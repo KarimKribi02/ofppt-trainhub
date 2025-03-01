@@ -65,7 +65,6 @@ const FormationForm = () => {
       description: '',
       dateDebut: '',
       dateFin: '',
-      statut: 'en attente',
       region: '',
       lieux: '',
       document: null,
@@ -158,8 +157,8 @@ const FormationForm = () => {
             <div className="mb-4">
               <label htmlFor="lieux" className="block text-sm font-medium mb-1">Ville</label>
               <select
-                id="ville"
-                name="ville"
+                id="lieux"
+                name="lieux"
                 value={formData.lieux}
                 onChange={handleChange}
                 className="w-full p-2 border rounded"

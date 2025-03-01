@@ -22,7 +22,6 @@ class FormationController extends Controller
             'description' => 'required|string',
             'dateDebut' => 'required|date',
             'dateFin' => 'required|date|after_or_equal:dateDebut',
-            'statut' => 'required|string',
             'region' => 'required|string',
             'lieux' => 'required|string',
             'document' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx',
@@ -34,7 +33,6 @@ class FormationController extends Controller
         $formation->description = $validated['description'];
         $formation->dateDebut = $validated['dateDebut'];
         $formation->dateFin = $validated['dateFin'];
-        $formation->statut = $validated['statut'];
         $formation->region = $validated['region'];
         $formation->lieux = $validated['lieux'];
         
