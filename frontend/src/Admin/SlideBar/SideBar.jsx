@@ -47,9 +47,9 @@ function SideBar() {
       >
         <div className="h-full px-3 py-4 overflow-y-auto">
           {/* Logo */}
-          <a href="#" className="flex items-center ps-2.5 mb-5">
+          
             <span className="self-center text-xl font-semibold whitespace-nowrap text-white">Trainhub</span>
-          </a>
+          
 
           {/* Menu Items */}
           <ul className="space-y-2 font-medium">
