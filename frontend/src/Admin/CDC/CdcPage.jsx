@@ -5,7 +5,9 @@ function CdcPage() {
   return (
     <>
       <SideBar />
+      
       <FormationForm />
+      
     </>
   )
 }

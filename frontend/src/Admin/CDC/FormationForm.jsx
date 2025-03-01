@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios'
 
 const FormationForm = () => {
   const [formData, setFormData] = useState({
@@ -29,22 +30,30 @@ const FormationForm = () => {
       [name]: files[0]
     });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form data submitted:', formData);
-    // FormData pour envoyer des fichiers
-    axios.post('http://127.0.0.1:8000/api/formations', formData)
-      .then(response => {
-        console.log('Formation ajoutée:', response.data);
-        // Réinitialiser le formulaire après ajout
-      })
-      .catch(error => {
-        console.error('Erreur lors de l\'ajout de la formation:', error);
-      });
+      const res = await axios.post('http://127.0.0.1:8000/api/formations', formData);
+  
+      if (res.data.status === 200) {
+        console.log('Formation ajoutée:', res.data.message);
+        setFormData({
+          titre: '',
+          description: '',
+          dateDebut: '',
+          dateFin: '',
+          statut: '',
+          region: '',
+          lieux: '',
+          document: null,
+          image: null
+        });
+      }
+   
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 sm:ml-64">
       <div className="max-w-3xl w-full bg-white shadow-lg p-6 rounded-lg">
         <h2 className="text-xl font-semibold mb-6 text-center">Ajouter Formation</h2>
 
