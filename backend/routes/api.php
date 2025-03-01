@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FormationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+
+// les api de formations
+
+// Route::get('/formations', [FormationController::class, 'index']); 
+// Route::get('/formations/{id}', [FormationController::class, 'show']); // Récupérer une formation specifique
+// Route::post('/formations', [FormationController::class, 'store']); // Creer une nouvelle formation
+// Route::put('/formations/{id}', [FormationController::class, 'update']); // Mettre a jour une formation
+// Route::delete('/formations/{id}', [FormationController::class, 'destroy']); // Supprimer une formation
+
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('formations', FormationController::class);
+
+
+
+
