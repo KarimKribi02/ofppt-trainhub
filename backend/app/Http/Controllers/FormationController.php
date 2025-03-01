@@ -82,7 +82,10 @@ class FormationController extends Controller
       
         $formation->update($request->all());
       
-        return response()->json($formation);
+        return response()->json([
+            'status'=> 200,
+            'message'=>'formation envoyer par succes'
+        ]);
     }
     
     // pour supprimier formation
@@ -90,7 +93,7 @@ class FormationController extends Controller
     {
         $formation = FormationModel::findOrFail($id);
         $formation->delete();
-      
+        
         return response()->json(['message' => 'Formation supprimée avec succès']);
     }
 }

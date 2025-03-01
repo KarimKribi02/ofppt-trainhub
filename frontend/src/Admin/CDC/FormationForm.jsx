@@ -48,7 +48,6 @@ const FormationForm = () => {
           description: '',
           dateDebut: '',
           dateFin: '',
-          statut: 'en attente',
           region: '',
           lieux: '',
           document: null,
