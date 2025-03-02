@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormationController;
+use App\Http\Controllers\messageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +33,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('formations', FormationController::class);
+Route::resource('formations', FormationController::class); // api de formation
+
+Route::resource('message', messageController::class);  // api de message
 
 
 
