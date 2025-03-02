@@ -2,35 +2,38 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 function TableFormations() {
-  const [formations, setFormations] = useState([]); // ✅ Initialisation avec un tableau vide
+  const [formations, setFormations] = useState([]);
   
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/formations")
-      .then((response) => {
-        setFormations(response.data || []); // ✅ Assure que formations est toujours un tableau
-        console.log("Données récupérées :", response.data);
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la récupération des formations :", error);
-        setFormations([]); // ✅ En cas d'erreur, éviter `undefined`
-      });
+    fetchFormations();
   }, []);
 
-
-  const handleStatusChange = async (e) => {
-    const newStatus = e.target.value; 
-  
+  const fetchFormations = async () => {
     try {
-      const res = await axios.put(`http://127.0.0.1:8000/api/formations/${formations.map((f) => f.id)}`, { status: newStatus });
-  
-      if (res.status === 200) {
-        console.log("Statut mis à jour :", res.data.message);
-      } else {
-        console.error("Erreur lors de la mise à jour :", res.data.message);
+     
+      const response = await axios.get(`http://localhost:8000/api/formations`);
+      setFormations(response.data);
+    } catch (err) {
+      console.error('Error recuperer formations:', err);
+    } 
+  };
+
+
+  const handleStatusChange = async (id, newStatus) => {
+    try {
+      const response = await axios.put(`http://localhost:8000/api/formations/${id}`, {
+        statut: newStatus
+      });
+      
+      if (response.data.status === 200) {
+        console.log('status : ',response.data.message)
+        setFormations(formations.map(f => 
+          f.id === id ? { ...f, statut: newStatus } : f
+        ));
       }
-    } catch (error) {
-      console.error("Erreur réseau :", error);
+    } catch (err) {
+      console.error('Error de mise a jour status:', err)
+
     }
   };
   
@@ -57,15 +60,15 @@ function TableFormations() {
           {formations?.length > 0 ? (
             formations.map((f) => (
               <tr key={f.id} className="border-t">
-                <td className="p-3">{f.id}</td>
+                <td className="p-3">{f.titre}</td>
                 <td className="p-3">{f.dateDebut}</td>
                 <td className="p-3">{f.dateFin}</td>
                 <td className="p-3">{f.lieux}</td>
                 <td className="p-3">
                   <select
-                    value={f.status}
-                    onChange={handleStatusChange}
-                    className={`p-2 rounded-md text-sm font-semibold border ${statusColors[f.status] || "bg-gray-100 text-gray-600"}`}
+                    value={f.statut}
+                    onChange={(e) => handleStatusChange(f.id, e.target.value)}
+                    className={`p-2 rounded-md text-sm font-semibold border ${statusColors[f.statut] || "bg-gray-100 text-gray-600"}`}
                   >
                     <option value="validé">validé</option>
                     <option value="en attente">En attente</option>
