@@ -7,6 +7,8 @@ import Overview from './Admin/CDC/Overview';
 import FormationForm from './Admin/CDC/FormationForm';
 import ChatTotal from './Admin/Chat/ChatTotal';
 import TableFormations from './Admin/DREF/TableFormations';
+import LoginPage from './Login/LoginPage';
+import Welcome from './Admin/Welcome';
 
 function App() {
   return (
@@ -14,19 +16,19 @@ function App() {
   <>
   <Routes>
       <Route path="/CDC" element={<Cdc />}>
+        <Route path="" element={<Welcome role="CDC" />} />
         <Route path="overview" element={<Overview />} />
         <Route path="ajouter-formation" element={<FormationForm />} />
         <Route path="chat" element={<ChatTotal role="CDC" />} />
       </Route>
       <Route path="/DREF" element={<Dref />}>
+        <Route path="" element={<Welcome role="DREF" />} />
         <Route path="formations" element={<TableFormations />} />
         <Route path="chat" element={<ChatTotal role="DREF"  />} />
       </Route>
+      <Route path="/" element={<LoginPage />} />
   </Routes>
-      {/* <Cdc /> */}
-      {/* <Dref /> */}
-      {/* <PageOverview />   */}
-      </>
+  </>
     </BrowserRouter>
     
   );

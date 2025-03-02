@@ -5,9 +5,9 @@ import CdcPage from '../Admin/CDC/CdcPage'
 function Routers() {
   return (
     <>
-        <Routes>
-        <Route path="/formations" element={<CdcPage />}/>
-        </Routes>
+    {/* //     <Routes>
+    //     <Route path="/formations" element={<CdcPage />}/>
+    //     </Routes> */}
     </>
   )
 }
