@@ -19,9 +19,9 @@ function Overview() {
   }, []);
 
   const statusColors = {
-    Complétée: "bg-green-100 text-green-600",
-    En_cours: "bg-yellow-100 text-yellow-600",
-    Annulée: "bg-red-100 text-red-600",
+    validé: "bg-green-100 text-green-600",
+    en_attente: "bg-yellow-100 text-yellow-600",
+    rejeté: "bg-red-100 text-red-600",
   };
 
   return (
@@ -44,8 +44,8 @@ function Overview() {
                 <td className="p-3">{f.dateDebut}</td>
                 <td className="p-3">{f.dateFin}</td>
                 <td className="p-3">{f.lieux}</td>
-                <td className={`p-3 rounded-md text-sm font-semibold ${statusColors[f.status] || "bg-gray-100 text-gray-600"}`}>
-                  {f.status}
+                <td className={`p-3 rounded-md text-sm font-semibold ${statusColors[f.statut] || "bg-gray-100 text-gray-600"}`}>
+                  {f.statut}
                 </td>
               </tr>
             ))

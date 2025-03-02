@@ -1,11 +1,17 @@
 import React from 'react'
 import SideBar from '../SlideBar/SideBar'
-import TableFormations from '../DREF/TableFormations'
+import { Outlet, Route, Routes } from 'react-router-dom'
 function DrefPage() {
   return (
     <>
-    <SideBar />
-    <TableFormations />
+    <div className="flex">
+      {/* Sidebar */}
+      <SideBar role="DREF" />
+      {/* Contenu principal */}
+      <div className="flex-1 p-4">
+        <Outlet /> {/* Affiche le contenu dynamique des sous-pages */}
+      </div>
+    </div>
     </>
   )
 }
