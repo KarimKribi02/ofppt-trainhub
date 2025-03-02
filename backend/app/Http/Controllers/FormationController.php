@@ -69,12 +69,16 @@ class FormationController extends Controller
             'description' => 'sometimes|required|string',
             'dateDebut' => 'sometimes|required|date', 
             'dateFin' => 'sometimes|required|date|after_or_equal:dateDebut', 
-            'statut' => 'sometimes|required|string', 
+            'statut' => 'sometimes|required|string|in:en attente,validé,rejeté', 
             'region' => 'sometimes|required|string',
             'lieux' => 'sometimes|required|string',
             'document' => 'nullable|string', 
             'image' => 'nullable|string'
         ]);
+
+        $data = array_filter($request->all(), function ($value) {
+            return $value !== null;
+        });
       
         $formation->update($request->all());
       
