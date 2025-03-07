@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Formation;
+use App\Models\FormationModel;
 use Illuminate\Http\Request;
 
 class FormationController extends Controller
@@ -10,14 +10,14 @@ class FormationController extends Controller
     // Afficher toutes les formations
     public function index()
     {
-        $formations = Formation::all();
+        $formations = FormationModel::all();
         return response()->json($formation);
     }
 
     // Afficher une formation spécifique
     public function show($id)
     {
-        $formation = Formation::find($id);
+        $formation = FormationModel::find($id);
         return response()->json($formation);
     }
 
@@ -36,7 +36,7 @@ class FormationController extends Controller
             'mode' => 'required|string',
         ]);
 
-        $formation = Formation::create($request->all());
+        $formation = FormationModel::create($request->all());
 
         return response()->json([
             'message' => 'ajouter avec succes',
@@ -47,7 +47,7 @@ class FormationController extends Controller
     // Mettre à jour une formation
     public function update(Request $request, $id)
     {
-        $formation = Formation::find($id);
+        $formation = FormationModel::find($id);
         $formation->update($request->all());
 
         return response()->json($formation);
@@ -56,7 +56,7 @@ class FormationController extends Controller
     // Supprimer une formation
     public function destroy($id)
     {
-        Formation::destroy($id);
+        FormationModel::destroy($id);
         return response()->json(['message' => 'Formation supprimée avec succès']);
     }
 }

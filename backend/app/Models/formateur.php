@@ -14,7 +14,9 @@ class formateur extends Model
     
     public function formateurAnimateur()
     {
-        return $this->hasOne(FormateurAnimateur::class, 'formateur_id');
+        return $this->hasOne(formateurAnimateur::class, 'formateur_id');
     }
+
+ 
 
 }

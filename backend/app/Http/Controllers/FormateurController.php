@@ -1,21 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\formateur;
 use Illuminate\Http\Request;
 
 class FormateurController extends Controller
 {
     public function index()
     {
-        $formateurs = Formateur::all();
+        $formateurs = formateur::all();
         return response()->json($formateurs);
     }
 
     // Afficher un formateur spécifique
     public function show($id)
     {
-        $formateur = Formateur::findOrFail($id);
+        $formateur = formateur::findOrFail($id);
         return response()->json($formateur);
     }
 
@@ -28,7 +28,7 @@ class FormateurController extends Controller
             'email' => 'required|string|email|unique:formateurs,email',
         ]);
 
-        $formateur = Formateur::create($request->all());
+        $formateur = formateur::create($request->all());
 
         return response()->json($formateur, 201);
     }
@@ -36,7 +36,7 @@ class FormateurController extends Controller
     // Mettre à jour un formateur
     public function update(Request $request, $id)
     {
-        $formateur = Formateur::findOrFail($id);
+        $formateur = formateur::findOrFail($id);
 
         $request->validate([
             'nom' => 'sometimes|required|string|max:255',
@@ -52,7 +52,7 @@ class FormateurController extends Controller
     // Supprimer un formateur
     public function destroy($id)
     {
-        Formateur::destroy($id);
+        formateur::destroy($id);
         return response()->json(['message' => 'Formateur supprimé avec succès']);
     }
 }

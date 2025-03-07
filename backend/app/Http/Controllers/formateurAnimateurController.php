@@ -1,21 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\formateurAnimateurr;
 use Illuminate\Http\Request;
 
 class formateurAnimateurController extends Controller
 {
     public function index()
     {
-        $formateurs = FormateurAnimateur::all();
+        $formateurs = formateurAnimateur::all();
         return response()->json($formateurs);
     }
 
     // Afficher un formateur animateur spécifique
     public function show($id)
     {
-        $formateur = FormateurAnimateur::find($id);
+        $formateur = formateurAnimateur::find($id);
         return response()->json($formateur);
     }
 
@@ -27,7 +27,7 @@ class formateurAnimateurController extends Controller
             'filliere' => 'nullable|string',
         ]);
 
-        $formateur = FormateurAnimateur::create($request->all());
+        $formateur = formateurAnimateur::create($request->all());
 
         return response()->json([
             'message' => 'ajouter avec succes'
@@ -37,7 +37,7 @@ class formateurAnimateurController extends Controller
     // Mettre à jour un formateur animateur
     public function update(Request $request, $id)
     {
-        $formateur = FormateurAnimateur::find($id);
+        $formateur = formateurAnimateur::find($id);
         $formateur->update($request->all());
 
         return response()->json([
@@ -49,7 +49,7 @@ class formateurAnimateurController extends Controller
     // Supprimer un formateur animateur
     public function destroy($id)
     {
-        FormateurAnimateur::destroy($id);
+        formateurAnimateur::destroy($id);
         return response()->json(['message' => 'Formateur Animateur supprimé avec succès']);
     }
 }

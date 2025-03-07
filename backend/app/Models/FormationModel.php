@@ -15,7 +15,7 @@ class FormationModel extends Model
 
     public function formateurAnimateur()
     {
-        return $this->belongsTo(FormateurAnimateur::class, 'formateur_animateur_id');
+        return $this->belongsTo(formateurAnimateur::class, 'formateur_animateur_id');
     }
 
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class formationAnimateur extends Model
+class formateurAnimateur extends Model
 {
     use HasFactory;
 
@@ -16,5 +16,10 @@ class formationAnimateur extends Model
     public function formations()
     {
         return $this->hasMany(FormationModel::class, 'formateur_animateur_id');
+    }
+
+    public function formateur()
+    {
+        return $this->belongsTo(formateur::class);
     }
 }
