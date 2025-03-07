@@ -13,19 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('formations',function (Blueprint $table){
+        Schema::create('formations', function (Blueprint $table){   
             $table->id();
             $table->string('titre');
             $table->text('description');
             $table->date('dateDebut');
             $table->date('dateFin');
-            $table->enum('statut', ['en attente', 'validé', 'rejeté'])->default('en attente');
-            $table->string('region');
+            $table->unsignedBigInteger('formateur_animateur_id');
             $table->string('lieux');
             $table->string('document')->nullable();
-            $table->string('image')->nullable();
+            $table->text('statut')->nullable();
+            $table->text('mode');
             $table->timestamps();
-       });
+            $table->foreign('formateur_animateur_id')->references('id')->on('formateur_animateurs')->onDelete('cascade');
+          });
     }
 
     /**
@@ -35,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('formations');
+        Schema::dropIfexist('formations');
     }
 };
