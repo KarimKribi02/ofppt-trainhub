@@ -9,6 +9,7 @@ import ChatTotal from './Admin/Chat/ChatTotal';
 import TableFormations from './Admin/DREF/TableFormations';
 import LoginPage from './Login/LoginPage';
 import Welcome from './Admin/Welcome';
+import AffichageFormation from './Admin/AffichageFormation';
 
 function App() {
   return (

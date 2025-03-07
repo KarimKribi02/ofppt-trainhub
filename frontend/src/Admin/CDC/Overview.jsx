@@ -34,6 +34,7 @@ function Overview() {
             <th className="p-3">Date de Fin</th>
             <th className="p-3">Lieux</th>
             <th className="p-3">Status</th>
+            <th className="p-3">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -47,11 +48,16 @@ function Overview() {
                 <td className={`p-3 rounded-md text-sm font-semibold ${statusColors[f.statut] || "bg-gray-100 text-gray-600"}`}>
                   {f.statut}
                 </td>
+                <td className="p-3 flex space-x-2">
+                  <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Modifier</button>
+                  <button className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Ajouter Formateur</button>
+                  <button className="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600">Voir</button>
+                </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="5" className="text-center p-4 text-gray-500">
+              <td colSpan="6" className="text-center p-4 text-gray-500">
                 Aucune formation disponible.
               </td>
             </tr>
