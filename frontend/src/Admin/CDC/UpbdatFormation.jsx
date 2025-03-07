@@ -42,7 +42,7 @@ const FormationForm = () => {
       }
     });
 
-      const res = await axios.post('http://127.0.0.1:8000/api/formations', data);
+      const res = await axios.put('http://127.0.0.1:8000/api/formations', data);
 
       if (res.data.status === 200) {
         console.log('Formation ajoutée:', res.data.message);
