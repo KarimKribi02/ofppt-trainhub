@@ -5,21 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class formateurAnimateur extends Model
+class FormateurAnimateur extends Model
 {
     use HasFactory;
-
-    protected $table = 'formateur_animateurs';
-
-    protected $fillable = ['formateur_id', 'filliere'];
     
-    public function formations()
-    {
-        return $this->hasMany(FormationModel::class, 'formateur_animateur_id');
-    }
+    protected $table = 'formateur_animateurs';
+    protected $fillable = ['nom','prenom','email','filières'];
 
-    public function formateur()
-    {
-        return $this->belongsTo(formateur::class,'formateur_id');
-    }
 }

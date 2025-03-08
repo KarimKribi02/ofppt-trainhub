@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nom');
             $table->string('prenom');
             $table->string('email')->unique();
-            $table->string('filliere')->nullable();
+            $table->string('filières')->nullable();
             $table->timestamps();
         });
     }

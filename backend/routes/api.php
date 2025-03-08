@@ -38,8 +38,8 @@ Route::resource('formations', FormationController::class); // api de formation
 
 Route::resource('message', messageController::class);  // api de message
 
-Route::resource('animateur',formateurAnimateurController::class);
+Route::resource('animateurs',formateurAnimateurController::class);
 
-Route::get('/animateurs', [formateurAnimateurController::class, 'getAnimateurs']);
+
 
 

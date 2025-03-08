@@ -181,8 +181,8 @@ const FormationForm = () => {
                 <option value="dakhla">Dakhla</option>
               </select>
             </div>
-            <div className='mb-4'>
-              <label htmlFor="filière" className="block text-sm font-medium mb-1">Filières :</label>
+            <div className="mb-4">
+              <label htmlFor="filières" className="block text-sm font-medium mb-1">Filières :</label>
               <select
                 id="filières"
                 name="filières"
@@ -190,15 +190,16 @@ const FormationForm = () => {
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
               >
-                <option value="">Sélectionner  Filière </option>
+                <option value="">Sélectionner Filière</option>
                 <option value="Développement Digital">Développement Digital</option>
-                <option value="Génie Civil ">Génie Civil </option>
+                <option value="Génie Civil">Génie Civil</option>
                 <option value="Infrastructure Digitale">Infrastructure Digitale</option>
                 <option value="Gestion des Entreprises">Gestion des Entreprises</option>
-              
               </select>
             </div>
-            <div className='mb-4'>
+
+            {/* Formateurs Animateurs */}
+            <div className="mb-4">
               <label htmlFor="formateurs_animateurs" className="block text-sm font-medium mb-1">Formateurs Animateurs :</label>
               <select
                 id="formateurs_animateurs"
@@ -207,15 +208,14 @@ const FormationForm = () => {
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
               >
-                <option value="">Sélectionner Formateurs Animateurs </option>
+                <option value="">Sélectionner Formateurs Animateurs</option>
                 {animateurs
-                .filter((animateur) => animateur.filliere === formData.filières)
-                .map((animateur) => (
-                  <option key={animateur.id} value={animateur.formateur.nom + " " + animateur.formateur.prenom}>
-                    {animateur.formateur.nom + " " + animateur.formateur.prenom}
-                  </option>
-                ))}
-
+                  .filter((animateur) => animateur.filières === formData.filières)
+                  .map((animateur) => (
+                    <option key={animateur.id} value={`${animateur.nom} ${animateur.prenom}`}>
+                      {animateur.nom} {animateur.prenom}
+                    </option>
+                  ))}
               </select>
             </div>
 
@@ -229,28 +229,69 @@ const FormationForm = () => {
                 className="w-full p-2 border rounded"
               />
             </div>
-           <div className='mb-4'>
-            <label htmlFor="mode" className="block text-sm font-medium mb-1">Mode de Formation :</label>
-            <div class="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-                <input id="presentiel" type="radio" value={formData.mode} name="bordered-checkbox" onChange={handleChange} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                <label for="presentiel" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 ">Presentiel</label>
-            </div>
-            <div class="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-                <input id="à_distance" type="radio" value={formData.mode} name="bordered-checkbox" onChange={handleChange} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                <label for="à_distance" class="w-full py-4 ms-2 text-sm font-medium text-gray-900">à Distance</label>
-            </div>
-            </div>
-           <div className='mb-4'>
-            <label htmlFor="mode" className="block text-sm font-medium mb-1">Statut de Formation :</label>
-            <div class="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-                <input id="redigé" type="radio" value={formData.statut} name="bordered-checkboxe" onChange={handleChange} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                <label for="redigé" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 ">Redigé</label>
-            </div>
-            <div class="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-                <input id="validé" type="radio" value={formData.statut} name="bordered-checkboxe" onChange={handleChange} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                <label for="validé" class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Validé</label>
-            </div>
-            </div>
+            <div className="mb-4">
+  <label className="block text-sm font-medium mb-1">Mode de Formation :</label>
+  <div className="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
+    <input
+      id="presentiel"
+      type="radio"
+      value="presentiel"
+      name="mode"
+      checked={formData.mode === "presentiel"}
+      onChange={handleChange}
+      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+    />
+    <label htmlFor="presentiel" className="w-full py-4 ms-2 text-sm font-medium text-gray-900">
+      Présentiel
+    </label>
+  </div>
+  <div className="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
+    <input
+      id="à_distance"
+      type="radio"
+      value="à_distance"
+      name="mode"
+      checked={formData.mode === "à_distance"}
+      onChange={handleChange}
+      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+    />
+    <label htmlFor="à_distance" className="w-full py-4 ms-2 text-sm font-medium text-gray-900">
+      À Distance
+    </label>
+  </div>
+</div>
+
+<div className="mb-4">
+  <label className="block text-sm font-medium mb-1">Statut de Formation :</label>
+  <div className="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
+    <input
+      id="redigé"
+      type="radio"
+      value="redigé"
+      name="statut"
+      checked={formData.statut === "redigé"}
+      onChange={handleChange}
+      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+    />
+    <label htmlFor="redigé" className="w-full py-4 ms-2 text-sm font-medium text-gray-900">
+      Rédigé
+    </label>
+  </div>
+  <div className="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
+    <input
+      id="validé"
+      type="radio"
+      value="validé"
+      name="statut"
+      checked={formData.statut === "validé"}
+      onChange={handleChange}
+      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+    />
+    <label htmlFor="validé" className="w-full py-4 ms-2 text-sm font-medium text-gray-900">
+      Validé
+    </label>
+  </div>
+</div>
             
 
             <div className="flex justify-center space-x-2 mt-4">

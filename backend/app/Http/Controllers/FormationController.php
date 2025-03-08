@@ -20,24 +20,46 @@ class FormationController extends Controller
      * Enregistrer une nouvelle formation.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'titre' => 'required|string|max:255',
-            'description' => 'required|string',
-            'dateDebut' => 'required|date',
-            'dateFin' => 'required|date|after_or_equal:dateDebut',
-            'filières' => 'required|string',
-            'formateurs_animateurs' => 'required|string',
-            'lieux' => 'required|string',
-            'document' => 'nullable|string',
-            'statut' => 'required|string',
-            'mode' => 'required|string'
-        ]);
+{
+    $request->validate([
+        'titre' => 'required|string|max:255',
+        'description' => 'required|string',
+        'dateDebut' => 'required|date',
+        'dateFin' => 'required|date|after_or_equal:dateDebut',
+        'filières' => 'required|string',
+        'formateurs_animateurs' => 'required|string',
+        'lieux' => 'required|string',
+        'document' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+        'statut' => 'required|string',
+        'mode' => 'required|string'
+    ]);
 
-        $formation = FormationModel::create($request->all());
-
-        return response()->json($formation, 201);
+    // Si un fichier est uploadé, stockez-le et récupérez son chemin
+    $documentPath = null;
+    if ($request->hasFile('document')) {
+        $documentPath = $request->file('document')->store('formations', 'public');
     }
+
+    // Créez la formation avec les données validées
+    $formation = FormationModel::create([
+        'titre' => $request->titre,
+        'description' => $request->description,
+        'dateDebut' => $request->dateDebut,
+        'dateFin' => $request->dateFin,
+        'filières' => $request->filières,
+        'formateurs_animateurs' => $request->formateurs_animateurs,
+        'lieux' => $request->lieux,
+        'document' => $documentPath, // Stocke le chemin du fichier
+        'statut' => $request->statut,
+        'mode' => $request->mode,
+    ]);
+
+    return response()->json([
+        'status' => 200,
+        'message' => 'Formation ajoutée avec succès',
+        'data' => $formation
+    ], 201);
+}
 
     /**
      * Afficher une formation spécifique.
@@ -66,7 +88,7 @@ class FormationController extends Controller
             'mode' => 'sometimes|string'
         ]);
 
-        $formation = FormationModel::findOrFail($id);
+        $formation = FormationModel::find($id);
         $formation->update($request->all());
 
         return response()->json($formation);
@@ -77,7 +99,7 @@ class FormationController extends Controller
      */
     public function destroy($id)
     {
-        $formation = FormationModel::findOrFail($id);
+        $formation = FormationModel::find($id);
         $formation->delete();
 
         return response()->json(['message' => 'Formation supprimée avec succès']);

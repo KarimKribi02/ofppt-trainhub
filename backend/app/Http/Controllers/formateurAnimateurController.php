@@ -1,61 +1,69 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\formateurAnimateur;
-use Illuminate\Http\Request;
 
+use Illuminate\Http\Request;
+use App\Models\FormateurAnimateur;
 class formateurAnimateurController extends Controller
 {
     public function index()
     {
-        $formateurs = formateurAnimateur::all();
+        $formateurs = FormateurAnimateur::all();
         return response()->json($formateurs);
     }
 
-    // Afficher un formateur animateur spécifique
+    // Afficher un formateur/animateur spécifique
     public function show($id)
     {
-        $formateur = formateurAnimateur::find($id);
+        $formateur = FormateurAnimateur::find($id);
+        
+        if (!$formateur) {
+            return response()->json(['message' => 'Formateur non trouvé'], 404);
+        }
+
         return response()->json($formateur);
     }
 
-    // Ajouter un nouveau formateur animateur
+    // Enregistrer un formateur/animateur
     public function store(Request $request)
     {
         $request->validate([
-            'formateur_id' => 'required|unique:formateur_animateurs,formateur_id|exists:formateurs,id',
-            'filliere' => 'nullable|string',
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'email' => 'required|email|unique:formateur_animateurs,email',
+            'filliere' => 'nullable|string|max:255',
         ]);
 
-        $formateur = formateurAnimateur::create($request->all());
+        $formateur = FormateurAnimateur::create($request->all());
 
-        return response()->json([
-            'message' => 'ajouter avec succes'
-        ]);
+        return response()->json($formateur, 201);  // 201 pour la création réussie
     }
 
-    public function getAnimateurs()
-    {
-        $animateurs = FormateurAnimateur::with('formateur')->get();
-        return response()->json($animateurs);
-    }
-
-    // Mettre à jour un formateur animateur
+    // Mettre à jour un formateur/animateur
     public function update(Request $request, $id)
     {
-        $formateur = formateurAnimateur::find($id);
+        $formateur = FormateurAnimateur::find($id);
+        
+        if (!$formateur) {
+            return response()->json(['message' => 'Formateur non trouvé'], 404);
+        }
+
         $formateur->update($request->all());
 
-        return response()->json([
-            'message' => 'mettre a jour avec succes',
-            'data' => 200
-        ]);
+        return response()->json($formateur);
     }
 
-    // Supprimer un formateur animateur
+    // Supprimer un formateur/animateur
     public function destroy($id)
     {
-        formateurAnimateur::destroy($id);
-        return response()->json(['message' => 'Formateur Animateur supprimé avec succès']);
+        $formateur = FormateurAnimateur::find($id);
+        
+        if (!$formateur) {
+            return response()->json(['message' => 'Formateur non trouvé'], 404);
+        }
+
+        $formateur->delete();
+
+        return response()->json(['message' => 'Formateur supprimé avec succès']);
     }
 }
