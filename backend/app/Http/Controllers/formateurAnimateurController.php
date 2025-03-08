@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\formateurAnimateurr;
+use App\Models\formateurAnimateur;
 use Illuminate\Http\Request;
 
 class formateurAnimateurController extends Controller
@@ -32,6 +32,12 @@ class formateurAnimateurController extends Controller
         return response()->json([
             'message' => 'ajouter avec succes'
         ]);
+    }
+
+    public function getAnimateurs()
+    {
+        $animateurs = FormateurAnimateur::with('formateur')->get();
+        return response()->json($animateurs);
     }
 
     // Mettre à jour un formateur animateur

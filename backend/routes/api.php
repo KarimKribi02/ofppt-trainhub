@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormationController;
 use App\Http\Controllers\messageController;
+use App\Http\Controllers\formateurAnimateurController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,8 @@ Route::resource('formations', FormationController::class); // api de formation
 
 Route::resource('message', messageController::class);  // api de message
 
+Route::resource('animateur',formateurAnimateurController::class);
 
+Route::get('/animateurs', [formateurAnimateurController::class, 'getAnimateurs']);
 
 

@@ -20,6 +20,6 @@ class formateurAnimateur extends Model
 
     public function formateur()
     {
-        return $this->belongsTo(formateur::class);
+        return $this->belongsTo(formateur::class,'formateur_id');
     }
 }
