@@ -11,7 +11,7 @@ class FormationModel extends Model
 
     protected $table = 'formations';
 
-    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'formateur_animateur_id', 'statut', 'lieux', 'mode', 'document'];
+    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières', 'formateur_animateur_id','document', 'statut',  'mode' ];
 
     public function formateurAnimateur()
     {

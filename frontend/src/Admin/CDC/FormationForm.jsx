@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import axios from 'axios'
 
 const FormationForm = () => {
   const [formData, setFormData] = useState({
-          titre: '',
-          description: '',
-          dateDebut: '',
-          dateFin: '',
-          region: '',
-          lieux: '',
-          filières: '',
-          formateurs_animateurs : '',
-          document: null,
-          statut: '',
-          mode: '',
+    titre: '',
+    description: '',
+    dateDebut: '',
+    dateFin: '',
+    lieux: '',
+    filières: '',
+    formateurs_animateurs : '',
+    document: null,
+    statut: '',
+    mode: '',
   });
+  const [animateurs, setAnimateurs] = useState([]);
   
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -26,7 +26,18 @@ const FormationForm = () => {
     });
   };
 
-
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/api/animateurs")
+      .then((response) => {
+        setAnimateurs(response.data);
+        
+      })
+      .catch((error) => {
+        console.log("Erreur lors du chargement des animateurs");
+        
+      });
+  }, []);
 
 
   const handleSubmit = async (e) => {
@@ -51,7 +62,6 @@ const FormationForm = () => {
           description: '',
           dateDebut: '',
           dateFin: '',
-          region: '',
           lieux: '',
           filières: '',
           formateurs_animateurs : '',
@@ -66,17 +76,16 @@ const FormationForm = () => {
 
   const handleCancel = () => {
     setFormData({
-      titre: '',
-      description: '',
-      dateDebut: '',
-      dateFin: '',
-      region: '',
-      lieux: '',
-      filières: '',
-      formateurs_animateurs : '',
-      document: null,
-      statut: '',
-      mode: '',
+          titre: '',
+          description: '',
+          dateDebut: '',
+          dateFin: '',
+          lieux: '',
+          filières: '',
+          formateurs_animateurs : '',
+          document: null,
+          statut: '',
+          mode: '',
     });
   };
 
@@ -199,11 +208,14 @@ const FormationForm = () => {
                 className="w-full p-2 border rounded"
               >
                 <option value="">Sélectionner Formateurs Animateurs </option>
-                <option value="casablanca">Casablanca</option>
-                <option value="rabat">Rabat</option>
-                <option value="marrakech">Marrakech</option>
-                <option value="fes">Fès</option>
-              
+                {animateurs
+                .filter((animateur) => animateur.filliere === formData.filières)
+                .map((animateur) => (
+                  <option key={animateur.id} value={animateur.formateur.nom + " " + animateur.formateur.prenom}>
+                    {animateur.formateur.nom + " " + animateur.formateur.prenom}
+                  </option>
+                ))}
+
               </select>
             </div>
 
@@ -231,11 +243,11 @@ const FormationForm = () => {
            <div className='mb-4'>
             <label htmlFor="mode" className="block text-sm font-medium mb-1">Statut de Formation :</label>
             <div class="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-                <input id="redigé" type="radio" value={formData.statut} name="bordered-checkbox" onChange={handleChange} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                <input id="redigé" type="radio" value={formData.statut} name="bordered-checkboxe" onChange={handleChange} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                 <label for="redigé" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 ">Redigé</label>
             </div>
             <div class="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-                <input id="validé" type="radio" value={formData.statut} name="bordered-checkbox" onChange={handleChange} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                <input id="validé" type="radio" value={formData.statut} name="bordered-checkboxe" onChange={handleChange} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                 <label for="validé" class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Validé</label>
             </div>
             </div>

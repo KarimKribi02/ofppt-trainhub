@@ -29,8 +29,9 @@ class FormationController extends Controller
             'description' => 'required|string',
             'dateDebut' => 'required|date',
             'dateFin' => 'required|date',
-            'formateur_animateur_id' => 'required|exists:formateur_animateurs,id',
             'lieux' => 'required|string',
+            'filières' => 'required|string',
+            'formateur_animateurs' => 'required|string',
             'document' => 'nullable|string',
             'statut' => 'nullable|string',
             'mode' => 'required|string',
@@ -40,7 +41,7 @@ class FormationController extends Controller
 
         return response()->json([
             'message' => 'ajouter avec succes',
-            'data' => 200
+            'status' => 200
         ]);
     }
 
