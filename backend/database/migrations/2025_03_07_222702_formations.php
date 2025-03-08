@@ -19,13 +19,13 @@ return new class extends Migration
             $table->text('description');
             $table->date('dateDebut');
             $table->date('dateFin');
-            $table->unsignedBigInteger('formateur_animateur_id');
+            $table->string('filières');
+            $table->string('formateurs_animateurs');
             $table->string('lieux');
             $table->string('document')->nullable();
-            $table->text('statut')->nullable();
-            $table->text('mode');
+            $table->string('statut');
+            $table->string('mode');
             $table->timestamps();
-            $table->foreign('formateur_animateur_id')->references('id')->on('formateur_animateurs')->onDelete('cascade');
           });
     }
 
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfexist('formations');
+        Schema::dropIfExists('formations');
     }
 };

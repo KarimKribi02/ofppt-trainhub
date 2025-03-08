@@ -11,11 +11,8 @@ class FormationModel extends Model
 
     protected $table = 'formations';
 
-    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières', 'formateur_animateur_id','document', 'statut',  'mode' ];
+    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières', 'formateurs_animateurs','document', 'statut',  'mode' ];
 
-    public function formateurAnimateur()
-    {
-        return $this->belongsTo(formateurAnimateur::class, 'formateur_animateur_id');
-    }
+   
 
 }

@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('formateur_animateurs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('formateur_id')->unique(); 
+            $table->string('nom');
+            $table->string('prenom');
+            $table->string('email')->unique();
             $table->string('filliere')->nullable();
-            $table->foreign('formateur_id')->references('id')->on('formateurs')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfexist('formateur_animateurs');
+        Schema::dropIfExists('formateur_animateurs');
     }
 };
