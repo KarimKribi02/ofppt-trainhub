@@ -13,26 +13,23 @@ import AffichageFormation from './Admin/AffichageFormation';
 
 function App() {
   return (
-  <BrowserRouter>
-  <>
-  <Routes>
-      <Route path="/CDC" element={<Cdc />}>
-        <Route path="" element={<Welcome role="CDC" />} />
-        <Route path="overview" element={<Overview />}>
-          <Route path="affichage-formation" element={<AffichageFormation />} />
+    <BrowserRouter>
+    <Routes>
+        <Route path="/CDC" element={<Cdc />}>
+            <Route path="" element={<Welcome role="CDC" />} />
+            <Route path="overview" element={<Overview />} />
+            <Route path="ajouter-formation" element={<FormationForm />} />
+            <Route path="chat" element={<ChatTotal role="CDC" />} />
+            <Route path="formation/:id" element={<AffichageFormation />} /> {/* ✅ Route dynamique */}
         </Route>
-        <Route path="ajouter-formation" element={<FormationForm />} />
-        <Route path="chat" element={<ChatTotal role="CDC" />} />
-      </Route>
-      <Route path="/DREF" element={<Dref />}>
-        <Route path="" element={<Welcome role="DREF" />} />
-        <Route path="formations" element={<TableFormations />} />
-        <Route path="chat" element={<ChatTotal role="DREF"  />} />
-      </Route>
-      <Route path="/" element={<LoginPage />} />
-  </Routes>
-  </>
-    </BrowserRouter>
+        <Route path="/DREF" element={<Dref />}>
+            <Route path="" element={<Welcome role="DREF" />} />
+            <Route path="formations" element={<TableFormations />} />
+            <Route path="chat" element={<ChatTotal role="DREF" />} />
+        </Route>
+        <Route path="/" element={<LoginPage />} />
+    </Routes>
+</BrowserRouter>
     
   );
 }
