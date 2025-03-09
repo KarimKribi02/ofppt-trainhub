@@ -18,7 +18,9 @@ function App() {
   <Routes>
       <Route path="/CDC" element={<Cdc />}>
         <Route path="" element={<Welcome role="CDC" />} />
-        <Route path="overview" element={<Overview />} />
+        <Route path="overview" element={<Overview />}>
+          <Route path="affichage-formation" element={<AffichageFormation />} />
+        </Route>
         <Route path="ajouter-formation" element={<FormationForm />} />
         <Route path="chat" element={<ChatTotal role="CDC" />} />
       </Route>

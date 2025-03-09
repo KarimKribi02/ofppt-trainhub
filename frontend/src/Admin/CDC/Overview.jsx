@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { Link , Outlet} from 'react-router-dom';
 
 function Overview() {
     const [formations, setFormations] = useState([]); // ✅ Initialisation avec un tableau vide
@@ -51,7 +52,7 @@ function Overview() {
                 <td className="p-3 flex space-x-2">
                   <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Modifier</button>
                   <button className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Ajouter Formateur</button>
-                  <button className="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600">Voir</button>
+                  <Link to='/CDC/affichage-formation' className="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600">Voir</Link> 
                 </td>
               </tr>
             ))
@@ -64,6 +65,7 @@ function Overview() {
           )}
         </tbody>
       </table>
+      
     </div>
   );
 }
