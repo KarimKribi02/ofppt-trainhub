@@ -66,7 +66,7 @@ class FormationController extends Controller
      */
     public function show($id)
     {
-        $formation = FormationModel::findOrFail($id);
+        $formation = FormationModel::find($id);
         return response()->json($formation);
     }
 

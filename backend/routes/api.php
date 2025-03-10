@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormationController;
 use App\Http\Controllers\messageController;
 use App\Http\Controllers\formateurAnimateurController;
+use App\Http\Controllers\FormateurParticipantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +39,9 @@ Route::resource('formations', FormationController::class); // api de formation
 
 Route::resource('message', messageController::class);  // api de message
 
-Route::resource('animateurs',formateurAnimateurController::class);
+Route::resource('animateurs',formateurAnimateurController::class);  // api de formateurs animateurs
+
+Route::resource('participants',FormateurParticipantController::class); // api de formateurs participants
 
 
 
