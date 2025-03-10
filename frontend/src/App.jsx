@@ -10,6 +10,7 @@ import TableFormations from './Admin/DREF/TableFormations';
 import LoginPage from './Login/LoginPage';
 import Welcome from './Admin/Welcome';
 import AffichageFormation from './Admin/AffichageFormation';
+import UpdatFormation from './Admin/CDC/UpdatFormation';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="ajouter-formation" element={<FormationForm />} />
             <Route path="chat" element={<ChatTotal role="CDC" />} />
             <Route path="formation/:id" element={<AffichageFormation />} /> {/* ✅ Route dynamique */}
+            <Route path="Updatformation/:id" element={<UpdatFormation/>} />
         </Route>
         <Route path="/DREF" element={<Dref />}>
             <Route path="" element={<Welcome role="DREF" />} />

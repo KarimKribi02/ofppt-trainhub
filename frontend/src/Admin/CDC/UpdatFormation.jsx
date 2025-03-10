@@ -1,22 +1,43 @@
-import React, { useState } from 'react';
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const FormationForm = () => {
+const UpdateFormation = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-          titre: '',
-          description: '',
-          dateDebut: '',
-          dateFin: '',
-          region: '',
-          lieux: '',
-          filières: '',
-          formateurs_animateurs : '',
-          document: null,
-          statut: '',
-          mode: '',
+    titre: '',
+    description: '',
+    dateDebut: '',
+    dateFin: '',
+    lieux: '',
+    filières: '',
+    formateurs_animateurs: '',
+    document: null,
+    statut: '',
+    mode: '',
   });
-  
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [animateurs, setAnimateurs] = useState([]);
+
+  useEffect(() => {
+    // Charger les données de la formation existante
+    axios.get(`http://localhost:8000/api/formations/${id}`)
+      .then((response) => {
+        setFormData(response.data);
+      })
+      .catch((error) => {
+        console.error("Erreur lors du chargement de la formation", error);
+      });
+
+    // Charger la liste des animateurs
+    axios.get("http://localhost:8000/api/animateurs")
+      .then((response) => {
+        setAnimateurs(response.data);
+      })
+      .catch((error) => {
+        console.error("Erreur lors du chargement des animateurs", error);
+      });
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, type, value, files } = e.target;
@@ -26,65 +47,32 @@ const FormationForm = () => {
     });
   };
 
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
+  const data = { ...formData }; // Copie de formData
 
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Utilisation de FormData pour gérer les fichiers
-
-    const data = new FormData();
-    Object.keys(formData).forEach((key) => {
-      if (formData[key]) {
-        data.append(key, formData[key]);
-      }
+  try {
+    const response = await axios.put(`http://127.0.0.1:8000/api/formations/${id}`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
 
-      const res = await axios.put('http://127.0.0.1:8000/api/formations', data);
+    console.log("Réponse de l'API :", response.data); // Vérifie la réponse Laravel
 
-      if (res.data.status === 200) {
-        console.log('Formation ajoutée:', res.data.message);
-        setFormData({
-          titre: '',
-          description: '',
-          dateDebut: '',
-          dateFin: '',
-          region: '',
-          lieux: '',
-          filières: '',
-          formateurs_animateurs : '',
-          document: null,
-          statut: '',
-          mode: '',
-        });
-      
-      }
+    alert("Formation mise à jour avec succès");
+    navigate("/CDC/overview");
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour", error.response?.data || error.message);
+  }
+};
+
   
-  };
-
-  const handleCancel = () => {
-    setFormData({
-      titre: '',
-      description: '',
-      dateDebut: '',
-      dateFin: '',
-      region: '',
-      lieux: '',
-      filières: '',
-      formateurs_animateurs : '',
-      document: null,
-      statut: '',
-      mode: '',
-    });
-  };
-
   return (
-    
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 sm:ml-64">
       <div className="max-w-3xl w-full bg-white shadow-lg p-6 rounded-lg">
-        <h2 className="text-xl font-semibold mb-6 text-center">Ajouter Formation</h2>
+        <h2 className="text-xl font-semibold mb-6 text-center">Modifier Formation</h2>
 
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4">
@@ -172,8 +160,8 @@ const FormationForm = () => {
                 <option value="dakhla">Dakhla</option>
               </select>
             </div>
-            <div className='mb-4'>
-              <label htmlFor="filière" className="block text-sm font-medium mb-1">Filières :</label>
+            <div className="mb-4">
+              <label htmlFor="filières" className="block text-sm font-medium mb-1">Filières :</label>
               <select
                 id="filières"
                 name="filières"
@@ -181,15 +169,16 @@ const FormationForm = () => {
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
               >
-                <option value="">Sélectionner  Filière </option>
+                <option value="">Sélectionner Filière</option>
                 <option value="Développement Digital">Développement Digital</option>
-                <option value="Génie Civil ">Génie Civil </option>
+                <option value="Génie Civil">Génie Civil</option>
                 <option value="Infrastructure Digitale">Infrastructure Digitale</option>
                 <option value="Gestion des Entreprises">Gestion des Entreprises</option>
-              
               </select>
             </div>
-            <div className='mb-4'>
+
+            {/* Formateurs Animateurs */}
+            <div className="mb-4">
               <label htmlFor="formateurs_animateurs" className="block text-sm font-medium mb-1">Formateurs Animateurs :</label>
               <select
                 id="formateurs_animateurs"
@@ -198,12 +187,14 @@ const FormationForm = () => {
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
               >
-                <option value="">Sélectionner Formateurs Animateurs </option>
-                <option value="casablanca">Casablanca</option>
-                <option value="rabat">Rabat</option>
-                <option value="marrakech">Marrakech</option>
-                <option value="fes">Fès</option>
-              
+                <option value="">Sélectionner Formateurs Animateurs</option>
+                {animateurs
+                  .filter((animateur) => animateur.filières === formData.filières)
+                  .map((animateur) => (
+                    <option key={animateur.id} value={`${animateur.nom} ${animateur.prenom}`}>
+                      {animateur.nom} {animateur.prenom}
+                    </option>
+                  ))}
               </select>
             </div>
 
@@ -217,44 +208,73 @@ const FormationForm = () => {
                 className="w-full p-2 border rounded"
               />
             </div>
-           <div className='mb-4'>
-            <label htmlFor="mode" className="block text-sm font-medium mb-1">Mode de Formation :</label>
-            <div class="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-                <input id="presentiel" type="radio" value={formData.mode} name="bordered-checkbox" onChange={handleChange} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                <label for="presentiel" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 ">Presentiel</label>
-            </div>
-            <div class="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-                <input id="à_distance" type="radio" value={formData.mode} name="bordered-checkbox" onChange={handleChange} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                <label for="à_distance" class="w-full py-4 ms-2 text-sm font-medium text-gray-900">à Distance</label>
-            </div>
-            </div>
-           <div className='mb-4'>
-            <label htmlFor="mode" className="block text-sm font-medium mb-1">Statut de Formation :</label>
-            <div class="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-                <input id="redigé" type="radio" value={formData.statut} name="bordered-checkbox" onChange={handleChange} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                <label for="redigé" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 ">Redigé</label>
-            </div>
-            <div class="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-                <input id="validé" type="radio" value={formData.statut} name="bordered-checkbox" onChange={handleChange} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                <label for="validé" class="w-full py-4 ms-2 text-sm font-medium text-gray-900">Validé</label>
-            </div>
-            </div>
+            <div className="mb-4">
+  <label className="block text-sm font-medium mb-1">Mode de Formation :</label>
+  <div className="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
+    <input
+      id="presentiel"
+      type="radio"
+      value="presentiel"
+      name="mode"
+      checked={formData.mode === "presentiel"}
+      onChange={handleChange}
+      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+    />
+    <label htmlFor="presentiel" className="w-full py-4 ms-2 text-sm font-medium text-gray-900">
+      Présentiel
+    </label>
+  </div>
+  <div className="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
+    <input
+      id="à_distance"
+      type="radio"
+      value="à_distance"
+      name="mode"
+      checked={formData.mode === "à_distance"}
+      onChange={handleChange}
+      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+    />
+    <label htmlFor="à_distance" className="w-full py-4 ms-2 text-sm font-medium text-gray-900">
+      À Distance
+    </label>
+  </div>
+</div>
+
+<div className="mb-4">
+  <label className="block text-sm font-medium mb-1">Statut de Formation :</label>
+  <div className="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
+    <input
+      id="redigé"
+      type="radio"
+      value="redigé"
+      name="statut"
+      checked={formData.statut === "redigé"}
+      onChange={handleChange}
+      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+    />
+    <label htmlFor="redigé" className="w-full py-4 ms-2 text-sm font-medium text-gray-900">
+      Rédigé
+    </label>
+  </div>
+  <div className="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
+    <input
+      id="validé"
+      type="radio"
+      value="validé"
+      name="statut"
+      checked={formData.statut === "validé"}
+      onChange={handleChange}
+      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+    />
+    <label htmlFor="validé" className="w-full py-4 ms-2 text-sm font-medium text-gray-900">
+      Validé
+    </label>
+  </div>
+</div>
             
 
             <div className="flex justify-center space-x-2 mt-4">
-              <button
-                type="button"
-                className="px-4 py-2 bg-gray-300 text-gray-800 rounded"
-                onClick={handleCancel}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded"
-              >
-                Add Formation
-              </button>
+            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">Mettre à jour</button>
             </div>
           </div>
         </form>
@@ -263,4 +283,4 @@ const FormationForm = () => {
   );
 };
 
-export default FormationForm;
+export default UpdateFormation;

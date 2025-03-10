@@ -50,7 +50,12 @@ function Overview() {
                                     {f.statut}
                                 </td>
                                 <td className="p-3 flex space-x-2">
-                                    <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Modifier</button>
+                                <Link 
+                                        to={`/CDC/Updatformation/${f.id}`} // ✅ Route avec ID dynamique
+                                        className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                                    >
+                                       Modifier
+                                    </Link>
                                     <button className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Ajouter Formateur</button>
                                     <Link 
                                         to={`/CDC/formation/${f.id}`} // ✅ Route avec ID dynamique
