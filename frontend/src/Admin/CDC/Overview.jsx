@@ -56,7 +56,12 @@ function Overview() {
                                     >
                                        Modifier
                                     </Link>
-                                    <button className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Ajouter Formateur</button>
+                                    <Link 
+                                        to={`/CDC/ajouter-formateurs/${f.id}`} // ✅ Route dynamique pour ajouter un formateur
+                                        className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                                    >
+                                        Ajouter Formateur
+                                    </Link>
                                     <Link 
                                         to={`/CDC/formation/${f.id}`} // ✅ Route avec ID dynamique
                                         className="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600"

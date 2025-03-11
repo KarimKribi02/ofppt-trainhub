@@ -11,6 +11,7 @@ import LoginPage from './Login/LoginPage';
 import Welcome from './Admin/Welcome';
 import AffichageFormation from './Admin/AffichageFormation';
 import UpdatFormation from './Admin/CDC/UpdatFormation';
+import FormateursTable from './Admin/FormateursTable';
 
 function App() {
   return (
@@ -23,7 +24,8 @@ function App() {
             <Route path="chat" element={<ChatTotal role="CDC" />} />
             <Route path="formation/:id" element={<AffichageFormation />} /> {/* ✅ Route dynamique */}
             <Route path="Updatformation/:id" element={<UpdatFormation/>} />
-        </Route>
+            <Route path="ajouter-formateurs/:id" element={<FormateursTable />} />
+        </Route>pdatFormation
         <Route path="/DREF" element={<Dref />}>
             <Route path="" element={<Welcome role="DREF" />} />
             <Route path="formations" element={<TableFormations />} />
