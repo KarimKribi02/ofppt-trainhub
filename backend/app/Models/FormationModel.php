@@ -11,7 +11,7 @@ class FormationModel extends Model
 
     protected $table = 'formations';
 
-    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières', 'formateurs_animateurs','document', 'statut',  'mode' ];
+    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières', 'formateurs_animateurs','document', 'statut',  'mode','lien_teams','participant_id' ];
 
    
 
