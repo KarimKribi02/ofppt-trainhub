@@ -18,14 +18,18 @@ return new class extends Migration
             $table->string('titre');
             $table->text('description');
             $table->date('dateDebut');
-            $table->date('dateFin');
+            $table->date('dateFin');    
             $table->string('filières');
             $table->string('formateurs_animateurs');
             $table->string('lieux');
             $table->string('document')->nullable();
             $table->string('statut');
             $table->string('mode');
+            $table->string('lien_teams');
+            $table->unsignedBigInteger('participant_id');
             $table->timestamps();
+
+            $table->foreign('participant_id')->references('id')->on('formateur_participants')->onDelete('cascade');
           });
     }
 
@@ -36,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('formations');
+        schema::dropIfExists('formations');
     }
 };
