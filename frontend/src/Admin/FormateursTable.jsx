@@ -1,11 +1,13 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function FormateursPage() {
   const [formateurs, setFormateurs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedFormateurs, setSelectedFormateurs] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterFiliere, setFilterFiliere] = useState("");
+  const [filterEtablissement, setFilterEtablissement] = useState("");
 
   useEffect(() => {
     axios.get("http://localhost:8000/api/participants")
@@ -25,13 +27,47 @@ export default function FormateursPage() {
     );
   };
 
+  const filteredFormateurs = formateurs.filter(formateur =>
+    formateur.nom.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (filterFiliere ? formateur.filliere === filterFiliere : true) &&
+    (filterEtablissement ? formateur.etablissement === filterEtablissement : true)
+  );
+
   return (
-    <div className="container mx-auto  p-4 sm:ml-64 ">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800 p-4 sm:ml-64">Liste des Formateurs</h1>
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 p-4 sm:ml-64">
+      <div className="mb-6 flex flex-wrap gap-4 items-center bg-white p-4 shadow-md rounded-lg w-full">
+        <input 
+          type="text" 
+          placeholder="🔍 Rechercher par nom..." 
+          className="border border-gray-300 p-2 rounded-lg w-full sm:w-1/4 focus:ring-2 focus:ring-blue-400"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <select 
+          className="border border-gray-300 p-2 rounded-lg w-full sm:w-1/3 focus:ring-2 focus:ring-blue-400" 
+          value={filterFiliere} 
+          onChange={(e) => setFilterFiliere(e.target.value)}
+        >
+          <option value="">Toutes les filières</option>
+          {[...new Set(formateurs.map(f => f.filliere))].map(filiere => (
+            <option key={filiere} value={filiere}>{filiere}</option>
+          ))}
+        </select>
+        <select 
+          className="border border-gray-300 p-2 rounded-lg w-full sm:w-1/3 focus:ring-2 focus:ring-blue-400" 
+          value={filterEtablissement} 
+          onChange={(e) => setFilterEtablissement(e.target.value)}
+        >
+          <option value="">Tous les établissements</option>
+          {[...new Set(formateurs.map(f => f.etablissement))].map(etablissement => (
+            <option key={etablissement} value={etablissement}>{etablissement}</option>
+          ))}
+        </select>
+      </div>
       {loading ? (
         <p className="text-center text-gray-600">Chargement...</p>
       ) : (
-        <div className="overflow-x-auto bg-white shadow-lg rounded-lg  p-4 sm:ml-64">
+        <div className="w-full bg-white shadow-lg rounded-lg">
           <table className="min-w-full border-collapse w-full">
             <thead>
               <tr className="bg-blue-600 text-white">
@@ -43,7 +79,7 @@ export default function FormateursPage() {
               </tr>
             </thead>
             <tbody>
-              {formateurs.map((formateur, index) => (
+              {filteredFormateurs.map((formateur, index) => (
                 <tr key={index} className="border-b hover:bg-gray-100">
                   <td className="py-2 px-4">
                     <input 
@@ -61,7 +97,7 @@ export default function FormateursPage() {
               ))}
             </tbody>
           </table>
-          <div className="mt-4 text-right">
+          <div className="mt-4 text-right p-4">
             <button className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition">Ajouter</button>
           </div>
         </div>
