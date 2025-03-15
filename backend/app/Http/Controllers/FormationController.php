@@ -24,7 +24,7 @@ class FormationController extends Controller
             'lieux' => 'required|string',
             'statut' => 'required|string',
             'mode' => 'required|string',
-            'lien_teams' => 'nullable|string',
+            'lien_teams' => 'nullable|url',
         ]);
 
         $formation = FormationModel::create($request->all());

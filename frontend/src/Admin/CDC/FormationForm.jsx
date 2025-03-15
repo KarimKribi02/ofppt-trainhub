@@ -13,6 +13,7 @@ const FormationForm = () => {
     document: null,
     statut: '',
     mode: '',
+    lien_teams: '', 
   });
   const [animateurs, setAnimateurs] = useState([]);
   
@@ -68,6 +69,7 @@ const FormationForm = () => {
           document: null,
           statut: '',
           mode: '',
+          lien_teams: '', 
         });
       
       }
@@ -86,6 +88,7 @@ const FormationForm = () => {
           document: null,
           statut: '',
           mode: '',
+          lien_teams: '', 
     });
   };
 
@@ -230,36 +233,48 @@ const FormationForm = () => {
               />
             </div>
             <div className="mb-4">
-  <label className="block text-sm font-medium mb-1">Mode de Formation :</label>
-  <div className="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-    <input
-      id="presentiel"
-      type="radio"
-      value="presentiel"
-      name="mode"
-      checked={formData.mode === "presentiel"}
-      onChange={handleChange}
-      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-    />
-    <label htmlFor="presentiel" className="w-full py-4 ms-2 text-sm font-medium text-gray-900">
-      Présentiel
-    </label>
-  </div>
-  <div className="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-    <input
-      id="à_distance"
-      type="radio"
-      value="à_distance"
-      name="mode"
-      checked={formData.mode === "à_distance"}
-      onChange={handleChange}
-      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-    />
-    <label htmlFor="à_distance" className="w-full py-4 ms-2 text-sm font-medium text-gray-900">
-      À Distance
-    </label>
-  </div>
-</div>
+              <label className="block text-sm font-medium mb-1">Mode de Formation :</label>
+              <div className="flex flex-col space-y-2">
+                {["présentiel", "à_distance", "hybride"].map((mode) => (
+                  <div key={mode} className="flex items-center border p-2 rounded">
+                    <input
+                      id={mode}
+                      type="radio"
+                      value={mode}
+                      name="mode"
+                      checked={formData.mode === mode}
+                      onChange={handleChange}
+                      className="w-4 h-4 text-blue-600"
+                    />
+                    <label htmlFor={mode} className="ml-2 text-sm font-medium text-gray-900">
+                      {mode === "présentiel"
+                        ? "Présentiel"
+                        : mode === "à_distance"
+                        ? "À Distance"
+                        : "Hybride"}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Affichage du champ lienFormation si Hybride ou À Distance est sélectionné */}
+            {(formData.mode === "à_distance" || formData.mode === "hybride") && (
+              <div className="mb-4">
+                <label htmlFor="lien_teams" className="block text-sm font-medium mb-1">
+                  Lien de la formation :
+                </label>
+                <input
+                  type="text"
+                  id="lien_teams"
+                  name="lien_teams"
+                  value={formData.lien_teams}
+                  onChange={handleChange}
+                  placeholder="Ex: https://meet.google.com/..."
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+            )}
 
 <div className="mb-4">
   <label className="block text-sm font-medium mb-1">Statut de Formation :</label>
