@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function FormateursPage() {
   const [formateurs, setFormateurs] = useState([]);
@@ -8,7 +9,8 @@ export default function FormateursPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterFiliere, setFilterFiliere] = useState("");
   const [filterEtablissement, setFilterEtablissement] = useState("");
-
+  const { id } = useParams(); // Récupère l'ID depuis l'URL
+  const navigate = useNavigate(); // Pour la navigation programmée
   useEffect(() => {
     axios.get("http://localhost:8000/api/participants")
       .then(response => {
@@ -26,6 +28,37 @@ export default function FormateursPage() {
       prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
     );
   };
+
+  const handleAddFormateurs = async () => {
+    if (!id) {
+      console.error("L'ID de la formation est manquant.");
+      alert("Impossible d'ajouter des formateurs sans ID de formation.");
+      return;
+    }
+  
+    if (!selectedFormateurs.length) {
+      alert("Veuillez sélectionner au moins un formateur.");
+      return;
+    }
+  
+    console.log("Données envoyées :", { participant_id: selectedFormateurs }); // Debug
+  
+    try {
+      const response = await axios.put(
+        `http://127.0.0.1:8000/api/formations/${id}`,
+        {
+          participant_id: selectedFormateurs,
+        }
+      );
+      alert("Formateurs ajoutés avec succès !");
+      setSelectedFormateurs([]);
+      navigate(`/formations/${id}`);
+    } catch (error) {
+      console.error("Erreur lors de l'ajout des formateurs :", error.response?.data || error.message);
+      alert("Une erreur s'est produite lors de l'ajout des formateurs.");
+    }
+  };
+  
 
   const filteredFormateurs = formateurs.filter(formateur =>
     formateur.nom.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -72,6 +105,7 @@ export default function FormateursPage() {
             <thead>
               <tr className="bg-blue-600 text-white">
                 <th className="py-3 px-4 text-left">Sélection</th>
+                <th className="py-3 px-4 text-left">ID</th>
                 <th className="py-3 px-4 text-left">Nom</th>
                 <th className="py-3 px-4 text-left">Prénom</th>
                 <th className="py-3 px-4 text-left">Filière</th>
@@ -89,6 +123,7 @@ export default function FormateursPage() {
                       onChange={() => handleSelect(formateur.id)}
                     />
                   </td>
+                  <td className="py-2 px-4">{formateur.id}</td>
                   <td className="py-2 px-4">{formateur.nom}</td>
                   <td className="py-2 px-4">{formateur.prenom}</td>
                   <td className="py-2 px-4">{formateur.filliere}</td>
@@ -98,7 +133,13 @@ export default function FormateursPage() {
             </tbody>
           </table>
           <div className="mt-4 text-right p-4">
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition">Ajouter</button>
+            <button 
+              className={`bg-blue-600 text-white px-6 py-2 rounded-lg shadow transition ${selectedFormateurs.length === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`} 
+              disabled={selectedFormateurs.length === 0}
+              onClick={handleAddFormateurs}
+            >
+              Ajouter
+            </button>
           </div>
         </div>
       )}
