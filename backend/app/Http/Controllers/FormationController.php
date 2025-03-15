@@ -12,6 +12,8 @@ class FormationController extends Controller
         return response()->json(FormationModel::all(), 200);
     }
 
+
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -25,11 +27,41 @@ class FormationController extends Controller
             'statut' => 'required|string',
             'mode' => 'required|string',
             'lien_teams' => 'nullable|url',
+            'document' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ]);
 
-        $formation = FormationModel::create($request->all());
-        return response()->json($formation, 201);
+        // Créer un tableau avec uniquement les champs désirés
+        $data = [
+            'titre' => $request->titre,
+            'description' => $request->description,
+            'dateDebut' => $request->dateDebut,
+            'dateFin' => $request->dateFin,
+            'lieux' => $request->lieux,
+            'filières' => $request->filières,
+            'formateurs_animateurs' => $request->formateurs_animateurs,
+            'statut' => $request->statut,
+            'mode' => $request->mode,
+            'lien_teams' => $request->lien_teams, // Nullable, donc OK si absent
+        ];
+
+        // Gérer le fichier document si présent
+        if ($request->hasFile('document')) {
+            $file = $request->file('document');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('formations', $fileName, 'public');
+            $data['document'] = $fileName;
+        }
+
+        // Insérer uniquement les champs spécifiés
+        $formation = FormationModel::create($data);
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Formation créée avec succès',
+            'data' => $formation,
+        ], 201);
     }
+    
 
     public function show($id)
     {

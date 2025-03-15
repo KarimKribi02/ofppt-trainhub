@@ -44,20 +44,24 @@ const FormationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Utilisation de FormData pour gérer les fichiers
-
+  
     const data = new FormData();
     Object.keys(formData).forEach((key) => {
       if (formData[key]) {
         data.append(key, formData[key]);
       }
     });
-
-      const res = await axios.post('http://127.0.0.1:8000/api/formations', data);
-
+  
+    try {
+      const res = await axios.post('http://127.0.0.1:8000/api/formations', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
       if (res.data.status === 200) {
         console.log('Formation ajoutée:', res.data.message);
+        alert('Formation ajoutée avec succès !'); // Feedback utilisateur
         setFormData({
           titre: '',
           description: '',
@@ -65,15 +69,19 @@ const FormationForm = () => {
           dateFin: '',
           lieux: '',
           filières: '',
-          formateurs_animateurs : '',
+          formateurs_animateurs: '',
           document: null,
           statut: '',
           mode: '',
-          lien_teams: '', 
+          lien_teams: '',
         });
-      
       }
-  
+    } catch (error) {
+      console.error('Erreur lors de la soumission:', error.response?.data || error.message);
+      alert('Erreur : ' + (error.response?.data.message || 'Une erreur est survenue')); // Feedback utilisateur
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCancel = () => {

@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('document')->nullable();
             $table->string('statut');
             $table->string('mode');
-            $table->string('lien_teams');
-            $table->unsignedBigInteger('participant_id');
+            $table->string('lien_teams')->nullable();
+            $table->unsignedBigInteger('participant_id')->nullable();
             $table->timestamps();
 
             $table->foreign('participant_id')->references('id')->on('formateur_participants')->onDelete('cascade');
