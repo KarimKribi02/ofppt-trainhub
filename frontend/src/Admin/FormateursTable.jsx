@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function FormateursPage() {
   const [formateurs, setFormateurs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedFormateurs, setSelectedFormateurs] = useState([]);
+  const [selectedFormateurIds, setSelectedFormateurIds] = useState([]); // Tableau d'IDs
   const [searchTerm, setSearchTerm] = useState("");
   const [filterFiliere, setFilterFiliere] = useState("");
   const [filterEtablissement, setFilterEtablissement] = useState("");
-  const { id } = useParams(); // Récupère l'ID depuis l'URL
-  const navigate = useNavigate(); // Pour la navigation programmée
+  const { id } = useParams(); // ID de la formation depuis l'URL
+  const navigate = useNavigate();
+
   useEffect(() => {
-    axios.get("http://localhost:8000/api/participants")
+    axios.get("http://127.0.0.1:8000/api/participants") // Endpoint corrigé
       .then(response => {
-        setFormateurs(response.data);
+        setFormateurs(response.data.data || response.data); // Ajustez selon la structure de la réponse
         setLoading(false);
       })
       .catch(error => {
@@ -24,9 +25,9 @@ export default function FormateursPage() {
   }, []);
 
   const handleSelect = (id) => {
-    setSelectedFormateurs(prev =>
+    setSelectedFormateurIds(prev =>
       prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
-    );
+    ); // Ajouter ou retirer un ID du tableau
   };
 
   const handleAddFormateurs = async () => {
@@ -35,30 +36,27 @@ export default function FormateursPage() {
       alert("Impossible d'ajouter des formateurs sans ID de formation.");
       return;
     }
-  
-    if (!selectedFormateurs.length) {
+
+    if (selectedFormateurIds.length === 0) {
       alert("Veuillez sélectionner au moins un formateur.");
       return;
     }
-  
-    console.log("Données envoyées :", { participant_id: selectedFormateurs }); // Debug
-  
+
+    console.log("Données envoyées :", { participant_ids: selectedFormateurIds });
+
     try {
       const response = await axios.put(
         `http://127.0.0.1:8000/api/formations/${id}`,
-        {
-          participant_id: selectedFormateurs,
-        }
+        { participant_ids: selectedFormateurIds } // Envoyer un tableau d'IDs
       );
       alert("Formateurs ajoutés avec succès !");
-      setSelectedFormateurs([]);
+      setSelectedFormateurIds([]); // Réinitialiser la sélection
       navigate(`/formations/${id}`);
     } catch (error) {
       console.error("Erreur lors de l'ajout des formateurs :", error.response?.data || error.message);
       alert("Une erreur s'est produite lors de l'ajout des formateurs.");
     }
   };
-  
 
   const filteredFormateurs = formateurs.filter(formateur =>
     formateur.nom.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -119,7 +117,7 @@ export default function FormateursPage() {
                     <input 
                       type="checkbox" 
                       className="w-5 h-5" 
-                      checked={selectedFormateurs.includes(formateur.id)}
+                      checked={selectedFormateurIds.includes(formateur.id)}
                       onChange={() => handleSelect(formateur.id)}
                     />
                   </td>
@@ -134,8 +132,8 @@ export default function FormateursPage() {
           </table>
           <div className="mt-4 text-right p-4">
             <button 
-              className={`bg-blue-600 text-white px-6 py-2 rounded-lg shadow transition ${selectedFormateurs.length === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`} 
-              disabled={selectedFormateurs.length === 0}
+              className={`bg-blue-600 text-white px-6 py-2 rounded-lg shadow transition ${selectedFormateurIds.length === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`} 
+              disabled={selectedFormateurIds.length === 0}
               onClick={handleAddFormateurs}
             >
               Ajouter

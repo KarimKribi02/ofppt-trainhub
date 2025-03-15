@@ -12,4 +12,9 @@ class formateurParticipant extends Model
     protected $table = 'formateur_participants';
 
     protected $fillable = ['nom','prenom','email','filliere','etablissement'];
+
+    public function formations()
+    {
+        return FormationModel::whereJsonContains('participant_ids', $this->id);
+    }
 }

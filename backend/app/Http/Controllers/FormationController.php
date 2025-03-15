@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\FormationModel;
+use App\Models\FormateurParticipant;
 
 class FormationController extends Controller
 {
     public function index()
     {
-        return response()->json(FormationModel::all(), 200);
+        $formations = FormationModel::all();
+        $formations->each(function ($formation) {
+            $formation->formateurParticipants = $formation->formateurParticipants()->get();
+        });
+        return response()->json($formations, 200);
     }
 
-
-    
     public function store(Request $request)
     {
         $request->validate([
@@ -28,9 +31,10 @@ class FormationController extends Controller
             'mode' => 'required|string',
             'lien_teams' => 'nullable|url',
             'document' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'participant_ids' => 'nullable|array', // Tableau d’IDs
+            'participant_ids.*' => 'exists:formateur_participants,id', // Chaque ID doit exister
         ]);
 
-        // Créer un tableau avec uniquement les champs désirés
         $data = [
             'titre' => $request->titre,
             'description' => $request->description,
@@ -41,10 +45,10 @@ class FormationController extends Controller
             'formateurs_animateurs' => $request->formateurs_animateurs,
             'statut' => $request->statut,
             'mode' => $request->mode,
-            'lien_teams' => $request->lien_teams, // Nullable, donc OK si absent
+            'lien_teams' => $request->lien_teams,
+            'participant_ids' => $request->participant_ids ?? null,
         ];
 
-        // Gérer le fichier document si présent
         if ($request->hasFile('document')) {
             $file = $request->file('document');
             $fileName = time() . '_' . $file->getClientOriginalName();
@@ -52,8 +56,8 @@ class FormationController extends Controller
             $data['document'] = $fileName;
         }
 
-        // Insérer uniquement les champs spécifiés
         $formation = FormationModel::create($data);
+        $formation->formateurParticipants = $formation->formateurParticipants()->get();
 
         return response()->json([
             'status' => 200,
@@ -61,26 +65,72 @@ class FormationController extends Controller
             'data' => $formation,
         ], 201);
     }
-    
 
     public function show($id)
     {
         $formation = FormationModel::find($id);
-        return $formation ? response()->json($formation) : response()->json(['message' => 'Formation non trouvée'], 404);
+        if (!$formation) {
+            return response()->json(['message' => 'Formation non trouvée'], 404);
+        }
+        $formation->formateurParticipants = $formation->formateurParticipants()->get();
+        return response()->json($formation);
     }
 
     public function update(Request $request, $id)
     {
         $formation = FormationModel::find($id);
-        $formation->update($request->all());
-        return response()->json([
-            'message'=>'formation modifier avec succes'
+        if (!$formation) {
+            return response()->json(['message' => 'Formation non trouvée'], 404);
+        }
+
+        $request->validate([
+            'titre' => 'sometimes|string|max:255',
+            'description' => 'sometimes',
+            'dateDebut' => 'sometimes|date',
+            'dateFin' => 'sometimes|date|after_or_equal:dateDebut',
+            'filières' => 'sometimes|string',
+            'formateurs_animateurs' => 'sometimes|string',
+            'lieux' => 'sometimes|string',
+            'statut' => 'sometimes|string',
+            'mode' => 'sometimes|string',
+            'lien_teams' => 'nullable|url',
+            'document' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'participant_ids' => 'nullable|array', // Tableau d’IDs
+            'participant_ids.*' => 'exists:formateur_participants,id', // Validation
         ]);
+
+        $data = $request->only([
+            'titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières',
+            'formateurs_animateurs', 'statut', 'mode', 'lien_teams'
+        ]);
+
+        if ($request->hasFile('document')) {
+            $file = $request->file('document');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('formations', $fileName, 'public');
+            $data['document'] = $fileName;
+        }
+
+        if ($request->has('participant_ids')) {
+            $data['participant_ids'] = $request->participant_ids;
+        }
+
+        $formation->update($data);
+        $formation->formateurParticipants = $formation->formateurParticipants()->get();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Formation modifiée avec succès',
+            'data' => $formation
+        ], 200);
     }
 
     public function destroy($id)
     {
         $formation = FormationModel::find($id);
+        if (!$formation) {
+            return response()->json(['message' => 'Formation non trouvée'], 404);
+        }
         $formation->delete();
         return response()->json(['message' => 'Formation supprimée'], 200);
     }

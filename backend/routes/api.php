@@ -43,6 +43,8 @@ Route::resource('animateurs',formateurAnimateurController::class);  // api de fo
 
 Route::resource('participants',FormateurParticipantController::class); // api de formateurs participants
 
+Route::post('participants/{formateurParticipantId}/assign-to-formation', [FormateurParticipantController::class, 'assignToFormation']);
+
 
 
 

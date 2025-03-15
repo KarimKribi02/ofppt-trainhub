@@ -11,8 +11,17 @@ class FormationModel extends Model
 
     protected $table = 'formations';
 
-    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières', 'formateurs_animateurs','document', 'statut',  'mode','lien_teams','participant_id' ];
+    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières', 'formateurs_animateurs','document', 'statut',  'mode','lien_teams','participant_ids'];
 
+
+    protected $casts = [
+        'participant_ids' => 'array',
+    ];
+
+ public function formateurParticipants()
+    {
+        return FormateurParticipant::whereIn('id', $this->participant_ids ?? []);
+    }
    
 
 }
