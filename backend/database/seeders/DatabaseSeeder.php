@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call(FormateurAnimateurSeeder::class);
         $this->call(FormateurParticipantSeeder::class);
+        $this->call(HebergementSeeder::class);
+        $this->call(drefsSeeder::class);
+        $this->call(cdcs::class);
         
 
     }

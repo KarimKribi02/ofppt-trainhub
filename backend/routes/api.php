@@ -7,7 +7,7 @@ use App\Http\Controllers\messageController;
 use App\Http\Controllers\formateurAnimateurController;
 use App\Http\Controllers\FormateurParticipantController;
 use App\Http\Controllers\HebergementController;
-
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -48,7 +48,10 @@ Route::post('participants/{formateurParticipantId}/assign-to-formation', [Format
 
 Route::get('/formations/{id}/download', [FormationController::class, 'downloadDocument']); // api de telecharger document
 
-Route::apiResource('hebergements', HebergementController::class);
+Route::resource('hebergements', HebergementController::class);  // api de hebergement
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 
 

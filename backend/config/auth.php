@@ -40,6 +40,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'cdc' => [
+        'driver' => 'sanctum',
+        'provider' => 'cdc',
+    ],
+    'dref' => [
+        'driver' => 'sanctum',
+        'provider' => 'dref',
+    ]
     ],
 
     /*
@@ -64,6 +72,14 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+        'cdc' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Cdc::class,
+    ],
+    'dref' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Dref::class,
+    ],
 
         // 'users' => [
         //     'driver' => 'database',

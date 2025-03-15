@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('hebergements', function (Blueprint $table) {
+        Schema::create('cdcs', function (Blueprint $table) {
             $table->id();
-            $table->string('nom_hebergement');
-            $table->string('lieu');
-            $table->string('localisation');
-            $table->date('date_arriver')->nullable()->change();;
-            $table->date('date_depart')->nullable()->change();;
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hebergements');
+        Schema::dropIfExists('cdcs');
     }
 };
