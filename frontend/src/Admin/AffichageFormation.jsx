@@ -73,6 +73,10 @@ const AffichageFormation = () => {
                 <label className="block text-sm font-medium text-gray-500">Mode</label>
                 <p className="mt-1 text-gray-900">{formationData.mode}</p>
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-500">Lien</label>
+                <a href={formationData.lien_teams} className="mt-1 text-gray-900">{formationData.lien_teams}</a>
+              </div>
             </div>
 
             {formationData.document && (

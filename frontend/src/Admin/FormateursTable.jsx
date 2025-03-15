@@ -51,7 +51,7 @@ export default function FormateursPage() {
       );
       alert("Formateurs ajoutés avec succès !");
       setSelectedFormateurIds([]); // Réinitialiser la sélection
-      navigate(`/formations/${id}`);
+      navigate(`/CDC/overview`);
     } catch (error) {
       console.error("Erreur lors de l'ajout des formateurs :", error.response?.data || error.message);
       alert("Une erreur s'est produite lors de l'ajout des formateurs.");
