@@ -18,7 +18,7 @@ class drefsSeeder extends Seeder
         DB::table('drefs')->insert([
             'email' => 'dref@example.com',
             'password' => bcrypt('password123'),
-            'name' => 'Jane Doe',
+            'role' => 'DREF',
             'created_at' => now(),
             'updated_at' => now(),
         ]);

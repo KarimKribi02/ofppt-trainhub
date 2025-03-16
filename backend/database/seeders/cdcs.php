@@ -18,6 +18,7 @@ class cdcs extends Seeder
         DB::table('cdcs')->insert([
             'email' => 'cdc@example.com',
             'password' => bcrypt('password123'), // Assurez-vous d'utiliser bcrypt pour les mots de passe
+            'role' => 'CDC', // Assurez-vous d'utiliser bcrypt pour les mots de passe
             'created_at' => now(),
             'updated_at' => now(),
         ]);

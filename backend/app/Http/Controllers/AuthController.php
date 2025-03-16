@@ -10,27 +10,34 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
+       
         $user = cdcs::where('email', $request->email)->first() ?? drefs::where('email', $request->email)->first();
 
-        if ($user && Hash::check($request->password, $user->password)) {
-            $token = $user->createToken('auth_token')->plainTextToken;
-            return response()->json([
-                'token' => $token,
-                'user' => [
-                    'id' => $user->id,
-                    'email' => $user->email,
-                    'type' => $user instanceof cdcs ? 'cdc' : 'dref',
-                    'name' => $user->name,
-                ]
-            ]);
+        
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Identifiants invalides'], 401);
+        }
+        if (!in_array($user->role, ['CDC', 'DREF'])) {
+            return response()->json(['message' => 'Rôle invalide'], 403);
         }
 
-        return response()->json(['message' => 'Identifiants invalides'], 401);
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        // Réponse avec le token et les informations de l'utilisateur
+        return response()->json([
+            'token' => $token,
+            'user' => [
+                'id' => $user->id,
+                'email' => $user->email,
+                'role' => $user->role, // Différenciation du profil ici
+            ]
+        ]);
     }
 
     public function logout(Request $request)
