@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { FaEdit, FaUserPlus, FaEye, FaTrash, FaCheck } from 'react-icons/fa';
 
 function Overview() {
     const [formations, setFormations] = useState([]);
@@ -34,6 +35,7 @@ function Overview() {
 
     return (
         <div className="p-6 sm:ml-64 bg-gray-50 min-h-screen">
+            {/* 🔍 Filtres de recherche */}
             <div className="mb-6 flex flex-wrap gap-4 items-center bg-white p-4 shadow-md rounded-lg">
                 <input 
                     type="text" 
@@ -59,9 +61,11 @@ function Overview() {
                 >
                     <option value="">Tous les statuts</option>
                     <option value="validé">Validé</option>
-                    <option value="redigé">Redigé</option>
+                    <option value="redigé">Rédigé</option>
                 </select>
             </div>
+
+            {/* 📋 Tableau des formations */}
             <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-lg">
                 <table className="min-w-full border border-gray-200 rounded-lg">
                     <thead>
@@ -85,25 +89,30 @@ function Overview() {
                                     <td className={`p-4 rounded-lg text-sm font-semibold ${statusColors[f.statut] || "bg-gray-100 text-gray-600"}`}>
                                         {f.statut}
                                     </td>
-                                    <td className="p-4 flex space-x-2">
+                                    <td className="p-4 flex flex-wrap gap-2">
                                         <Link 
                                             to={`/CDC/Updatformation/${f.id}`} 
-                                            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                                            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition flex items-center gap-1"
                                         >
-                                            Modifier
+                                            <FaEdit /> Modifier
                                         </Link>
                                         <Link 
                                             to={`/CDC/ajouter-formateurs/${f.id}`} 
-                                            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+                                            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition flex items-center gap-1"
                                         >
-                                            Ajouter Formateur
+                                            <FaUserPlus /> Formateur
                                         </Link>
                                         <Link 
                                             to={`/CDC/formation/${f.id}`} 
-                                            className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition"
+                                            className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition flex items-center gap-1"
                                         >
-                                            Voir
+                                            <FaEye /> Voir
                                         </Link>
+                                        <button 
+                                            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition flex items-center gap-1"
+                                        >
+                                            <FaTrash /> Supprimer
+                                        </button>
                                     </td>
                                 </tr>
                             ))

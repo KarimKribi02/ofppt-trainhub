@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import { FiGrid, FiLayers, FiMessageSquare, FiLogOut } from "react-icons/fi";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 
 function SideBar({ role }) {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleClickOutside = (event) => {
     if (isOpen && event.target.id === "sidebar-overlay") {
       setIsOpen(false);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    navigate("/");
   };
 
   const menuItems = {
@@ -28,10 +34,11 @@ function SideBar({ role }) {
 
   return (
     <div>
+      {/* Bouton pour ouvrir le menu sur mobile */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         type="button"
-        className="inline-flex items-center p-2 mt-2 ms-3 text-sm bg-orange-500 rounded-lg sm:hidden hover:bg-gray-100"
+        className="inline-flex items-center p-2 mt-2 ms-3 text-sm bg-orange-500 rounded-lg sm:hidden hover:bg-orange-600 transition"
       >
         <span className="sr-only">Open sidebar</span>
         <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
@@ -39,6 +46,7 @@ function SideBar({ role }) {
         </svg>
       </button>
 
+      {/* Overlay en arrière-plan pour fermer le menu en mobile */}
       {isOpen && (
         <div
           id="sidebar-overlay"
@@ -47,6 +55,7 @@ function SideBar({ role }) {
         ></div>
       )}
 
+      {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
@@ -59,24 +68,30 @@ function SideBar({ role }) {
           <ul className="space-y-2 font-medium mt-5">
             {currentMenu.map((item, index) => (
               <li key={index}>
-                <Link to={item.to} className="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 group">
-                  <span className="w-5 h-5 text-white group-hover:text-gray-900">{item.icon}</span>
+                <Link
+                  to={item.to}
+                  className="flex items-center p-2 text-white rounded-lg hover:bg-orange-600 transition"
+                >
+                  <span className="w-5 h-5">{item.icon}</span>
                   <span className="ms-3">{item.label}</span>
                 </Link>
               </li>
             ))}
+            
+            {/* Bouton Déconnexion */}
             <li>
-              <a href="#" className="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 group">
-                <FiLogOut className="w-5 h-5 text-white group-hover:text-gray-900" />
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center p-2 text-white rounded-lg hover:bg-red-600 transition"
+              >
+                <FiLogOut className="w-5 h-5" />
                 <span className="ms-3">Déconnexion</span>
-              </a>
+              </button>
             </li>
           </ul>
         </div>
       </aside>
-      
     </div>
-
   );
 }
 

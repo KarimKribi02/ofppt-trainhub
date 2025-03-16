@@ -1,8 +1,7 @@
-import React from 'react'
-import Cdc from './Admin/CDC/CdcPage'
-import Dref from './Admin/DREF/DrefPage'
-import PageOverview from './Admin/CDC/PageOverview';
-import { BrowserRouter, Routes , Route} from "react-router-dom";
+import React from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Cdc from './Admin/CDC/CdcPage';
+import Dref from './Admin/DREF/DrefPage';
 import Overview from './Admin/CDC/Overview';
 import FormationForm from './Admin/CDC/FormationForm';
 import ChatTotal from './Admin/Chat/ChatTotal';
@@ -12,31 +11,39 @@ import Welcome from './Admin/Welcome';
 import AffichageFormation from './Admin/AffichageFormation';
 import UpdatFormation from './Admin/CDC/UpdatFormation';
 import FormateursTable from './Admin/FormateursTable';
+import ProtectedRoute from './Login/ProtectedRoute'; // Import du composant de protection
 
 function App() {
   return (
     <BrowserRouter>
-    <Routes>
-        <Route path="/CDC" element={<Cdc />}>
+      <Routes>
+        {/* Page de connexion */}
+        <Route path="/" element={<LoginPage />} />
+
+        {/* Routes protégées pour CDC */}
+        <Route element={<ProtectedRoute allowedRoles={["CDC"]} />}>
+          <Route path="/CDC" element={<Cdc />}>
             <Route path="" element={<Welcome role="CDC" />} />
             <Route path="overview" element={<Overview />} />
             <Route path="ajouter-formation" element={<FormationForm />} />
             <Route path="chat" element={<ChatTotal role="CDC" />} />
-            <Route path="formation/:id" element={<AffichageFormation />} /> {/* ✅ Route dynamique */}
-            <Route path="Updatformation/:id" element={<UpdatFormation/>} />
+            <Route path="formation/:id" element={<AffichageFormation />} />
+            <Route path="Updatformation/:id" element={<UpdatFormation />} />
             <Route path="ajouter-formateurs/:id" element={<FormateursTable />} />
-        </Route>pdatFormation
-        <Route path="/DREF" element={<Dref />}>
+          </Route>
+        </Route>
+
+        {/* Routes protégées pour DREF */}
+        <Route element={<ProtectedRoute allowedRoles={["DREF"]} />}>
+          <Route path="/DREF" element={<Dref />}>
             <Route path="" element={<Welcome role="DREF" />} />
             <Route path="formations" element={<TableFormations />} />
             <Route path="chat" element={<ChatTotal role="DREF" />} />
+          </Route>
         </Route>
-        <Route path="/" element={<LoginPage />} />
-    </Routes>
-</BrowserRouter>
-    
+      </Routes>
+    </BrowserRouter>
   );
 }
 
-
-export default App
+export default App;
