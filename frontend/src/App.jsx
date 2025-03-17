@@ -28,7 +28,7 @@ function App() {
             <Route path="ajouter-formation" element={<FormationForm />} />
             <Route path="chat" element={<ChatTotal role="CDC" />} />
             <Route path="formation/:id" element={<AffichageFormation />} />
-            <Route path="Updatformation/:id" element={<UpdatFormation />} />
+            <Route path="Updatformation/:id" element={<UpdatFormation  source="CDC" />} />
             <Route path="ajouter-formateurs/:id" element={<FormateursTable />} />
           </Route>
         </Route>
@@ -39,6 +39,9 @@ function App() {
             <Route path="" element={<Welcome role="DREF" />} />
             <Route path="formations" element={<TableFormations />} />
             <Route path="chat" element={<ChatTotal role="DREF" />} />
+            <Route path="Updatformation/:id" element={<UpdatFormation source="DREF" />} />
+            <Route path="formation/:id" element={<AffichageFormation />} />
+            <Route path="ajouter-formateurs/:id" element={<FormateursTable />} />
           </Route>
         </Route>
       </Routes>

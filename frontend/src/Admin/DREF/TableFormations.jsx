@@ -100,25 +100,25 @@ function DrefFormations() {
                                             <FaCheck /> 
                                         </button>
                                         <Link 
-                                            to={`/CDC/Updatformation/${f.id}`} 
+                                            to={`/DREF/Updatformation/${f.id}`} 
                                             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition flex items-center gap-1"
                                         >
                                             <FaEdit /> 
                                         </Link>
                                         <Link 
-                                            to={`/CDC/ajouter-formateurs/${f.id}`} 
+                                            to={`/DREF/ajouter-formateurs/${f.id}`} 
                                             className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition flex items-center gap-1"
                                         >
                                             <FaUserPlus />
                                         </Link>
                                         <Link 
-                                            to={`/CDC/formation/${f.id}`} 
+                                            to={`/DREF/formation/${f.id}`} 
                                             className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition flex items-center gap-1"
                                         >
                                             <FaEye /> 
                                         </Link>
                                         <Link 
-                                            to={`/CDC/ajouter-hebergement/${f.id}`} 
+                                            to={`/DREF/ajouter-hebergement/${f.id}`} 
                                             className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition flex items-center gap-1"
                                         >
                                             <FaHotel /> 
