@@ -12,6 +12,7 @@ import AffichageFormation from './Admin/AffichageFormation';
 import UpdatFormation from './Admin/CDC/UpdatFormation';
 import FormateursTable from './Admin/FormateursTable';
 import ProtectedRoute from './Login/ProtectedRoute'; // Import du composant de protection
+import Hebergement from './Admin/DREF/hebergement';
 
 function App() {
   return (
@@ -42,10 +43,13 @@ function App() {
             <Route path="Updatformation/:id" element={<UpdatFormation source="DREF" />} />
             <Route path="formation/:id" element={<AffichageFormation />} />
             <Route path="ajouter-formateurs/:id" element={<FormateursTable />} />
+            <Route path="ajouter-hebergement/:id" element={<Hebergement />} />
           </Route>
         </Route>
       </Routes>
     </BrowserRouter>
+
+   
   );
 }
 
