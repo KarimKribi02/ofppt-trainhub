@@ -11,7 +11,7 @@ class formateurParticipant extends Model
 
     protected $table = 'formateur_participants';
 
-    protected $fillable = ['nom','prenom','email','filliere','etablissement'];
+    protected $fillable = ['nom','prenom','email','filliere','etablissement','hebergement_id'];
 
     public function formations()
     {
