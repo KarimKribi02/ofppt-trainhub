@@ -30,31 +30,44 @@ export default function FormateursPage() {
     ); // Ajouter ou retirer un ID du tableau
   };
 
+  
   const handleAddFormateurs = async () => {
     if (!id) {
       console.error("L'ID de la formation est manquant.");
       alert("Impossible d'ajouter des formateurs sans ID de formation.");
       return;
     }
-
+  
     if (selectedFormateurIds.length === 0) {
       alert("Veuillez sélectionner au moins un formateur.");
       return;
     }
-
-    console.log("Données envoyées :", { participant_ids: selectedFormateurIds });
-
+  
     try {
-      const response = await axios.put(
+      // Étape 1 : Récupérer les données actuelles de la formation
+      const response = await axios.get(`http://127.0.0.1:8000/api/formations/${id}`);
+      const formationData = response.data;
+  
+      // Étape 2 : Préparer les données mises à jour
+      const updatedData = {
+        ...formationData, // Conserver toutes les données existantes
+        participant_ids: selectedFormateurIds // Mettre à jour participant_ids
+      };
+  
+      console.log("Données envoyées :", updatedData);
+  
+      // Étape 3 : Envoyer la requête PUT
+      const putResponse = await axios.put(
         `http://127.0.0.1:8000/api/formations/${id}`,
-        { participant_ids: selectedFormateurIds } // Envoyer un tableau d'IDs
+        updatedData
       );
+  
       alert("Formateurs ajoutés avec succès !");
-      setSelectedFormateurIds([]); // Réinitialiser la sélection
+      setSelectedFormateurIds([]);
       navigate(`/CDC/overview`);
     } catch (error) {
       console.error("Erreur lors de l'ajout des formateurs :", error.response?.data || error.message);
-      alert("Une erreur s'est produite lors de l'ajout des formateurs.");
+      alert("Une erreur s'est produite : " + (error.response?.data?.message || error.message));
     }
   };
 
