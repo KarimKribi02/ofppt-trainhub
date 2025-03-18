@@ -11,16 +11,18 @@ class FormationModel extends Model
 
     protected $table = 'formations';
 
-    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières', 'formateurs_animateurs','document', 'statut',  'mode','lien_teams','participant_ids','hebergement_id'];
-
-
-    protected $casts = [
-        'participant_ids' => 'array',
+    protected $fillable = [
+        'titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières',
+        'formateurs_animateurs', 'statut', 'mode', 'lien_teams', 'document', 'participant_ids'
     ];
 
- public function formateurParticipants()
+    protected $casts = [
+        'participant_ids' => 'array' // Pour gérer automatiquement le JSON
+    ];
+
+    public function formateurParticipants()
     {
-        return FormateurParticipant::whereIn('id', $this->participant_ids ?? []);
+        return FormateurParticipant::whereIn('id', $this->participant_ids ?? [])->get();
     }
 
     public function hebergement()
