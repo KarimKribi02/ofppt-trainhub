@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('filliere');
             $table->string('etablissement');
+            $table->foreignId('hebergement_id')->nullable()->constrained('hebergements')->onDelete('cascade');
             $table->timestamps();
         });
     }

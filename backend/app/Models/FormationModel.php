@@ -11,7 +11,7 @@ class FormationModel extends Model
 
     protected $table = 'formations';
 
-    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières', 'formateurs_animateurs','document', 'statut',  'mode','lien_teams','participant_ids'];
+    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières', 'formateurs_animateurs','document', 'statut',  'mode','lien_teams','participant_ids','hebergement_id'];
 
 
     protected $casts = [
@@ -22,6 +22,10 @@ class FormationModel extends Model
     {
         return FormateurParticipant::whereIn('id', $this->participant_ids ?? []);
     }
-   
 
+    public function hebergement()
+{
+    return $this->belongsTo(hebergement::class);
+}
+   
 }

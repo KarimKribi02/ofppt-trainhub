@@ -13,4 +13,10 @@ class hebergement extends Model
 
     protected $fillable = ['nom_hebergement','lieu','localisation','date_arriver','date_depart'];
 
+    public function formations()
+    {
+        return $this->hasMany(Formation::class);
+    }
+
 }
+

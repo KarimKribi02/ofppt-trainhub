@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('prenom');
             $table->string('email')->unique();
             $table->string('filières')->nullable();
+            $table->foreignId('hebergement_id')->nullable()->constrained('hebergements')->onDelete('cascade');
             $table->timestamps();
         });
     }
