@@ -7,7 +7,8 @@ export default function Hebergement() {
     const [loading, setLoading] = useState(true);
     const [selectedHebergementId, setSelectedHebergementId] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
-    const [lieuTerm, setLieuTerm] = useState(""); // New state for lieu filter
+    const [lieuTerm, setLieuTerm] = useState("");
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         setLoading(true);
@@ -27,12 +28,25 @@ export default function Hebergement() {
         setSelectedHebergementId(prev => (prev === id ? null : id));
     };
 
+    const handleAddHebergement = () => {
+        if (!selectedHebergementId) return;
+
+        axios.post(`http://127.0.0.1:8000/api/formations/${selectedHebergementId}`)
+            .then(() => {
+                setMessage("Hébergement ajouté avec succès !");
+                setTimeout(() => setMessage(""), 3000);
+            })
+            .catch(() => {
+                setMessage("Erreur lors de l'ajout de l'hébergement.");
+                setTimeout(() => setMessage(""), 3000);
+            });
+    };
+
     const filteredHebergements = hebergements.filter(hebergement =>
         hebergement.nom_hebergement.toLowerCase().includes(searchTerm.toLowerCase()) &&
         hebergement.lieu.toLowerCase().includes(lieuTerm.toLowerCase())
     );
 
-    // Get all unique 'lieu' values for the select dropdown
     const lieux = [...new Set(hebergements.map(hebergement => hebergement.lieu))];
 
     return (
@@ -50,12 +64,13 @@ export default function Hebergement() {
                     onChange={(e) => setLieuTerm(e.target.value)}
                     className="border border-gray-300 p-2 rounded-lg w-full sm:w-1/4 focus:ring-2 focus:ring-blue-400"
                 >
-                    <option value="">Select par lieu...</option>
+                    <option value="">Sélectionner un lieu...</option>
                     {lieux.map((lieu, index) => (
                         <option key={index} value={lieu}>{lieu}</option>
                     ))}
                 </select>
             </div>
+
             {loading ? (
                 <p className="text-center text-gray-600">Chargement...</p>
             ) : (
@@ -94,9 +109,11 @@ export default function Hebergement() {
                         <button 
                             className={`bg-blue-600 text-white px-6 py-2 rounded-lg shadow transition ${!selectedHebergementId ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
                             disabled={!selectedHebergementId}
+                            onClick={handleAddHebergement}
                         >
                             Ajouter
                         </button>
+                        {message && <p className="text-center mt-2 text-green-600">{message}</p>}
                     </div>
                 </div>
             )}
