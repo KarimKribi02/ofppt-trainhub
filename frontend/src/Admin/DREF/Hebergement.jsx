@@ -34,6 +34,20 @@ export default function Hebergement() {
         setSelectedHebergementId(prev => (prev === id ? null : id));
     };
 
+<<<<<<< HEAD
+    const handleAddHebergement = () => {
+        if (!selectedHebergementId) return;
+
+        axios.put(`http://127.0.0.1:8000/api/formations/${selectedHebergementId}`)
+            .then(() => {
+                setMessage("Hébergement ajouté avec succès !");
+                setTimeout(() => setMessage(""), 3000);
+            })
+            .catch(() => {
+                setMessage("Erreur lors de l'ajout de l'hébergement.");
+                setTimeout(() => setMessage(""), 3000);
+            });
+=======
     const handleAddHebergement = async () => {
         if (!selectedHebergementId) {
             setMessage("Veuillez sélectionner un hébergement.");
@@ -64,6 +78,7 @@ export default function Hebergement() {
             setMessage("Erreur lors de l'ajout de l'hébergement : " + (error.response?.data?.message || error.message));
             setTimeout(() => setMessage(""), 3000);
         }
+>>>>>>> 9d776f5806d3fe9b757d342d74e42459bc6e2a9c
     };
 
     const filteredHebergements = hebergements.filter((hebergement) =>
