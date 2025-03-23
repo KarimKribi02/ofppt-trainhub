@@ -31,7 +31,7 @@ export default function Hebergement() {
     const handleAddHebergement = () => {
         if (!selectedHebergementId) return;
 
-        axios.post(`http://127.0.0.1:8000/api/formations/${selectedHebergementId}`)
+        axios.put(`http://127.0.0.1:8000/api/formations/${selectedHebergementId}`)
             .then(() => {
                 setMessage("Hébergement ajouté avec succès !");
                 setTimeout(() => setMessage(""), 3000);

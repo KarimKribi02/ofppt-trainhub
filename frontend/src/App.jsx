@@ -12,7 +12,7 @@ import AffichageFormation from './Admin/AffichageFormation';
 import UpdatFormation from './Admin/CDC/UpdatFormation';
 import FormateursTable from './Admin/FormateursTable';
 import ProtectedRoute from './Login/ProtectedRoute'; // Import du composant de protection
-import Hebergement from './Admin/DREF/hebergement';
+import Hebergement from './Admin/DREF/Hebergement';
 
 function App() {
   return (
