@@ -107,7 +107,7 @@ class FormationController extends Controller
             'statut' => 'required|string',
             'mode' => 'required|string',
             'lien_teams' => 'nullable|url',
-            'document' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'document' => 'sometimes|file|mimes:pdf,doc,docx,ppt,pptx',
             'participant_ids' => 'nullable|array',
             'participant_ids.*' => 'exists:formateur_participants,id',
             'hebergement_id' => 'nullable|exists:hebergements,id',
