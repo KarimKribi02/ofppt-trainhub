@@ -10,7 +10,7 @@ export default function Hebergement() {
     const [lieuTerm, setLieuTerm] = useState("");
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
-    const { id } = useParams(); // Récupérer 'id' depuis l'URL /DREF/ajouter-hebergement/:id
+    const { id } = useParams(); 
 
     useEffect(() => {
         const fetchHebergements = async () => {
