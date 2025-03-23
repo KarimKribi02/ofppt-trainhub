@@ -48,6 +48,9 @@ Route::resource('participants',FormateurParticipantController::class); // api de
 
 Route::post('participants/{formateurParticipantId}/assign-to-formation', [FormateurParticipantController::class, 'assignToFormation']); // api de ajouter des ids de formateurs participants a formation
 
+
+Route::post('/formations/{id}/add-participants', [FormationController::class, 'addParticipants']);
+
 Route::put('/formations/{id}/hebergement', [FormationController::class, 'updateHebergement']); // api de ajouter hebergement
 
 Route::get('/formations/{id}/download', [FormationController::class, 'downloadDocument']); // api de telecharger document

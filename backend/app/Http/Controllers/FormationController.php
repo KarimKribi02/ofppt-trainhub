@@ -94,6 +94,29 @@ class FormationController extends Controller
     ], 200);
 }
 
+public function addParticipants(Request $request, $id)
+    {
+        $formation = FormationModel::find($id);
+        if (!$formation) {
+            return response()->json(['message' => 'Formation non trouvée'], 404);
+        }
+
+        $request->validate([
+            'participant_ids' => 'required|array',
+            'participant_ids.*' => 'exists:formateur_participants,id', // Vérifie que chaque ID existe dans la table des participants
+        ]);
+
+        // Mettre à jour uniquement participant_ids
+        $formation->participant_ids = $request->participant_ids;
+        $formation->save();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Formateurs ajoutés avec succès',
+            'data' => $formation->load('hebergement'),
+        ], 200);
+    }
+
     private function validateFormation(Request $request)
     {
         $request->validate([
