@@ -3,32 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\FormationModel;
-use App\Models\FormateurParticipant;
+use App\Models\Hebergement;
 use Illuminate\Http\Request;
 
 class FormationController extends Controller
 {
     public function index()
     {
-        $formations = FormationModel::all();
-        $formations->each(function ($formation) {
-            $formation->formateurParticipants = $formation->formateurParticipants(); // Sans get()
-            $formation->hebergement = $formation->hebergement;
-        });
-
+        $formations = FormationModel::with('hebergement')->get();
         return response()->json($formations, 200);
     }
 
     public function store(Request $request)
     {
         $this->validateFormation($request);
-
         $data = $this->prepareFormationData($request);
         $formation = FormationModel::create($data);
-
-        $formation->formateurParticipants = $formation->formateurParticipants(); // Sans get()
-        $formation->hebergement = $formation->hebergement;
-
+        $formation->load('hebergement');
         return response()->json([
             'status' => 200,
             'message' => 'Formation créée avec succès',
@@ -38,34 +29,23 @@ class FormationController extends Controller
 
     public function show($id)
     {
-        $formation = FormationModel::find($id);
-
+        $formation = FormationModel::with('hebergement')->find($id);
         if (!$formation) {
             return response()->json(['message' => 'Formation non trouvée'], 404);
         }
-
-        $formation->formateurParticipants = $formation->formateurParticipants(); // Sans get()
-        $formation->hebergement = $formation->hebergement;
-
         return response()->json($formation, 200);
     }
 
     public function update(Request $request, $id)
     {
         $formation = FormationModel::find($id);
-
         if (!$formation) {
             return response()->json(['message' => 'Formation non trouvée'], 404);
         }
-
         $this->validateFormation($request);
-
         $data = $this->prepareFormationData($request);
         $formation->update($data);
-
-        $formation->formateurParticipants = $formation->formateurParticipants(); // Sans get()
-        $formation->hebergement = $formation->hebergement;
-
+        $formation->load('hebergement');
         return response()->json([
             'status' => 200,
             'message' => 'Formation modifiée avec succès',
@@ -76,14 +56,43 @@ class FormationController extends Controller
     public function destroy($id)
     {
         $formation = FormationModel::find($id);
-
         if (!$formation) {
             return response()->json(['message' => 'Formation non trouvée'], 404);
         }
-
         $formation->delete();
         return response()->json(['message' => 'Formation supprimée'], 200);
     }
+
+    public function getHebergements()
+    {
+        $hebergements = Hebergement::all();
+        return response()->json($hebergements, 200);
+    }
+
+    // Mettre à jour une formation existante avec un hebergement_id via l'URL
+    public function assignHebergement(Request $request, $formation_id)
+{
+    $request->validate([
+        'hebergement_id' => 'required|exists:hebergements,id',
+    ]);
+
+    $formation = FormationModel::find($formation_id);
+    if (!$formation) {
+        return response()->json(['message' => 'Formation non trouvée'], 404);
+    }
+
+    $formation->update([
+        'hebergement_id' => $request->hebergement_id
+    ]);
+
+    $formation->load('hebergement');
+
+    return response()->json([
+        'status' => 200,
+        'message' => 'Hébergement assigné avec succès',
+        'data' => $formation,
+    ], 200);
+}
 
     private function validateFormation(Request $request)
     {
@@ -98,9 +107,10 @@ class FormationController extends Controller
             'statut' => 'required|string',
             'mode' => 'required|string',
             'lien_teams' => 'nullable|url',
-            'document' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'document' => 'sometimes|file|mimes:pdf,doc,docx,ppt,pptx',
             'participant_ids' => 'nullable|array',
             'participant_ids.*' => 'exists:formateur_participants,id',
+            'hebergement_id' => 'nullable|exists:hebergements,id',
         ]);
     }
 
@@ -118,6 +128,7 @@ class FormationController extends Controller
             'mode' => $request->mode,
             'lien_teams' => $request->lien_teams,
             'participant_ids' => $request->participant_ids ?? null,
+            'hebergement_id' => $request->hebergement_id ?? null
         ];
 
         if ($request->hasFile('document')) {

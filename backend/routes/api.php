@@ -8,6 +8,7 @@ use App\Http\Controllers\formateurAnimateurController;
 use App\Http\Controllers\FormateurParticipantController;
 use App\Http\Controllers\HebergementController;
 use App\Http\Controllers\AuthController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -45,11 +46,14 @@ Route::resource('animateurs',formateurAnimateurController::class);  // api de fo
 
 Route::resource('participants',FormateurParticipantController::class); // api de formateurs participants
 
-Route::post('participants/{formateurParticipantId}/assign-to-formation', [FormateurParticipantController::class, 'assignToFormation']);
+Route::post('participants/{formateurParticipantId}/assign-to-formation', [FormateurParticipantController::class, 'assignToFormation']); // api de ajouter des ids de formateurs participants a formation
+
+Route::put('/formations/{id}/hebergement', [FormationController::class, 'updateHebergement']); // api de ajouter hebergement
 
 Route::get('/formations/{id}/download', [FormationController::class, 'downloadDocument']); // api de telecharger document
 
 Route::resource('hebergements', HebergementController::class);  // api de hebergement
+Route::post('/hebergements/assign/{formation_id}', [FormationController::class, 'assignHebergement']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);

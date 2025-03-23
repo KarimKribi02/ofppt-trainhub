@@ -11,23 +11,23 @@ class FormationModel extends Model
 
     protected $table = 'formations';
 
-    protected $fillable = [
-        'titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières',
-        'formateurs_animateurs', 'statut', 'mode', 'lien_teams', 'document', 'participant_ids'
-    ];
+    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières','formateurs_animateurs', 'statut', 'mode', 'lien_teams', 'document', 'participant_ids','hebergement_id'];
 
     protected $casts = [
         'participant_ids' => 'array' // Pour gérer automatiquement le JSON
     ];
 
-    public function formateurParticipants()
+    public function getFormateurParticipantsAttribute()
     {
-        return FormateurParticipant::whereIn('id', $this->participant_ids ?? [])->get();
+        if (empty($this->participant_ids)) {
+            return collect(); // Retourne une collection vide si aucun ID
+        }
+        return FormateurParticipant::whereIn('id', $this->participant_ids)->get();
     }
 
     public function hebergement()
-{
-    return $this->belongsTo(hebergement::class);
-}
+    {
+        return $this->belongsTo(hebergement::class, 'hebergement_id');
+    }
    
 }
