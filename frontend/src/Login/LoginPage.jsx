@@ -33,7 +33,11 @@ export default function LoginPage() {
       } else if (response.data.user.role === "DREF") {
         console.log("Redirection vers /DREF");
         navigate("/DREF");
-      } else {
+      } else if (response.data.user.role === "ANIMATEUR") {
+        console.log("Redirection vers /ANIMATEUR");
+        // navigate("/ANIMATEUR");
+      }
+       else {
         console.log("Redirection vers /");
         navigate("/");
       }
