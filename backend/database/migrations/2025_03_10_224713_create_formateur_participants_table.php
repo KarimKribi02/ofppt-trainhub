@@ -18,8 +18,10 @@ return new class extends Migration
             $table->string('nom');
             $table->string('prenom');
             $table->string('email')->unique();
+            $table->string('password');
             $table->string('filliere');
             $table->string('etablissement');
+            $table->string('role');
             $table->foreignId('hebergement_id')->nullable()->constrained('hebergements')->onDelete('cascade');
             $table->timestamps();
         });

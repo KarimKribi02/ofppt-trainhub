@@ -46,10 +46,7 @@ Route::resource('animateurs',formateurAnimateurController::class);  // api de fo
 
 Route::resource('participants',FormateurParticipantController::class); // api de formateurs participants
 
-Route::post('participants/{formateurParticipantId}/assign-to-formation', [FormateurParticipantController::class, 'assignToFormation']); // api de ajouter des ids de formateurs participants a formation
-
-
-Route::post('/formations/{id}/add-participants', [FormationController::class, 'addParticipants']);
+Route::post('/formations/{id}/add-participants', [FormationController::class, 'addParticipants']); // api de ajouter formateurs participants
 
 Route::put('/formations/{id}/hebergement', [FormationController::class, 'updateHebergement']); // api de ajouter hebergement
 

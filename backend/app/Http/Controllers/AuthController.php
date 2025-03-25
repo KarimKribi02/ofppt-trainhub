@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\cdcs;
 use App\Models\drefs;
+use App\Models\FormateurAnimateur;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -17,13 +18,13 @@ class AuthController extends Controller
         ]);
 
        
-        $user = cdcs::where('email', $request->email)->first() ?? drefs::where('email', $request->email)->first();
+        $user = cdcs::where('email', $request->email)->first() ?? drefs::where('email', $request->email)->first() ?? FormateurAnimateur::where('email', $request->email)->first();
 
         
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Identifiants invalides'], 401);
         }
-        if (!in_array($user->role, ['CDC', 'DREF'])) {
+        if (!in_array($user->role, ['CDC', 'DREF','ANIMATEUR'])) {
             return response()->json(['message' => 'Rôle invalide'], 403);
         }
 
