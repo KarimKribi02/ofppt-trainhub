@@ -26,9 +26,6 @@ return new class extends Migration
             $table->string('statut');
             $table->string('mode');
             $table->string('lien_teams')->nullable();
-            $table->json('participant_ids')->nullable();
-            $table->foreignId('hebergement_id')->nullable()->constrained('hebergements')->onDelete('cascade');
-
             $table->timestamps();
         });
     }

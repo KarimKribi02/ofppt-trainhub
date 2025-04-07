@@ -13,6 +13,7 @@ import UpdatFormation from './Admin/CDC/UpdatFormation';
 import FormateursTable from './Admin/FormateursTable';
 import ProtectedRoute from './Login/ProtectedRoute'; // Import du composant de protection
 import Hebergement from './Admin/DREF/Hebergement';
+import DocumentUpload from './uploadfile';
 
 function App() {
   return (
@@ -50,6 +51,8 @@ function App() {
     </BrowserRouter>
 
    
+    // <DocumentUpload />
+    
   );
 }
 

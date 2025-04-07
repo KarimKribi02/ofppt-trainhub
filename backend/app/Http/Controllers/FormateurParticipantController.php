@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\FormateurParticipant;
+use App\Models\formateurParticipant;
 
 class FormateurParticipantController extends Controller
 {
@@ -12,7 +12,7 @@ class FormateurParticipantController extends Controller
      */
     public function index()
     {
-        $formateursParticipants = FormateurParticipant::all();
+        $formateursParticipants = formateurParticipant::all();
         return response()->json($formateursParticipants);
     }
 
@@ -25,15 +25,28 @@ class FormateurParticipantController extends Controller
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
             'email' => 'required|string|email|unique:formateur_participants,email',
+            'password' => 'required|string|min:8',
             'filliere' => 'required|string|max:255',
             'etablissement' => 'required|string|max:255',
+            'role' => 'required|string|max:255',
+            'hebergement_id' => 'nullable|exists:hebergements,id',
         ]);
 
-        $formateurParticipant = FormateurParticipant::create($request->all());
+        $formateurParticipant = formateurParticipant::create([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'email' => $request->email,
+            'password' => bcrypt($request->password), // Hashage du mot de passe
+            'filliere' => $request->filliere,
+            'etablissement' => $request->etablissement,
+            'role' => $request->role,
+            'hebergement_id' => $request->hebergement_id,
+        ]);
 
         return response()->json([
-            'message' => 'formateur participant ajouter avec succes'
-        ]);
+            'message' => 'Formateur participant ajouté avec succès',
+            'data' => $formateurParticipant
+        ], 201);
     }
 
     /**
@@ -41,10 +54,10 @@ class FormateurParticipantController extends Controller
      */
     public function show($id)
     {
-        $formateurParticipant = FormateurParticipant::find($id);
+        $formateurParticipant = formateurParticipant::find($id);
 
         if (!$formateurParticipant) {
-            return response()->json(['message' => 'Formateur participant non trouvé']);
+            return response()->json(['message' => 'Formateur participant non trouvé'], 404);
         }
 
         return response()->json($formateurParticipant);
@@ -55,7 +68,7 @@ class FormateurParticipantController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $formateurParticipant = FormateurParticipant::find($id);
+        $formateurParticipant = formateurParticipantt::find($id);
 
         if (!$formateurParticipant) {
             return response()->json(['message' => 'Formateur participant non trouvé'], 404);
@@ -65,13 +78,24 @@ class FormateurParticipantController extends Controller
             'nom' => 'sometimes|string|max:255',
             'prenom' => 'sometimes|string|max:255',
             'email' => 'sometimes|string|email|unique:formateur_participants,email,' . $id,
+            'password' => 'sometimes|string|min:8',
             'filliere' => 'sometimes|string|max:255',
             'etablissement' => 'sometimes|string|max:255',
+            'role' => 'sometimes|string|max:255',
+            'hebergement_id' => 'nullable|exists:hebergements,id',
         ]);
 
-        $formateurParticipant->update($request->all());
+        $data = $request->all();
+        if ($request->has('password')) {
+            $data['password'] = bcrypt($request->password);
+        }
 
-        return response()->json($formateurParticipant);
+        $formateurParticipant->update($data);
+
+        return response()->json([
+            'message' => 'Formateur participant mis à jour avec succès',
+            'data' => $formateurParticipant
+        ]);
     }
 
     /**
@@ -79,7 +103,7 @@ class FormateurParticipantController extends Controller
      */
     public function destroy($id)
     {
-        $formateurParticipant = FormateurParticipant::find($id);
+        $formateurParticipant = formateurParticipant::find($id);
 
         if (!$formateurParticipant) {
             return response()->json(['message' => 'Formateur participant non trouvé'], 404);
