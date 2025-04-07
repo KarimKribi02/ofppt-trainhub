@@ -1,40 +1,61 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function FormateursPage() {
   const [formateurs, setFormateurs] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [selectedFormateurIds, setSelectedFormateurIds] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterFiliere, setFilterFiliere] = useState("");
   const [filterEtablissement, setFilterEtablissement] = useState("");
+  const [loading, setLoading] = useState(true);
+
   const { id } = useParams();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/participants")
-      .then((response) => {
-        setFormateurs(response.data.data || response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la récupération des formateurs :", error);
-        setLoading(false);
-      });
-  }, []);
 
-  const handleSelect = (id) => {
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const [formateursRes, participantsRes] = await Promise.all([
+            axios.get("http://127.0.0.1:8000/api/participants"),
+            axios.get(`http://127.0.0.1:8000/api/formation-participants/${id}`)
+          ]);
+          
+          console.log("Réponse brute des participants :", participantsRes.data);
+
+          const allFormateurs = formateursRes.data.data || formateursRes.data;
+    
+          // ✅ on convertit les IDs en number (pour match dans le .includes)
+          const existingIds = (participantsRes.data?.participants || []).map(
+            (p) => Number(p.id)
+          );
+    
+          console.log("Participants existants (IDs):", existingIds);
+    
+          setFormateurs(allFormateurs);
+          setSelectedFormateurIds(existingIds);
+          setLoading(false);
+        } catch (error) {
+          console.error("Erreur de chargement :", error);
+          setLoading(false);
+        }
+      };
+    
+      fetchData();
+    }, [id]);
+    
+  
+  const handleSelect = (formateurId) => {
     setSelectedFormateurIds((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+      prev.includes(formateurId)
+        ? prev.filter((id) => id !== formateurId)
+        : [...prev, formateurId]
     );
   };
 
   const handleAddFormateurs = async () => {
     if (!id) {
-      console.error("L'ID de la formation est manquant.");
-      alert("Impossible d'ajouter des formateurs sans ID de formation.");
+      alert("ID de formation manquant.");
       return;
     }
 
@@ -44,104 +65,87 @@ export default function FormateursPage() {
     }
 
     try {
-      // Préparer les données avec uniquement participant_ids
       const data = {
         participant_ids: selectedFormateurIds,
       };
 
-      console.log("Données envoyées :", data);
-
-      // Envoyer la requête POST à la nouvelle route
-      const response = await axios.post(
+      await axios.post(
         `http://127.0.0.1:8000/api/formation-participants/${id}`,
         data,
         {
-          headers: {
-            "Content-Type": "application/json", // JSON car pas de fichier
-          },
+          headers: { "Content-Type": "application/json" },
         }
       );
 
       alert("Formateurs ajoutés avec succès !");
-      setSelectedFormateurIds([]);
-      // navigate(`/CDC/overview`);
     } catch (error) {
-      console.error(
-        "Erreur lors de l'ajout des formateurs :",
-        error.response?.data || error.message
-      );
-      alert(
-        "Une erreur s'est produite : " +
-          (error.response?.data?.message || error.message)
-      );
+      console.error("Erreur lors de l'ajout :", error.response?.data || error.message);
+      alert("Erreur : " + (error.response?.data?.message || error.message));
     }
   };
 
-  const filteredFormateurs = formateurs.filter(
-    (formateur) =>
-      formateur.nom.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (filterFiliere ? formateur.filliere === filterFiliere : true) &&
-      (filterEtablissement
-        ? formateur.etablissement === filterEtablissement
-        : true)
+  const filteredFormateurs = formateurs.filter((formateur) =>
+    formateur.nom.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (filterFiliere ? formateur.filliere === filterFiliere : true) &&
+    (filterEtablissement ? formateur.etablissement === filterEtablissement : true)
   );
+  
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 p-4 sm:ml-64">
-      <div className="mb-6 flex flex-wrap gap-4 items-center bg-white p-4 shadow-md rounded-lg w-full">
+    <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4 sm:ml-64">
+      <div className="mb-6 w-full bg-white p-4 shadow rounded-lg flex flex-wrap gap-4 items-center">
         <input
           type="text"
           placeholder="🔍 Rechercher par nom..."
-          className="border border-gray-300 p-2 rounded-lg w-full sm:w-1/4 focus:ring-2 focus:ring-blue-400"
+          className="border border-gray-300 p-2 rounded-lg w-full sm:w-1/3"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <select
-          className="border border-gray-300 p-2 rounded-lg w-full sm:w-1/3 focus:ring-2 focus:ring-blue-400"
+          className="border border-gray-300 p-2 rounded-lg w-full sm:w-1/3"
           value={filterFiliere}
           onChange={(e) => setFilterFiliere(e.target.value)}
         >
           <option value="">Toutes les filières</option>
-          {[...new Set(formateurs.map((f) => f.filliere))].map((filiere) => (
+          {[...new Set(formateurs.map(f => f.filliere))].map((filiere) => (
             <option key={filiere} value={filiere}>
               {filiere}
             </option>
           ))}
         </select>
         <select
-          className="border border-gray-300 p-2 rounded-lg w-full sm:w-1/3 focus:ring-2 focus:ring-blue-400"
+          className="border border-gray-300 p-2 rounded-lg w-full sm:w-1/3"
           value={filterEtablissement}
           onChange={(e) => setFilterEtablissement(e.target.value)}
         >
           <option value="">Tous les établissements</option>
-          {[...new Set(formateurs.map((f) => f.etablissement))].map(
-            (etablissement) => (
-              <option key={etablissement} value={etablissement}>
-                {etablissement}
-              </option>
-            )
-          )}
+          {[...new Set(formateurs.map(f => f.etablissement))].map((etab) => (
+            <option key={etab} value={etab}>
+              {etab}
+            </option>
+          ))}
         </select>
       </div>
+
       {loading ? (
-        <p className="text-center text-gray-600">Chargement...</p>
+        <p className="text-gray-600">Chargement...</p>
       ) : (
-        <div className="w-full bg-white shadow-lg rounded-lg">
-          <table className="min-w-full border-collapse w-full">
-            <thead>
-              <tr className="bg-blue-600 text-white">
-                <th className="py-3 px-4 text-left">Sélection</th>
-                <th className="py-3 px-4 text-left">ID</th>
-                <th className="py-3 px-4 text-left">Nom</th>
-                <th className="py-3 px-4 text-left">Prénom</th>
-                <th className="py-3 px-4 text-left">Filière</th>
-                <th className="py-3 px-4 text-left">Établissement</th>
+        <div className="w-full bg-white shadow rounded-lg overflow-x-auto">
+          <table className="w-full table-auto">
+            <thead className="bg-blue-600 text-white">
+              <tr>
+                <th className="px-4 py-2 text-left">Sélection</th>
+                <th className="px-4 py-2 text-left">ID</th>
+                <th className="px-4 py-2 text-left">Nom</th>
+                <th className="px-4 py-2 text-left">Prénom</th>
+                <th className="px-4 py-2 text-left">Filière</th>
+                <th className="px-4 py-2 text-left">Établissement</th>
               </tr>
             </thead>
             <tbody>
-              {filteredFormateurs.map((formateur, index) => (
-                <tr key={index} className="border-b hover:bg-gray-100">
-                  <td className="py-2 px-4">
+              {filteredFormateurs.map((formateur) => (
+                <tr key={formateur.id} className="border-b hover:bg-gray-100">
+                  <td className="px-4 py-2">
                     <input
                       type="checkbox"
                       className="w-5 h-5"
@@ -149,18 +153,18 @@ export default function FormateursPage() {
                       onChange={() => handleSelect(formateur.id)}
                     />
                   </td>
-                  <td className="py-2 px-4">{formateur.id}</td>
-                  <td className="py-2 px-4">{formateur.nom}</td>
-                  <td className="py-2 px-4">{formateur.prenom}</td>
-                  <td className="py-2 px-4">{formateur.filliere}</td>
-                  <td className="py-2 px-4">{formateur.etablissement}</td>
+                  <td className="px-4 py-2">{formateur.id}</td>
+                  <td className="px-4 py-2">{formateur.nom}</td>
+                  <td className="px-4 py-2">{formateur.prenom}</td>
+                  <td className="px-4 py-2">{formateur.filliere}</td>
+                  <td className="px-4 py-2">{formateur.etablissement}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <div className="mt-4 text-right p-4">
+          <div className="p-4 text-right">
             <button
-              className={`bg-blue-600 text-white px-6 py-2 rounded-lg shadow transition ${
+              className={`bg-blue-600 text-white px-6 py-2 rounded-lg transition ${
                 selectedFormateurIds.length === 0
                   ? "opacity-50 cursor-not-allowed"
                   : "hover:bg-blue-700"

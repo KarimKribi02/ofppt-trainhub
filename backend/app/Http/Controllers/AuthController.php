@@ -6,6 +6,7 @@ use App\Models\cdcs;
 use App\Models\drefs;
 use App\Models\FormateurAnimateur;
 use Illuminate\Support\Facades\Hash;
+USE App\Models\formateurParticipant;
 
 class AuthController extends Controller
 {

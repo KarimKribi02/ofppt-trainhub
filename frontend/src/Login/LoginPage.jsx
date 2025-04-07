@@ -36,10 +36,13 @@ export default function LoginPage() {
       } else if (response.data.user.role === "ANIMATEUR") {
         console.log("Redirection vers /ANIMATEUR");
         navigate("/ANIMATEUR");
+      } else if (response.data.user.role === "PARTICIPANT") {
+        console.log("Redirection vers /PARTICIPANT");
+        navigate("/");
       }
        else {
         console.log("Redirection vers /");
-        navigate("/");
+        navigate("/login");
       }
     } catch (err) {
       console.error("Login Failed:", err.response?.data || err.message);

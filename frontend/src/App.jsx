@@ -27,15 +27,15 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Page de connexion */}
-        <Route path="/" element={<LoginPage />} />
-
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route element={<ProtectedRoute allowedRoles={["PARTICIPANT"]} />}>
         
-        <Route path="/home" element={<HomePage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/course" element={<Course />} />
         <Route path="/courses" element={<CoursesPage />} />
         <Route path="/about" element={<About />} />
-
+        </Route>
         {/* Routes protégées pour CDC */}
         <Route element={<ProtectedRoute allowedRoles={["CDC"]} />}>
           <Route path="/CDC" element={<Cdc />}>
