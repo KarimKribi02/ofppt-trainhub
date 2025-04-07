@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Cdc from './Admin/CDC/CdcPage';
 import Dref from './Admin/DREF/DrefPage';
+import Animateur from './Admin/ANIMATEUR/animateurPage';
 import Overview from './Admin/CDC/Overview';
 import FormationForm from './Admin/CDC/FormationForm';
 import ChatTotal from './Admin/Chat/ChatTotal';
@@ -13,7 +14,8 @@ import UpdatFormation from './Admin/CDC/UpdatFormation';
 import FormateursTable from './Admin/FormateursTable';
 import ProtectedRoute from './Login/ProtectedRoute'; // Import du composant de protection
 import Hebergement from './Admin/DREF/Hebergement';
-import DocumentUpload from './uploadfile';
+import FormationAnimateur from './Admin/ANIMATEUR/FormationAnimateur'
+
 
 function App() {
   return (
@@ -45,6 +47,18 @@ function App() {
             <Route path="formation/:id" element={<AffichageFormation />} />
             <Route path="ajouter-formateurs/:id" element={<FormateursTable />} />
             <Route path="ajouter-hebergement/:id" element={<Hebergement />} />
+          </Route>
+        </Route>
+        {/* Routes protégées pour ANIMATEUR */}
+        <Route element={<ProtectedRoute allowedRoles={["ANIMATEUR"]} />}>
+          <Route path="/ANIMATEUR" element={<Animateur />}>
+            <Route path="" element={<Welcome role="ANIMATEUR" />} />
+            <Route path="formationsAnimateur" element={<FormationAnimateur />} />
+            <Route path="chat" element={<ChatTotal role="ANIMATEUR" />} />
+            {/* <Route path="Updatformation/:id" element={<UpdatFormation source="DREF" />} />
+            <Route path="formation/:id" element={<AffichageFormation />} />
+            <Route path="ajouter-formateurs/:id" element={<FormateursTable />} />
+            <Route path="ajouter-hebergement/:id" element={<Hebergement />} /> */}
           </Route>
         </Route>
       </Routes>

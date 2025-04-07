@@ -35,7 +35,7 @@ export default function LoginPage() {
         navigate("/DREF");
       } else if (response.data.user.role === "ANIMATEUR") {
         console.log("Redirection vers /ANIMATEUR");
-        // navigate("/ANIMATEUR");
+        navigate("/ANIMATEUR");
       }
        else {
         console.log("Redirection vers /");

@@ -28,6 +28,9 @@ function SideBar({ role }) {
       { to: "formations", icon: <FiGrid />, label: "Formations" },
       { to: "chat", icon: <FiMessageSquare />, label: "Chat" },
     ],
+    ANIMATEUR: [
+      { to: "formationsAnimateur", icon: <FiGrid />, label: "formationsAnimateur" },
+    ],
   };
 
   const currentMenu = menuItems[role] || [];
