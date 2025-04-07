@@ -11,7 +11,7 @@ class FormationModel extends Model
 
     protected $table = 'formations';
 
-    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières','formateurs_animateurs', 'statut', 'mode', 'lien_teams', 'document'];
+    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières','formateurs_animateurs', 'statut', 'mode', 'lien_teams', 'document', 'hebergement_id'];
 
     // protected $casts = [
     //     'participant_ids' => 'array' // Pour gérer automatiquement le JSON
@@ -30,8 +30,8 @@ class FormationModel extends Model
         return $this->hasMany(FormationParticipant::class, 'formation_id');
     }
 
-    public function foramtionhebergments()
+    public function hebergement()
     {
-        return $this->hasMany(foramtionhebergment::class);
+        return $this->belongsTo(hebergement::class, 'hebergement_id');
     }
 }

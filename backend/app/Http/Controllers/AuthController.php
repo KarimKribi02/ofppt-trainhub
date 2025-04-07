@@ -18,13 +18,13 @@ class AuthController extends Controller
         ]);
 
        
-        $user = cdcs::where('email', $request->email)->first() ?? drefs::where('email', $request->email)->first() ?? FormateurAnimateur::where('email', $request->email)->first();
+        $user = cdcs::where('email', $request->email)->first() ?? drefs::where('email', $request->email)->first() ?? FormateurAnimateur::where('email', $request->email)->first() ?? formateurParticipant::where('email', $request->email)->first();
 
         
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Identifiants invalides'], 401);
         }
-        if (!in_array($user->role, ['CDC', 'DREF','ANIMATEUR'])) {
+        if (!in_array($user->role, ['CDC', 'DREF','ANIMATEUR', 'PARTICIPANT'])) {
             return response()->json(['message' => 'Rôle invalide'], 403);
         }
 
@@ -36,7 +36,7 @@ class AuthController extends Controller
             'user' => [
                 'id' => $user->id,
                 'email' => $user->email,
-                'role' => $user->role, // Différenciation du profil ici
+                'role' => $user->role, 
             ]
         ]);
     }
