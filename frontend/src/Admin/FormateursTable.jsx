@@ -45,13 +45,26 @@ export default function FormateursPage() {
     }, [id]);
     
   
-  const handleSelect = (formateurId) => {
-    setSelectedFormateurIds((prev) =>
-      prev.includes(formateurId)
-        ? prev.filter((id) => id !== formateurId)
-        : [...prev, formateurId]
-    );
-  };
+    const handleSelect = async (formateurId) => {
+      const isSelected = selectedFormateurIds.includes(formateurId);
+    
+      if (isSelected) {
+        try {
+          await axios.delete(
+            `http://127.0.0.1:8000/api/formation-participants/${id}/${formateurId}`
+          );
+          setSelectedFormateurIds((prev) =>
+            prev.filter((id) => id !== formateurId)
+          );
+        } catch (error) {
+          console.error("Erreur lors de la suppression :", error.response?.data || error.message);
+          alert("Erreur lors de la suppression du formateur.");
+        }
+      } else {
+        setSelectedFormateurIds((prev) => [...prev, formateurId]);
+      }
+    };
+    
 
   const handleAddFormateurs = async () => {
     if (!id) {

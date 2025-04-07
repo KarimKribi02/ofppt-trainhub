@@ -70,4 +70,4 @@ Route::resource('formation-participants', FormationParticipantController::class)
 Route::resource('formation-hebergements', ForamtionhebergmentController::class);  // api de hebergement avec formation
 
 
-
+Route::delete('/formation-participants/{formationId}/{participantId}', [FormationParticipantController::class, 'detachParticipant']);

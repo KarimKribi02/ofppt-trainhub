@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\FormationParticipant;
 use App\Models\FormationModel;
 use App\Models\formateurParticipant;
+use Illuminate\Support\Facades\DB;
+
 
 class FormationParticipantController extends Controller
 {
@@ -84,10 +86,20 @@ class FormationParticipantController extends Controller
         return response()->json($formationParticipant->load(['formation', 'participant']));
     }
 
-    public function destroy($id)
+    public function detachParticipant($formationId, $participantId)
     {
-        $formationParticipant = FormationParticipant::find($id);
-        $formationParticipant->delete();
-        return response()->json(null, 204);
+        // Vérifie si la liaison existe
+        $deleted = DB::table('formation_participants')
+            ->where('formation_id', $formationId)
+            ->where('participant_id', $participantId)
+            ->delete();
+    
+        if ($deleted) {
+            return response()->json(['message' => 'Participant détaché avec succès.'], 200);
+        } else {
+            return response()->json(['message' => 'Aucune correspondance trouvée.'], 404);
+        }
     }
+    
+
 }
