@@ -9,7 +9,7 @@ class foramtionhebergment extends Model
 {
     use HasFactory;
 
-    protected $table = 'foramtionhebergments';
+    protected $table = 'formationhebergments';
 
     protected $fillable = ['formation_id', 'hebergement_id'];
 

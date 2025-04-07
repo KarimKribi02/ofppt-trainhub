@@ -10,6 +10,7 @@ use App\Http\Controllers\HebergementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TestUploadController;
 use App\Http\Controllers\FormationParticipantController;
+use App\Http\Controllers\ForamtionhebergmentController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -66,7 +67,7 @@ Route::post('/formation-participants/{id}', [FormationParticipantController::cla
 // Route resource pour les opérations CRUD standard
 Route::resource('formation-participants', FormationParticipantController::class);
 
-Route::resource('formation-hebergements', FormationHebergementController::class);  // api de hebergement avec formation
+Route::resource('formation-hebergements', ForamtionhebergmentController::class);  // api de hebergement avec formation
 
 Route::post('/upload-test', [TestUploadController::class, 'upload']);
 

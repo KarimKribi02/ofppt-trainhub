@@ -9,7 +9,6 @@ use App\Models\formateurParticipant;
 
 class FormationParticipantController extends Controller
 {
-    // Récupérer tous les participants
  
 
     // Ajouter des participants à une formation
