@@ -69,5 +69,5 @@ Route::resource('formation-participants', FormationParticipantController::class)
 
 Route::resource('formation-hebergements', ForamtionhebergmentController::class);  // api de hebergement avec formation
 
-Route::post('/upload-test', [TestUploadController::class, 'upload']);
+
 

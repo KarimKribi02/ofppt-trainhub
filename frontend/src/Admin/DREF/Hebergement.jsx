@@ -46,9 +46,10 @@ export default function Hebergement() {
         }
     
         try {
-            const response = await axios.post(
-                `http://127.0.0.1:8000/api/hebergements/assign/${id}`,
+            const response = await axios.put(
+                `http://127.0.0.1:8000/api/formation-hebergements`,
                 {
+                    formation_id: id,
                     hebergement_id: selectedHebergementId,
                 }
             );

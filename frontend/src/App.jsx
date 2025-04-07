@@ -15,6 +15,11 @@ import FormateursTable from './Admin/FormateursTable';
 import ProtectedRoute from './Login/ProtectedRoute'; // Import du composant de protection
 import Hebergement from './Admin/DREF/Hebergement';
 import FormationAnimateur from './Admin/ANIMATEUR/FormationAnimateur'
+import HomePage from './Participants/HomePage';
+import ContactPage from './Participants/ContactPage';
+import Course from './Participants/Course';
+import CoursesPage from './Participants/CoursesPage';
+import About from './Participants/AboutPage';
 
 
 function App() {
@@ -23,6 +28,13 @@ function App() {
       <Routes>
         {/* Page de connexion */}
         <Route path="/" element={<LoginPage />} />
+
+        
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/course" element={<Course />} />
+        <Route path="/courses" element={<CoursesPage />} />
+        <Route path="/about" element={<About />} />
 
         {/* Routes protégées pour CDC */}
         <Route element={<ProtectedRoute allowedRoles={["CDC"]} />}>
