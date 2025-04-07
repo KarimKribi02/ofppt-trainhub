@@ -18,13 +18,20 @@ const Welcome = ({ role }) => {
       link: "formations",
       buttonText: "Gérer les Formations →",
     },
+    ANIMATEUR: {
+      title: "Bonjour et Bienvenue, Animateur !",
+      description:
+        "En tant qu'animateur, vous pouvez gérer les formations et les participants. Vous pouvez aussi consulter les statistiques des formations.",
+      link: "formations",
+      buttonText: "Voir les Formations →",
+    }, // ❗ Ajout de cette accolade fermante
   };
 
   // Sélection du contenu en fonction du rôle (CDC par défaut si aucun rôle défini)
   const { title, description, link, buttonText } = content[role] || content["CDC"];
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4  p-4 sm:ml-64">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4 p-4 sm:ml-64">
       <div className="bg-white p-8 rounded-2xl shadow-lg max-w-2xl text-center">
         <h3 className="text-2xl md:text-3xl font-bold text-orange-500 mt-2">{title}</h3>
         <p className="text-gray-600 mt-4">{description}</p>
