@@ -63,9 +63,13 @@ class FormationParticipantController extends Controller
    
     public function show($id)
     {
-        $formationParticipant = FormationParticipant::with(['formation', 'participant'])->findOrFail($id);
-        return response()->json($formationParticipant);
+        $participants = FormationParticipant::where('formation_id', $id)
+            ->with('participant') 
+            ->get();
+    
+        return response()->json(['participants' => $participants]);
     }
+    
 
     public function update(Request $request, $id)
     {
