@@ -22,9 +22,9 @@ Route::get('/', function () {
 
 
 
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login'); 
-Route::post('/login', [AuthController::class, 'authenticate']);
-Route::get('/dashboard', function () {
-    return view('dashboard'); // Assure-toi que cette vue existe
-})->middleware('auth','verified')->name('dashboard');
+// Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login'); 
+// Route::post('/login', [AuthController::class, 'authenticate']);
+// Route::get('/dashboard', function () {
+//     return view('dashboard'); // Assure-toi que cette vue existe
+// })->middleware('auth','verified')->name('dashboard');
 

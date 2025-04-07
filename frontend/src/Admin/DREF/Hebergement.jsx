@@ -46,13 +46,12 @@ export default function Hebergement() {
         }
     
         try {
-            const response = await axios.put(
-                `http://127.0.0.1:8000/api/formation-hebergements`,
-                {
-                    formation_id: id,
-                    hebergement_id: selectedHebergementId,
-                }
-            );
+            const response = await axios.post(
+                    `http://127.0.0.1:8000/api/hebergements/assign/${id}` ,
+                    {
+                      hebergement_id: selectedHebergementId
+                    }
+                  );
             setMessage("Hébergement ajouté avec succès !");
             setSelectedHebergementId(null);
             setTimeout(() => {
