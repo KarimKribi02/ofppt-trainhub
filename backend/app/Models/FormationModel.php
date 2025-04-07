@@ -11,23 +11,27 @@ class FormationModel extends Model
 
     protected $table = 'formations';
 
-    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières','formateurs_animateurs', 'statut', 'mode', 'lien_teams', 'document', 'participant_ids','hebergement_id'];
+    protected $fillable = ['titre', 'description', 'dateDebut', 'dateFin', 'lieux', 'filières','formateurs_animateurs', 'statut', 'mode', 'lien_teams', 'document'];
 
-    protected $casts = [
-        'participant_ids' => 'array' // Pour gérer automatiquement le JSON
-    ];
+    // protected $casts = [
+    //     'participant_ids' => 'array' // Pour gérer automatiquement le JSON
+    // ];
 
-    public function getFormateurParticipantsAttribute()
+    // public function getFormateurParticipantsAttribute()
+    // {
+    //     if (empty($this->participant_ids)) {
+    //         return collect(); // Retourne une collection vide si aucun ID
+    //     }
+    //     return FormateurParticipant::whereIn('id', $this->participant_ids)->get();
+    // }
+
+    public function formationParticipants()
     {
-        if (empty($this->participant_ids)) {
-            return collect(); // Retourne une collection vide si aucun ID
-        }
-        return FormateurParticipant::whereIn('id', $this->participant_ids)->get();
+        return $this->hasMany(FormationParticipant::class, 'formation_id');
     }
 
-    public function hebergement()
+    public function foramtionhebergments()
     {
-        return $this->belongsTo(hebergement::class, 'hebergement_id');
+        return $this->hasMany(foramtionhebergment::class);
     }
-   
 }

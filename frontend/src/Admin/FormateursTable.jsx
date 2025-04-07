@@ -53,7 +53,7 @@ export default function FormateursPage() {
 
       // Envoyer la requête POST à la nouvelle route
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/formations/${id}/add-participants`,
+        `http://127.0.0.1:8000/api/formation-participants/${id}`,
         data,
         {
           headers: {

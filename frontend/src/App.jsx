@@ -16,6 +16,7 @@ import ProtectedRoute from './Login/ProtectedRoute'; // Import du composant de p
 import Hebergement from './Admin/DREF/Hebergement';
 import FormationAnimateur from './Admin/ANIMATEUR/FormationAnimateur'
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -64,6 +65,8 @@ function App() {
     </BrowserRouter>
 
    
+    // <DocumentUpload />
+    
   );
 }
 

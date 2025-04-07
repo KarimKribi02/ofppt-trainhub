@@ -8,7 +8,8 @@ use App\Http\Controllers\formateurAnimateurController;
 use App\Http\Controllers\FormateurParticipantController;
 use App\Http\Controllers\HebergementController;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\TestUploadController;
+use App\Http\Controllers\FormationParticipantController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -46,11 +47,10 @@ Route::resource('animateurs',formateurAnimateurController::class);  // api de fo
 
 Route::resource('participants',FormateurParticipantController::class); // api de formateurs participants
 
-Route::post('/formations/{id}/add-participants', [FormationController::class, 'addParticipants']); // api de ajouter formateurs participants
+// Route::post('/formations/{id}/add-participants', [FormationController::class, 'addParticipants']); // api de ajouter formateurs participants
 
-Route::put('/formations/{id}/hebergement', [FormationController::class, 'updateHebergement']); // api de ajouter hebergement
 
-Route::get('/formations/{id}/download', [FormationController::class, 'downloadDocument']); // api de telecharger document
+Route::post('/formations/{formation_id}/upload-document', [FormationController::class, 'uploadDocument']); // api de telecharger document
 
 Route::resource('hebergements', HebergementController::class);  // api de hebergement
 Route::post('/hebergements/assign/{formation_id}', [FormationController::class, 'assignHebergement']);
@@ -60,4 +60,13 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 
 
+// Route personnalisée pour ajouter des participants à une formation
+Route::post('/formation-participants/{id}', [FormationParticipantController::class, 'addParticipants']);
+
+// Route resource pour les opérations CRUD standard
+Route::resource('formation-participants', FormationParticipantController::class);
+
+Route::resource('formation-hebergements', FormationHebergementController::class);  // api de hebergement avec formation
+
+Route::post('/upload-test', [TestUploadController::class, 'upload']);
 

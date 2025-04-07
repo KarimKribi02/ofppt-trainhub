@@ -12,10 +12,17 @@ class formateurParticipant extends Model
 
     protected $table = 'formateur_participants';
 
-    protected $fillable = ['nom','prenom','email','filliere','etablissement','hebergement_id'];
+    protected $fillable = ['nom','prenom','email','password','role','filliere','etablissement','hebergement_id'];
 
-    public function formations()
+ 
+
+    public function hebergement()
     {
-        return FormationModel::whereJsonContains('participant_ids', $this->id);
+        return $this->belongsTo(hebergement::class);
+    }
+    
+    public function formationParticipants()
+    {
+        return $this->hasMany(FormationParticipant::class, 'participant_id');
     }
 }

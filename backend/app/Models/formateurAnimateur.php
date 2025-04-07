@@ -11,6 +11,6 @@ class FormateurAnimateur extends Model
     use HasFactory, HasApiTokens;
     
     protected $table = 'formateur_animateurs';
-    protected $fillable = ['nom','prenom','email','filières'];
+    protected $fillable = ['nom','prenom','email','password','role','filières'];
 
 }
