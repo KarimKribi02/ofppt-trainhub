@@ -19,13 +19,16 @@ export default function LoginPage() {
         email,
         password,
       });
+      const participantData = response.data.participant; // <-- ou response.data.user selon ton API
+      localStorage.setItem("PARTICIPANT", JSON.stringify(participantData));
+  
 
       console.log("Login Successful:", response.data);
 
       // Stocker le token et le rôle
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", response.data.user.role);
-
+      
       // Rediriger selon le rôle
       if (response.data.user.role === "CDC") {
         console.log("Redirection vers /CDC");
