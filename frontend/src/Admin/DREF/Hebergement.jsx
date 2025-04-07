@@ -33,8 +33,6 @@ export default function Hebergement() {
     const handleSelect = (id) => {
         setSelectedHebergementId(prev => (prev === id ? null : id));
     };
-
-
     const handleAddHebergement = async () => {
         if (!selectedHebergementId) {
             setMessage("Veuillez sélectionner un hébergement.");
@@ -58,14 +56,13 @@ export default function Hebergement() {
             setSelectedHebergementId(null);
             setTimeout(() => {
                 setMessage("");
-                navigate("/CDC/overview");
+                navigate("/DREF/formations");
             }, 2000);
         } catch (error) {
             console.error("Erreur lors de l'ajout de l'hébergement:", error.response?.data || error.message);
             setMessage("Erreur lors de l'ajout de l'hébergement : " + (error.response?.data?.message || error.message));
             setTimeout(() => setMessage(""), 3000);
         }
-
     };
 
     const filteredHebergements = hebergements.filter((hebergement) =>
@@ -155,5 +152,6 @@ export default function Hebergement() {
                 </div>
             )}
         </div>
+        
     );
 }
