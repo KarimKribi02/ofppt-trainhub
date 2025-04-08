@@ -6,33 +6,51 @@ import Navbar from './Navbar';
 
 const Benefits = () => {
   const [user, setUser] = useState(null);
+  const [cours, setCours] = useState([]);
+  const [coursFiltrés, setCoursFiltrés] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log('Token envoyé:', token); // Ajoutez ceci pour déboguer
     if (token) {
-        axios.get('http://127.0.0.1:8000/api/user', {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: 'application/json'
-            }
+      axios.get('http://127.0.0.1:8000/api/user', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json'
+        }
+      })
+        .then(res => {
+          setUser(res.data);
         })
-            .then(res => {
-                console.log('Réponse API:', res.data);
-                setUser(res.data);
-            })
-            .catch(err => {
-                console.error('Erreur API:', err.response ? err.response.data : err.message);
-                setUser(null);
-            });
-    } else {
-        console.log('Aucun token trouvé');
+        .catch(err => {
+          console.error('Erreur utilisateur:', err.response ? err.response.data : err.message);
+          setUser(null);
+        });
     }
-}, []);
+  }, []);
+
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8000/api/formation-participants')
+      .then(res => {
+        setCours(res.data);
+      })
+      .catch(err => {
+        console.error('Erreur cours:', err);
+      });
+  }, []);
+
+  // Filtrer les formations du participant connecté
+  useEffect(() => {
+    if (user && cours.length > 0) {
+      const filtrés = cours.filter(c => c.participant_id === user.id);
+      setCoursFiltrés(filtrés);
+      console.log('Cours filtrés:', filtrés);
+    }
+  }, [user, cours]);
 
   return (
     <>
-    <Navbar />
+      <Navbar />
+
       {/* Hero Section */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 text-center">
@@ -87,25 +105,47 @@ const Benefits = () => {
       </section>
 
       {/* Courses Section (seulement si utilisateur connecté) */}
-      {user && (
-        <section className="bg-white py-16">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex justify-between items-center mb-8">
-              <div>
-                <h2 className="text-3xl font-bold mb-2">Nos Cours</h2>
-                <p className="text-gray-600 max-w-2xl">
-                  Découvrez notre sélection de cours de haute qualité.
-                </p>
-              </div>
-              <Link to="/courses" className="text-orange-500 hover:underline font-medium">
-                Voir tous les cours
-              </Link>
-            </div>
-            {/* Tu peux ajouter ici une boucle pour afficher les cours */}
-          </div>
-        </section>
-      )}
+{user && (
+  <section className="bg-white py-20">
+    <div className="max-w-7xl mx-auto px-4">
+      <div className="flex justify-between items-center mb-10">
+        <div>
+          <h2 className="text-3xl font-bold mb-2 text-gray-800">Mes Formations</h2>
+          <p className="text-gray-600 max-w-xl">
+            Voici les formations auxquelles vous êtes inscrit.
+          </p>
+        </div>
+        <Link
+          to="/courses"
+          className="text-orange-500 hover:underline font-medium text-sm"
+        >
+          Voir tous les cours →
+        </Link>
+      </div>
 
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {coursFiltrés.map((item, index) => (
+          <div
+            key={index}
+            className="bg-gradient-to-br from-white to-gray-50 border border-gray-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition duration-200"
+          >
+            <h3 className="text-xl font-semibold text-orange-600 mb-2">{item.formation.titre}</h3>
+
+            <div className="text-sm text-gray-600 space-y-1">
+              <p><span className="font-medium">📍 Lieu :</span> {item.formation.lieux}</p>
+              <p><span className="font-medium">🎓 Filière :</span> {item.formation.filières}</p>
+              <p>
+                <span className="font-medium">🗓️ Dates :</span> {item.formation.dateDebut} → {item.formation.dateFin}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+      
       <Footer />
     </>
   );
