@@ -1,21 +1,21 @@
-// src/components/Navbar.jsx
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ handleLogout }) => { // Recevoir handleLogout comme prop
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Vérifie si un token ou un participant est stocké
-    const user = localStorage.getItem("PARTICIPANT");
-    setIsAuthenticated(!!user);
+    const token = localStorage.getItem('token'); // Utiliser "token" au lieu de "PARTICIPANT"
+    setIsAuthenticated(!!token);
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("PARTICIPANT");
+  const onLogout = () => {
+    if (handleLogout) {
+      handleLogout(); // Appeler la fonction passée depuis Benefits
+    }
     setIsAuthenticated(false);
-    navigate("/login");
+    navigate('/login');
   };
 
   return (
@@ -39,7 +39,7 @@ const Navbar = () => {
               </Link>
             ) : (
               <button
-                onClick={handleLogout}
+                onClick={onLogout}
                 className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors"
               >
                 Déconnecter

@@ -52,6 +52,7 @@ Route::post('/hebergements/assign/{formation_id}', [FormationController::class, 
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'getUser']);
 
 
 
@@ -65,4 +66,4 @@ Route::resource('formation-hebergements', ForamtionhebergmentController::class);
 
 Route::delete('/formation-participants/{formationId}/{participantId}', [FormationParticipantController::class, 'detachParticipant']);
 
-Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'getUser']);
+

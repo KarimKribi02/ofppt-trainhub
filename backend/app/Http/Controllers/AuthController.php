@@ -66,7 +66,7 @@ class AuthController extends Controller
         'role' => $user->role,
         'nom' => $user->nom,
         'prenom' => $user->prenom,
-        'filiere' => $user->filiere,
+        'filliere' => $user->filiere,
         'etablissement' => $user->etablissement
     ]);
 }
