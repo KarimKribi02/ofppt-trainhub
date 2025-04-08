@@ -38,7 +38,7 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'email' => $user->email,
                 'role' => $user->role, 
-                'name' => $user->name ,
+                'nom' => $user->nom,
                 'prenom' => $user->prenom,
                 'filliere' => $user->filiere,
                 'etablissement' => $user->etablissement
@@ -51,4 +51,23 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
         return response()->json(['message' => 'Déconnexion réussie']);
     }
+
+    public function getUser(Request $request)
+{
+    $user = $request->user(); 
+
+    if (!$user) {
+        return response()->json(['message' => 'Utilisateur non authentifié'], 401);
+    }
+
+    return response()->json([
+        'id' => $user->id,
+        'email' => $user->email,
+        'role' => $user->role,
+        'nom' => $user->nom,
+        'prenom' => $user->prenom,
+        'filiere' => $user->filiere,
+        'etablissement' => $user->etablissement
+    ]);
+}
 }

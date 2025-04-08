@@ -34,12 +34,6 @@ use App\Http\Controllers\ForamtionhebergmentController;
 // Route::delete('/formations/{id}', [FormationController::class, 'destroy']); // Supprimer une formation
 
 
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-    
-});
-
 Route::resource('formations', FormationController::class); // api de formation
 
 // Route::resource('message', messageController::class);  // api de message
@@ -69,5 +63,6 @@ Route::resource('formation-participants', FormationParticipantController::class)
 
 Route::resource('formation-hebergements', ForamtionhebergmentController::class);  // api de hebergement avec formation
 
-
 Route::delete('/formation-participants/{formationId}/{participantId}', [FormationParticipantController::class, 'detachParticipant']);
+
+Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'getUser']);

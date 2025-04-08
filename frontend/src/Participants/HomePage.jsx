@@ -8,11 +8,27 @@ const Benefits = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Appel à l'API Laravel pour récupérer l'utilisateur connecté
-    axios.get('http://127.0.0.1:8000/api/login')
-      .then(res => setUser(res.data))
-      .catch(() => setUser(null)); // utilisateur invité
-  }, []);
+    const token = localStorage.getItem('token');
+    console.log('Token envoyé:', token); // Ajoutez ceci pour déboguer
+    if (token) {
+        axios.get('http://127.0.0.1:8000/api/user', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/json'
+            }
+        })
+            .then(res => {
+                console.log('Réponse API:', res.data);
+                setUser(res.data);
+            })
+            .catch(err => {
+                console.error('Erreur API:', err.response ? err.response.data : err.message);
+                setUser(null);
+            });
+    } else {
+        console.log('Aucun token trouvé');
+    }
+}, []);
 
   return (
     <>
@@ -21,7 +37,7 @@ const Benefits = () => {
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Bienvenue {user ? <span className="text-orange-500">{user.name}</span> : 'sur notre plateforme'}
+            Bienvenue {user ? <span className="text-orange-500">{user.nom} {user.prenom}</span> : 'sur notre plateforme'}
           </h1>
           <p className="text-gray-600 text-lg mb-8">
             Découvrez nos cours en ligne en design et développement.
