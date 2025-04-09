@@ -17,7 +17,7 @@ import Hebergement from './Admin/DREF/Hebergement';
 import FormationAnimateur from './Admin/ANIMATEUR/FormationAnimateur'
 import HomePage from './Participants/HomePage';
 import ContactPage from './Participants/ContactPage';
-import Course from './Participants/Course';
+import CourseDetailsPage from './Participants/Course';
 import CoursesPage from './Participants/CoursesPage';
 import About from './Participants/AboutPage';
 
@@ -30,10 +30,9 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<HomePage />} />
         <Route element={<ProtectedRoute allowedRoles={["PARTICIPANT"]} />}>
-        
         <Route path="/contact" element={<ContactPage />} />
-        <Route path="/course" element={<Course />} />
         <Route path="/courses" element={<CoursesPage />} />
+        <Route path="/courses/:id" element={<CourseDetailsPage />} />
         <Route path="/about" element={<About />} />
         </Route>
         {/* Routes protégées pour CDC */}

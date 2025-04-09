@@ -34,7 +34,10 @@ const StyledCourseCard = ({ formation }) => {
         </div>
       </div>
       <div className="pt-4 text-right">
-        <Link to={`/courses/${formation.titre.toLowerCase().replace(/ /g, '-')}`} className="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600 transition">
+      <Link
+          to={`/courses/${formation.id}`}
+          className="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600 transition"
+        >
           Détails
         </Link>
       </div>
