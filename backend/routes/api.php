@@ -66,4 +66,4 @@ Route::resource('formation-hebergements', ForamtionhebergmentController::class);
 
 Route::delete('/formation-participants/{formationId}/{participantId}', [FormationParticipantController::class, 'detachParticipant']);
 
-
+Route::put('/formations/{formationId}/participants/{participantId}/attendance', [FormationParticipantController::class, 'manageAttendance']);

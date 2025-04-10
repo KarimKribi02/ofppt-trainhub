@@ -101,5 +101,32 @@ class FormationParticipantController extends Controller
         }
     }
     
+    // Gérer l'absence ou la présence d'un participant
+public function manageAttendance(Request $request, $formationId, $participantId)
+{
+    $request->validate([
+        'est_absent' => 'required|in:oui,non', // 'oui' pour absent, 'non' pour présent
+        'date_absence' => 'nullable|date', // Date facultative si absent
+    ]);
+
+    // Recherche de l'enregistrement dans formation_participants
+    $formationParticipant = FormationParticipant::where('formation_id', $formationId)
+        ->where('participant_id', $participantId)
+        ->first();
+
+    if (!$formationParticipant) {
+        return response()->json(['message' => 'Participant non trouvé pour cette formation'], 404);
+    }
+
+    // Mise à jour des champs est_absent et date_absence
+    $formationParticipant->est_absent = $request->est_absent;
+    $formationParticipant->date_absence = $request->est_absent === 'oui' ? $request->date_absence : null;
+    $formationParticipant->save();
+
+    return response()->json([
+        'message' => 'Statut d\'absence mis à jour avec succès',
+        'data' => $formationParticipant->load('participant')
+    ], 200);
+}
 
 }

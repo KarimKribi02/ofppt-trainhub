@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\formateurParticipant;
+use Illuminate\Support\Facades\Hash;
 
 class FormateurParticipantController extends Controller
 {
@@ -36,7 +37,7 @@ class FormateurParticipantController extends Controller
             'nom' => $request->nom,
             'prenom' => $request->prenom,
             'email' => $request->email,
-            'password' => bcrypt($request->password), // Hashage du mot de passe
+            'password' => Hash::make($request->password), // Hashage du mot de passe
             'filliere' => $request->filliere,
             'etablissement' => $request->etablissement,
             'role' => $request->role,
@@ -87,7 +88,7 @@ class FormateurParticipantController extends Controller
 
         $data = $request->all();
         if ($request->has('password')) {
-            $data['password'] = bcrypt($request->password);
+            $data['password'] = Hash::make($request->password);
         }
 
         $formateurParticipant->update($data);

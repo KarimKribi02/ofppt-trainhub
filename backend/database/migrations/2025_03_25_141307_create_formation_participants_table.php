@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('formation_id')->constrained('formations')->onDelete('cascade');
             $table->foreignId('participant_id')->constrained('formateur_participants')->onDelete('cascade');
+            $table->string('est_absent')->nullable();
+            $table->date('date_absence')->nullable();
             $table->timestamps();
         });
     }
