@@ -11,10 +11,8 @@ const CourseDetailsPage = () => {
   const [formation, setFormation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
-<<<<<<< HEAD
+
   const [activeTab, setActiveTab] = useState('details');
-=======
->>>>>>> 1de18637e694034777246f8cb8f831bed4344f98
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -31,11 +29,6 @@ const CourseDetailsPage = () => {
       });
     }
   }, []);
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> 1de18637e694034777246f8cb8f831bed4344f98
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/api/formations/${id}`)
       .then(res => {
@@ -99,7 +92,6 @@ const CourseDetailsPage = () => {
   };
 
   return (
-<<<<<<< HEAD
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md" />
       
