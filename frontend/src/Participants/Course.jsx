@@ -273,14 +273,8 @@ const CourseDetailsPage = () => {
                         )}
                       </PDFDownloadLink>
                     </div>
-                    
                     <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition">
-                      <a
-                        href={`http://127.0.0.1:8000/storage/formations/${formation.ressources}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center"
-                      >
+                      <div className="flex items-center cursor-pointer" onClick={() => handleDownload(formation.document)}>
                         <div className="bg-green-100 rounded-lg p-3 mr-4">
                           <svg className="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
@@ -296,7 +290,7 @@ const CourseDetailsPage = () => {
                           </svg>
                           Télécharger
                         </button>
-                      </a>
+                      </div>
                     </div>
                   </div>
                 </div>

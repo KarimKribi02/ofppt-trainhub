@@ -120,31 +120,62 @@ const Benefits = () => {
           </Link>
         </div>
       </section>
-
-      {/* Section Bénéfices */}
-      <section className="bg-gray-100 py-12 md:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <section>
+       {/* Éléments décoratifs */}
+       <div className="absolute w-full h-full z-0">
+          <svg className="absolute right-0 top-0 h-64 w-64 text-orange-200 opacity-20 transform translate-x-1/3 -translate-y-1/4" fill="currentColor" viewBox="0 0 100 100">
+            <path d="M50 0 L100 50 L50 100 L0 50 Z"></path>
+          </svg>
+          <svg className="absolute left-0 bottom-0 h-48 w-48 text-orange-300 opacity-20 transform -translate-x-1/3 translate-y-1/4" fill="currentColor" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="50"></circle>
+          </svg>
+        </div>
+        
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-14 text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 text-center mb-10 md:mb-12">
             Pourquoi choisir Trainhub ?
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+           
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {[
-              { icon: '🎯', title: 'Contenu dirigé par des experts', description: 'Apprenez auprès de professionnels de l’industrie avec une expérience concrète.' },
-              { icon: '💡', title: 'Apprentissage flexible', description: 'Étudiez à votre rythme, où et quand vous voulez.' },
-              { icon: '📈', title: 'Croissance de carrière', description: 'Ouvrez de nouvelles opportunités avec des compétences améliorées.' }
+              { 
+                icon: '🎯', 
+                title: 'Expertise reconnue', 
+                description: 'Formations dispensées par des experts de l\'industrie avec une expérience concrète et reconnue.' 
+              },
+              { 
+                icon: '⚡', 
+                title: 'Flexibilité maximale', 
+                description: 'Apprenez à votre rythme, où que vous soyez, quand vous le souhaitez, sur tous vos appareils.' 
+              },
+              { 
+                icon: '🚀', 
+                title: 'Évolution de carrière', 
+                description: 'Déverrouillez de nouvelles opportunités professionnelles grâce à des compétences prisées sur le marché.' 
+              }
             ].map((benefit, index) => (
               <div
                 key={index}
-                className="bg-white p-6 md:p-8 rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-2 transition-all duration-300"
+                className="group bg-white rounded-2xl shadow-xl hover:shadow-2xl p-8 transform transition-all duration-300 hover:-translate-y-2 border-b-4 border-transparent hover:border-orange-500"
               >
-                <div className="text-4xl md:text-5xl text-orange-500 mb-4 md:mb-6">{benefit.icon}</div>
-                <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-2 md:mb-3">{benefit.title}</h3>
-                <p className="text-gray-600 text-sm md:text-base">{benefit.description}</p>
+                <div className="w-16 h-16 rounded-full bg-orange-100 text-orange-500 flex items-center justify-center text-3xl mb-6 group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300">
+                  {benefit.icon}
+                </div>
+                <h3 className="text-xl lg:text-2xl font-bold text-gray-800 mb-4 group-hover:text-orange-500 transition-colors duration-300">
+                  {benefit.title}
+                </h3>
+                <p className="text-gray-600">
+                  {benefit.description}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
+
 
       {/* Section Mes Formations (pour les utilisateurs connectés) */}
       {user && (
