@@ -66,10 +66,10 @@ function App() {
             <Route path="" element={<Welcome role="ANIMATEUR" />} />
             <Route path="formationsAnimateur" element={<FormationAnimateur />} />
             <Route path="chat" element={<ChatTotal role="ANIMATEUR" />} />
-            {/* <Route path="Updatformation/:id" element={<UpdatFormation source="DREF" />} />
+            {/* <Route path="Updatformation/:id" element={<UpdatFormation source="DREF" />} /> */}
             <Route path="formation/:id" element={<AffichageFormation />} />
-            <Route path="ajouter-formateurs/:id" element={<FormateursTable />} />
-            <Route path="ajouter-hebergement/:id" element={<Hebergement />} /> */}
+            {/* <Route path="ajouter-formateurs/:id" element={<FormateursTable />} /> */}
+            {/* <Route path="ajouter-hebergement/:id" element={<Hebergement />} /> */}
           </Route>
         </Route>
       </Routes>

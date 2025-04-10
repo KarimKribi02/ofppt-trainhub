@@ -9,22 +9,19 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <Link to="/" className="inline-block">
-              <svg className="w-8 h-8 text-orange-500" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-              </svg>
+            <span className="self-center text-xl font-semibold whitespace-nowrap text-orange-500">Trainhub</span>
             </Link>
             <div className="space-y-2">
               <a href="mailto:hello@trainhub.com" className="block text-gray-600 hover:text-orange-500">contact@trainhub.com</a>
-              <a href="tel:+19198232209" className="block text-gray-600 hover:text-orange-500">+1 919 823 2209</a>
-              <p className="text-gray-600">Semewhere in the World</p>
+              <a href="tel:+19198232209" className="block text-gray-600 hover:text-orange-500">+212 788 888 888</a>
             </div>
           </div>
 
           <div>
             <h3 className="font-semibold mb-4">Home</h3>
             <ul className="space-y-2">
-              <li><Link to="/benefits" className="text-gray-600 hover:text-orange-500">Benefits</Link></li>
-              <li><Link to="/our-courses" className="text-gray-600 hover:text-orange-500">Our Courses</Link></li>
+              <li><Link to="/benefits" className="text-gray-600 hover:text-orange-500">Bénéfices</Link></li>
+              <li><Link to="/our-courses" className="text-gray-600 hover:text-orange-500">Mes Formations</Link></li>
               <li><Link to="/testimonials" className="text-gray-600 hover:text-orange-500">Our Testimonials</Link></li>
               <li><Link to="/faq" className="text-gray-600 hover:text-orange-500">Our FAQ</Link></li>
             </ul>
@@ -48,7 +45,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-200 mt-12 pt-8 text-center">
-          <p className="text-gray-600">© 2023 Skillbridge. All rights reserved.</p>
+          <p className="text-gray-600">© 2023 Trainhub. All rights reserved.</p>
         </div>
       </div>
     </footer>

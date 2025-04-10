@@ -1,59 +1,59 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
+
 const AboutPage = () => {
-  const achievements = [
+  const objectifs = [
     {
       id: 1,
-      icon: "👑",
-      title: "Trusted by Thousands",
-      description: "We have successfully served thousands of students, helping them unlock their potential and achieve their career goals."
+      icon: "📅",
+      title: "Planification des formations",
+      description: "Permettre une planification efficace des sessions de formation pour les formateurs de l’OFPPT."
     },
     {
       id: 2,
-      icon: "🏆",
-      title: "Award-Winning Courses",
-      description: "Our courses have received recognition and accolades in the industry for their quality, depth of content, and effective teaching methodologies."
+      icon: "📈",
+      title: "Suivi et évaluation",
+      description: "Assurer un suivi continu des parcours de formation et une évaluation de leur impact."
     },
     {
       id: 3,
-      icon: "👍",
-      title: "Positive Student Feedback",
-      description: "We take pride in the positive feedback we receive from our students, who appreciate the practicality and relevance of our course materials."
+      icon: "📂",
+      title: "Centralisation documentaire",
+      description: "Faciliter l’accès aux ressources pédagogiques à travers un système d’archivage centralisé."
     },
     {
       id: 4,
-      icon: "🤝",
-      title: "Industry Partnerships",
-      description: "We have established strong partnerships with industry leaders, enabling us to provide our students with access to the latest tools and technologies"
+      icon: "🏨",
+      title: "Organisation logistique",
+      description: "Gérer les hébergements et déplacements des formateurs lors des sessions de formation."
     }
   ];
 
-  const goals = [
+  const avantages = [
     {
       id: 1,
-      icon: "📚",
-      title: "Provide Practical Skills",
-      description: "We focus on teaching practical skills that are relevant to the current industry demands. Our courses are designed to equip learners with the knowledge and tools needed to excel in their chosen field."
+      icon: "🔐",
+      title: "Sécurité & Accessibilité",
+      description: "Une interface intuitive, responsive et sécurisée pour tous les profils utilisateurs."
     },
     {
       id: 2,
-      icon: "💡",
-      title: "Foster Creative Problem-Solving",
-      description: "We believe in nurturing innovative thinking and creative abilities, allowing our students to tackle real-world challenges with confidence and innovation."
+      icon: "👥",
+      title: "Gestion multi-acteurs",
+      description: "Un système adapté aux rôles des formateurs, responsables, administrateurs et animateurs."
     },
     {
       id: 3,
-      icon: "🤝",
-      title: "Promote Collaboration and Community",
-      description: "We believe in the power of collaboration and peer learning. Our platform fosters a supportive and inclusive community where learners can connect, share insights, and grow together."
+      icon: "📊",
+      title: "Rapports analytiques",
+      description: "Génération de statistiques détaillées pour faciliter la prise de décision et l’amélioration continue."
     },
     {
       id: 4,
-      icon: "🚀",
-      title: "Stay Ahead of the Curve",
-      description: "The digital landscape is constantly evolving, and we strive to stay at the forefront of industry trends. We regularly update our course content to ensure our students receive the latest knowledge and skills."
+      icon: "🧩",
+      title: "Solution intégrée",
+      description: "Regrouper tous les modules nécessaires dans une plateforme centralisée et performante."
     }
   ];
 
@@ -61,45 +61,25 @@ const AboutPage = () => {
     <>
       <Navbar />
       <div className="bg-gray-50">
-        <div className="container mx-auto px-4">
-          {/* Spacing after Navbar */}
-          <div className="h-8"></div>
+        <div className="container mx-auto px-4 py-8">
 
-          {/* About Header */}
-          <div className="mb-12">
-            <h1 className="text-3xl font-bold mb-4">About Skillbridge</h1>
-            <p className="text-gray-600 max-w-3xl mb-8">
-              Welcome to our platform, where we are passionate about empowering individuals to 
-              master the world of design and development. We offer a wide range of online courses 
-              designed to equip learners with the skills and knowledge needed to succeed in the 
-              ever-evolving digital landscape.
-            </p>
-            <div className="border-b border-gray-200 w-full"></div>
-          </div>
+          <h1 className="text-3xl font-bold mb-6">À propos du projet OFPPT</h1>
+          <p className="text-gray-600 mb-12 max-w-4xl">
+            Ce système de gestion a été conçu pour renforcer l'efficacité des formations dispensées aux formateurs de l'OFPPT.
+            Il permet une meilleure planification, un suivi rigoureux, une gestion centralisée des documents, et facilite l'organisation logistique. 
+            En s’appuyant sur des outils modernes, le projet vise à améliorer la qualité pédagogique et la prise de décision au sein de l’établissement.
+          </p>
 
-      {/* Achievements Section */}
           <div className="mb-16">
-            <h2 className="text-2xl font-bold mb-4">Achievements</h2>
-            <p className="text-gray-600 mb-8">
-              Our commitment to excellence has led us to achieve significant milestones along our journey. 
-              Here are some of our notable achievements:
-            </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {achievements.map((achievement) => (
-              <div 
-                key={achievement.id} 
-                  className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
-                >
+            <h2 className="text-2xl font-semibold mb-4">Objectifs du système</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {objectifs.map(obj => (
+                <div key={obj.id} className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition duration-300">
                   <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0">
-                      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-orange-50 text-2xl">
-                        {achievement.icon}
-                      </div>
-                    </div>
-                  <div>
-                      <h3 className="text-xl font-semibold mb-2 text-gray-900">{achievement.title}</h3>
-                      <p className="text-gray-600 leading-relaxed">{achievement.description}</p>
+                    <div className="text-3xl">{obj.icon}</div>
+                    <div>
+                      <h3 className="text-xl font-semibold">{obj.title}</h3>
+                      <p className="text-gray-600">{obj.description}</p>
                     </div>
                   </div>
                 </div>
@@ -107,60 +87,28 @@ const AboutPage = () => {
             </div>
           </div>
 
-          {/* Our Goals Section */}
           <div className="mb-16">
-            <h2 className="text-2xl font-bold mb-4">Our Goals</h2>
-            <p className="text-gray-600 mb-8 max-w-3xl">
-              At Skillbridge, our goal is to empower individuals from all backgrounds to thrive in the world of design and development. 
-              We believe that education should be accessible and transformative, enabling barriers to pursue their passions and make a meaningful impact.
-              Through our carefully crafted courses, we aim to:
-            </p>
-
+            <h2 className="text-2xl font-semibold mb-4">Avantages clés</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {goals.map((goal) => (
-                <div 
-                  key={goal.id}
-                  className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
-                >
+              {avantages.map(adv => (
+                <div key={adv.id} className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition duration-300">
                   <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0">
-                      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-orange-50 text-2xl">
-                        {goal.icon}
-                      </div>
-                    </div>
+                    <div className="text-3xl">{adv.icon}</div>
                     <div>
-                      <h3 className="text-xl font-semibold mb-2 text-gray-900">{goal.title}</h3>
-                      <p className="text-gray-600 leading-relaxed">{goal.description}</p>
+                      <h3 className="text-xl font-semibold">{adv.title}</h3>
+                      <p className="text-gray-600">{adv.description}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-          {/* Together Section */}
-          <div className="mb-16 bg-white rounded-xl p-8 shadow-lg">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-4">
-                <span className="text-orange-500">Together</span>, let's shape the future of digital innovation
-              </h2>
-              <p className="text-gray-600 mb-8">
-                Join us on this exciting learning journey and unlock your potential in design and development.
-          </p>
-          <Link 
-                to="/signup" 
-            className="inline-block bg-orange-500 text-white px-8 py-3 rounded-md hover:bg-orange-600 transition-colors"
-          >
-                Join Now
-          </Link>
+              ))}
             </div>
           </div>
+
         </div>
       </div>
-
       <Footer />
     </>
   );
 };
 
-export default AboutPage; 
+export default AboutPage;

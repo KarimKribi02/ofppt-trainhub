@@ -22,7 +22,7 @@ const Welcome = ({ role }) => {
       title: "Bonjour et Bienvenue, Animateur !",
       description:
         "En tant qu'animateur, vous pouvez gérer les formations et les participants. Vous pouvez aussi consulter les statistiques des formations.",
-      link: "formations",
+      link: "formationsAnimateur",
       buttonText: "Voir les Formations →",
     }, // ❗ Ajout de cette accolade fermante
   };

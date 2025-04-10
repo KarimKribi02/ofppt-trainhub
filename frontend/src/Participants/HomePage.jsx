@@ -100,17 +100,17 @@ const Benefits = () => {
             Bienvenue {user ? (
               <span className="text-orange-500">{user.nom} {user.prenom}</span>
             ) : (
-              'sur notre plateforme'
+              'sur Trainhub'
             )}
           </h1>
           <p className="text-gray-600 text-lg mb-8">
-            Découvrez nos cours en ligne en design et développement.
+          Découvrez notre plateforme dédiée à la gestion et au suivi des formations des formateurs de Trainhub.
           </p>
           <p className="text-gray-500 text-sm mb-8">
-            Apprenez avec des experts du domaine et développez vos compétences à votre rythme.
+          Optimisez vos parcours, accédez aux ressources pédagogiques, et suivez votre évolution professionnelle en toute simplicité.
           </p>
           <Link to="/courses" className="bg-orange-500 text-white py-3 px-6 rounded-lg shadow hover:bg-orange-600 transition">
-            Explorer les cours
+          Explorer les formations
           </Link>
         </div>
       </section>

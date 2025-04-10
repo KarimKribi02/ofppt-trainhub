@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { FaCheck, FaTrash, FaEdit, FaUserPlus, FaEye, FaHotel } from 'react-icons/fa';
+import { FaEye , FaUserSlash } from 'react-icons/fa';
 
 function DrefFormations() {
     const [formations, setFormations] = useState([]);
@@ -26,29 +26,6 @@ function DrefFormations() {
         f.titre.toLowerCase().includes(searchTerm.toLowerCase()) &&
         (filterLieu ? f.lieux === filterLieu : true)
     );
-
-    // ✅ Accepter une formation (changer son statut)
-    const handleAccept = async (id) => {
-        try {
-            await axios.put(`http://127.0.0.1:8000/api/formations/${id}`, { statut: "validé" });
-            setFormations(formations.map(f => f.id === id ? { ...f, statut: "validé" } : f));
-        } catch (error) {
-            console.error("Erreur lors de l'acceptation de la formation :", error);
-        }
-    };
-
-    // 🗑️ Supprimer une formation
-    const handleDelete = async (id) => {
-        if (window.confirm("Êtes-vous sûr de vouloir supprimer cette formation ?")) {
-            try {
-                await axios.delete(`http://127.0.0.1:8000/api/formations/${id}`);
-                setFormations(formations.filter(f => f.id !== id));
-            } catch (error) {
-                console.error("Erreur lors de la suppression de la formation :", error);
-            }
-        }
-    };
-
     return (
         <div className="p-6 sm:ml-64 bg-gray-50 min-h-screen">
             {/* 🔍 Barre de recherche et filtres */}
@@ -93,43 +70,22 @@ function DrefFormations() {
                                     <td className="p-4">{f.dateFin}</td>
                                     <td className="p-4">{f.lieux}</td>
                                     <td className="p-4 flex flex-wrap gap-2">
-                                        <button 
-                                            onClick={() => handleAccept(f.id)}
-                                            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition flex items-center gap-1"
-                                        >
-                                            <FaCheck /> 
-                                        </button>
-                                        <Link 
-                                            to={`/DREF/Updatformation/${f.id}`} 
-                                            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition flex items-center gap-1"
-                                        >
-                                            <FaEdit /> 
-                                        </Link>
-                                        <Link 
-                                            to={`/DREF/ajouter-formateurs/${f.id}`} 
-                                            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition flex items-center gap-1"
-                                        >
-                                            <FaUserPlus />
-                                        </Link>
-                                        <Link 
-                                            to={`/DREF/formation/${f.id}`} 
-                                            className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition flex items-center gap-1"
-                                        >
-                                            <FaEye /> 
-                                        </Link>
-                                        <Link 
-                                            to={`/DREF/ajouter-hebergement/${f.id}`} 
-                                            className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition flex items-center gap-1"
-                                        >
-                                            <FaHotel /> 
-                                        </Link>
-                                        <button 
-                                            onClick={() => handleDelete(f.id)}
-                                            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition flex items-center gap-1"
-                                        >
-                                            <FaTrash /> 
-                                        </button>
-                                    </td>
+                                    <Link 
+                                        to={`/ANIMATEUR/formation/${f.id}`} 
+                                        className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition flex items-center gap-1"
+                                    >
+                                        <FaEye />
+                                    </Link>
+
+                                    <Link 
+                                        to={`/ANIMATEUR/formation/${f.id}/absence`} 
+                                        className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition flex items-center gap-1"
+                                        title="Signaler une absence de formateur"
+                                    >
+                                        <FaUserSlash />
+                                    </Link>
+                                </td>
+
                                 </tr>
                             ))
                         ) : (
