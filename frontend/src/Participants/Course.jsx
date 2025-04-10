@@ -11,7 +11,10 @@ const CourseDetailsPage = () => {
   const [formation, setFormation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+<<<<<<< HEAD
   const [activeTab, setActiveTab] = useState('details');
+=======
+>>>>>>> 1de18637e694034777246f8cb8f831bed4344f98
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -28,7 +31,11 @@ const CourseDetailsPage = () => {
       });
     }
   }, []);
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 1de18637e694034777246f8cb8f831bed4344f98
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/api/formations/${id}`)
       .then(res => {
@@ -72,7 +79,27 @@ const CourseDetailsPage = () => {
     );
   }
 
+  const handleDownload = async (documentPath) => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/downloadDocument/${documentPath}`, {
+        responseType: 'arraybuffer'
+      });
+      
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', documentPath);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Erreur lors du téléchargement:', error);
+    }
+  };
+
   return (
+<<<<<<< HEAD
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md" />
       

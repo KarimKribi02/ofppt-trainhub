@@ -11,6 +11,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TestUploadController;
 use App\Http\Controllers\FormationParticipantController;
 use App\Http\Controllers\ForamtionhebergmentController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -65,3 +66,8 @@ Route::resource('formation-participants', FormationParticipantController::class)
 Route::delete('/formation-participants/{formationId}/{participantId}', [FormationParticipantController::class, 'detachParticipant']);
 
 Route::put('/formations/{formationId}/participants/{participantId}/absence', [FormationParticipantController::class, 'manageAttendance']);
+
+Route::get('downloadDocument/{filename}', [FormationController::class, 'downloadDocument']);
+
+// Make sure you also have this for compatibility with your current React code
+Route::get('download/{filename}', [FormationController::class, 'downloadDocument']);

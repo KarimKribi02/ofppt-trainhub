@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class FormationController extends Controller
 {
+
     public function index()
     {
         $formations = FormationModel::all();
@@ -109,7 +110,7 @@ class FormationController extends Controller
             'statut' => 'required|string',
             'mode' => 'required|string',
             'lien_teams' => 'nullable|url',
-            'document' => 'sometimes|file|mimes:pdf,doc,docx,ppt,pptx',
+            'document' => 'sometimes|file|mimes:pdf,doc,docx,ppt,pptx,jpg,jpeg,png,gif,zip,rar,7z',
             'hebergement_id' => 'nullable|exists:hebergements,id',
         ]);
     }
@@ -185,5 +186,56 @@ class FormationController extends Controller
             'error' => $e->getMessage()
         ], 500);
     }
+}
+
+public function downloadDocument($filename)
+{
+    // Check in documents directory first
+    $filePath = storage_path('app/public/documents/' . $filename);
+    
+    // If not found in documents, check in formations directory
+    if (!file_exists($filePath)) {
+        $filePath = storage_path('app/public/formations/' . $filename);
+    }
+    
+    // If still not found, return 404
+    if (!file_exists($filePath)) {
+        return response()->json(['message' => 'Fichier non trouvé'], 404);
+    }
+
+    // Determine content type based on extension
+    $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+    $contentType = 'application/octet-stream'; // Default fallback
+    
+    // MIME types for various file formats
+    $mimeTypes = [
+        // Documents
+        'pdf' => 'application/pdf',
+        'doc' => 'application/msword',
+        'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'ppt' => 'application/vnd.ms-powerpoint',
+        'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        
+        // Images
+        'jpg' => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+        'png' => 'image/png',
+        'gif' => 'image/gif',
+        
+        // Compressed Files
+        'zip' => 'application/zip',
+        'rar' => 'application/x-rar-compressed',
+        '7z' => 'application/x-7z-compressed',
+    ];
+    
+    // Set the content type if the extension is recognized
+    if (array_key_exists($extension, $mimeTypes)) {
+        $contentType = $mimeTypes[$extension];
+    }
+
+    // Return the file for download with the appropriate headers
+    return response()->download($filePath, $filename, [
+        'Content-Type' => $contentType,
+    ]);
 }
 } 

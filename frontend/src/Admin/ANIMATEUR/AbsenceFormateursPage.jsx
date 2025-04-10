@@ -39,11 +39,13 @@ export default function AbsenceFormateursPage() {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      setAbsents((prev) =>
-        isAbsent
+      setAbsents((prev) => {
+        const newAbsents = isAbsent
           ? prev.filter((id) => id !== participantId)
-          : [...prev, participantId]
-      );
+          : [...prev, participantId];
+        console.log("New absents:", newAbsents);
+        return newAbsents;
+      });
     } catch (error) {
       console.error("Erreur API :", error.response?.data || error.message);
       alert("Échec de mise à jour de l’absence.");
