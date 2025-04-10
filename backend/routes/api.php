@@ -62,8 +62,6 @@ Route::post('/formation-participants/{id}', [FormationParticipantController::cla
 // Route resource pour les opérations CRUD standard
 Route::resource('formation-participants', FormationParticipantController::class);
 
-Route::resource('formation-hebergements', ForamtionhebergmentController::class);  // api de hebergement avec formation
-
 Route::delete('/formation-participants/{formationId}/{participantId}', [FormationParticipantController::class, 'detachParticipant']);
 
-Route::put('/formations/{formationId}/participants/{participantId}/attendance', [FormationParticipantController::class, 'manageAttendance']);
+Route::put('/formations/{formationId}/participants/{participantId}/absence', [FormationParticipantController::class, 'manageAttendance']);
