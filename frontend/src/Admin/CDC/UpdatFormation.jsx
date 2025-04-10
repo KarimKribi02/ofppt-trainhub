@@ -13,12 +13,13 @@ const UpdateFormation = ({ source }) => {
     lieux: '',
     filières: '',
     formateurs_animateurs: '',
-    document: null, // Gardez null pour un nouveau fichier, pas une chaîne
+    document: null,
     statut: '',
     mode: '',
     lien_teams: '',
   });
   const [animateurs, setAnimateurs] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     axios.get(`http://localhost:8000/api/formations/${id}`)
@@ -51,9 +52,9 @@ const UpdateFormation = ({ source }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const data = new FormData();
-    // Ajouter tous les champs sauf document
     data.append('titre', formData.titre);
     data.append('description', formData.description);
     data.append('dateDebut', formData.dateDebut);
@@ -64,13 +65,9 @@ const UpdateFormation = ({ source }) => {
     data.append('statut', formData.statut);
     data.append('mode', formData.mode);
     if (formData.lien_teams) data.append('lien_teams', formData.lien_teams);
-
-    // Ajouter le document uniquement si un nouveau fichier est sélectionné
     if (formData.document && formData.document instanceof File) {
       data.append('document', formData.document);
     }
-
-    // Simuler PUT avec POST
     data.append('_method', 'PUT');
 
     try {
@@ -84,194 +81,210 @@ const UpdateFormation = ({ source }) => {
       navigate(source === "DREF" ? "/DREF/formations" : "/CDC/overview");
     } catch (error) {
       console.error("Erreur lors de la mise à jour", error.response?.data || error.message);
+      alert('Erreur : ' + (error.response?.data.message || 'Une erreur est survenue'));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
+  const handleCancel = () => {
+    navigate(source === "DREF" ? "/DREF/formations" : "/CDC/overview");
+  };
+
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 sm:ml-64">
-      <div className="max-w-3xl w-full bg-white shadow-lg p-6 rounded-lg">
-        <h2 className="text-xl font-semibold mb-6 text-center">Modifier Formation</h2>
+    <div className="flex justify-center items-start min-h-screen bg-gradient-to-br from-blue-50 to-white p-6 sm:ml-64">
+      <div className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl p-8">
+        <h2 className="text-2xl font-bold text-center text-orange-500 mb-8 flex items-center justify-center gap-2">
+          <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+          Modifier une Formation
+        </h2>
 
         <form onSubmit={handleSubmit}>
-          <div className="grid gap-4">
-            <div className="mb-4">
-              <label htmlFor="titre" className="block text-sm font-medium mb-1">Titre</label>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Titre */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Titre</label>
               <input
                 type="text"
-                id="titre"
                 name="titre"
                 value={formData.titre}
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
+                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500 outline-none"
               />
             </div>
 
-            <div className="mb-4">
-              <label htmlFor="description" className="block text-sm font-medium mb-1">Description</label>
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                rows="4"
-                className="w-full p-2 border rounded"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label htmlFor="dateDebut" className="block text-sm font-medium mb-1">Date de Début</label>
+            {/* Date début */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Date de Début</label>
               <input
                 type="date"
-                id="dateDebut"
                 name="dateDebut"
                 value={formData.dateDebut}
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
+                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring=oange-500 outline-none"
               />
             </div>
 
-            <div className="mb-4">
-              <label htmlFor="dateFin" className="block text-sm font-medium mb-1">Date de Fin</label>
+            {/* Date fin */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Date de Fin</label>
               <input
                 type="date"
-                id="dateFin"
                 name="dateFin"
                 value={formData.dateFin}
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
+                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500 outline-none"
               />
             </div>
 
-            <div className="mb-4">
-              <label htmlFor="lieux" className="block text-sm font-medium mb-1">Ville</label>
+            {/* Lieux */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Ville</label>
               <select
-                id="lieux"
                 name="lieux"
                 value={formData.lieux}
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
+                className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:ring-2 focus:ring-orange-500 outline-none"
               >
                 <option value="">Sélectionner une ville</option>
                 <option value="casablanca">Casablanca</option>
-                {/* Autres options inchangées */}
+                <option value="rabat">Rabat</option>
+                <option value="marrakech">Marrakech</option>
               </select>
             </div>
 
-            <div className="mb-4">
-              <label htmlFor="filières" className="block text-sm font-medium mb-1">Filières :</label>
+            {/* Filière */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Filière</label>
               <select
-                id="filières"
                 name="filières"
                 value={formData.filières}
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
+                className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:ring-2 focus:ring-orange-500 outline-none"
               >
                 <option value="">Sélectionner Filière</option>
                 <option value="Développement Digital">Développement Digital</option>
-                {/* Autres options inchangées */}
+                <option value="Génie Civil">Génie Civil</option>
               </select>
             </div>
 
-            <div className="mb-4">
-              <label htmlFor="formateurs_animateurs" className="block text-sm font-medium mb-1">Formateurs Animateurs :</label>
+            {/* Animateur */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Formateur / Animateur</label>
               <select
-                id="formateurs_animateurs"
                 name="formateurs_animateurs"
                 value={formData.formateurs_animateurs}
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
+                className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:ring-2 focus:ring-orange-500 outline-none"
               >
-                <option value="">Sélectionner Formateurs Animateurs</option>
+                <option value="">Sélectionner</option>
                 {animateurs
-                  .filter((animateur) => animateur.filières === formData.filières)
-                  .map((animateur) => (
-                    <option key={animateur.id} value={`${animateur.nom} ${animateur.prenom}`}>
-                      {animateur.nom} {animateur.prenom}
+                  .filter((a) => a.filières === formData.filières)
+                  .map((a) => (
+                    <option key={a.id} value={`${a.nom} ${a.prenom}`}>
+                      {a.nom} {a.prenom}
                     </option>
                   ))}
               </select>
             </div>
 
-            <div className="mb-4">
-              <label htmlFor="document" className="block text-sm font-medium mb-1">Document de Formation</label>
-              <input
-                type="file"
-                id="document"
-                name="document"
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-                accept=".pdf,.doc,.docx,.ppt,.pptx"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Mode de Formation :</label>
-              <div className="flex flex-col space-y-2">
+            {/* Mode */}
+            <div className="col-span-2">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Mode de Formation</label>
+              <div className="flex gap-4">
                 {["présentiel", "à_distance", "hybride"].map((mode) => (
-                  <div key={mode} className="flex items-center border p-2 rounded">
+                  <label key={mode} className="flex items-center gap-2">
                     <input
-                      id={mode}
                       type="radio"
-                      value={mode}
                       name="mode"
+                      value={mode}
                       checked={formData.mode === mode}
                       onChange={handleChange}
-                      className="w-4 h-4 text-blue-600"
+                      className="text-orange-500 focus:ring-orange-500"
                     />
-                    <label htmlFor={mode} className="ml-2 text-sm font-medium text-gray-900">
-                      {mode === "présentiel" ? "Présentiel" : mode === "à_distance" ? "À Distance" : "Hybride"}
-                    </label>
-                  </div>
+                    <span>{mode === "présentiel" ? "Présentiel" : mode === "à_distance" ? "À Distance" : "Hybride"}</span>
+                  </label>
                 ))}
               </div>
             </div>
 
+            {/* Lien teams si nécessaire */}
             {(formData.mode === "à_distance" || formData.mode === "hybride") && (
-              <div className="mb-4">
-                <label htmlFor="lien_teams" className="block text-sm font-medium mb-1">Lien de la formation :</label>
+              <div className="col-span-2">
+                <label className="block mb-2 text-sm font-semibold text-gray-700">Lien Teams</label>
                 <input
                   type="text"
-                  id="lien_teams"
                   name="lien_teams"
                   value={formData.lien_teams}
                   onChange={handleChange}
-                  placeholder="Ex: https://meet.google.com/..."
-                  className="w-full p-2 border rounded"
+                  placeholder="https://teams.microsoft.com/..."
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500 outline-none"
                 />
               </div>
             )}
 
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Statut de Formation :</label>
-              <div className="flex items-center ps-4 border border-gray-200 rounded-sm">
-                <input
-                  id="redigé"
-                  type="radio"
-                  value="redigé"
-                  name="statut"
-                  checked={formData.statut === "redigé"}
-                  onChange={handleChange}
-                  className="w-4 h-4 text-blue-600"
-                />
-                <label htmlFor="redigé" className="w-full py-4 ms-2 text-sm font-medium text-gray-900">Rédigé</label>
-              </div>
-              <div className="flex items-center ps-4 border border-gray-200 rounded-sm">
-                <input
-                  id="validé"
-                  type="radio"
-                  value="validé"
-                  name="statut"
-                  checked={formData.statut === "validé"}
-                  onChange={handleChange}
-                  className="w-4 h-4 text-blue-600"
-                />
-                <label htmlFor="validé" className="w-full py-4 ms-2 text-sm font-medium text-gray-900">Validé</label>
-              </div>
+            {/* Description */}
+            <div className="col-span-2">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Description</label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                rows="4"
+                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500 outline-none"
+              />
             </div>
 
-            <div className="flex justify-center space-x-2 mt-4">
-              <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">Mettre à jour</button>
+            {/* Document */}
+            <div className="col-span-2">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Document de formation</label>
+              <input
+                type="file"
+                name="document"
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-lg p-3 bg-white"
+                accept=".pdf,.doc,.docx,.ppt,.pptx"
+              />
             </div>
+
+            {/* Statut */}
+            <div className="col-span-2">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Statut</label>
+              <div className="flex gap-6">
+                {["redigé", "validé"].map((s) => (
+                  <label key={s} className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name="statut"
+                      value={s}
+                      checked={formData.statut === s}
+                      onChange={handleChange}
+                      className="text-orange-500 focus:ring-orange-500"
+                    />
+                    <span className="capitalize">{s}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 flex justify-end gap-4">
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="px-6 py-2 border rounded-lg text-gray-700 hover:bg-gray-100 transition"
+            >
+              Annuler
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition disabled:bg-orange-400"
+            >
+              {isSubmitting ? 'Mise à jour en cours...' : 'Mettre à jour'}
+            </button>
           </div>
         </form>
       </div>

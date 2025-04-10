@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { FaEye , FaUserSlash } from 'react-icons/fa';
+import { FaEye, FaUserSlash } from 'react-icons/fa';
 
 function DrefFormations() {
     const [formations, setFormations] = useState([]);
@@ -20,83 +20,89 @@ function DrefFormations() {
             });
     }, []);
 
-    // 🔍 Filtrer uniquement les formations validées
     const filteredFormations = formations.filter(f => 
         f.statut === "validé" &&
         f.titre.toLowerCase().includes(searchTerm.toLowerCase()) &&
         (filterLieu ? f.lieux === filterLieu : true)
     );
+
     return (
-        <div className="p-6 sm:ml-64 bg-gray-50 min-h-screen">
-            {/* 🔍 Barre de recherche et filtres */}
-            <div className="mb-6 flex flex-wrap gap-4 items-center bg-white p-4 shadow-md rounded-lg">
-                <input 
-                    type="text" 
-                    placeholder="🔍 Rechercher par titre..." 
-                    className="border border-gray-300 p-2 rounded-lg w-full sm:w-1/3 focus:ring-2 focus:ring-blue-400"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <select 
-                    className="border border-gray-300 p-2 rounded-lg w-full sm:w-1/3 focus:ring-2 focus:ring-blue-400" 
-                    value={filterLieu} 
-                    onChange={(e) => setFilterLieu(e.target.value)}
-                >
-                    <option value="">Tous les lieux</option>
-                    {[...new Set(formations.map(f => f.lieux))].map(lieu => (
-                        <option key={lieu} value={lieu}>{lieu}</option>
-                    ))}
-                </select>
+        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 sm:ml-64">
+            {/* Filter Section */}
+            <div className="max-w-6xl mx-auto mb-8">
+                <div className="bg-white p-6 rounded-xl shadow-lg flex flex-col sm:flex-row gap-4">
+                    <div className="relative flex-1">
+                        <input 
+                            type="text" 
+                            placeholder="Rechercher par titre..." 
+                            className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
+                    </div>
+                    <select 
+                        className="flex-1 px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                        value={filterLieu} 
+                        onChange={(e) => setFilterLieu(e.target.value)}
+                    >
+                        <option value="">Tous les lieux</option>
+                        {[...new Set(formations.map(f => f.lieux))].map(lieu => (
+                            <option key={lieu} value={lieu}>{lieu}</option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
-            {/* 📋 Tableau des formations validées */}
-            <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-lg">
-                <table className="min-w-full border border-gray-200 rounded-lg">
-                    <thead>
-                        <tr className="bg-blue-500 text-white text-left">
-                            <th className="p-4">Titre</th>
-                            <th className="p-4">Date de Début</th>
-                            <th className="p-4">Date de Fin</th>
-                            <th className="p-4">Lieux</th>
-                            <th className="p-4">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredFormations.length > 0 ? (
-                            filteredFormations.map((f, index) => (
-                                <tr key={index} className="border-t hover:bg-gray-100 transition duration-200">
-                                    <td className="p-4">{f.titre}</td>
-                                    <td className="p-4">{f.dateDebut}</td>
-                                    <td className="p-4">{f.dateFin}</td>
-                                    <td className="p-4">{f.lieux}</td>
-                                    <td className="p-4 flex flex-wrap gap-2">
-                                    <Link 
-                                        to={`/ANIMATEUR/formation/${f.id}`} 
-                                        className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition flex items-center gap-1"
-                                    >
-                                        <FaEye />
-                                    </Link>
-
-                                    <Link 
-                                        to={`/ANIMATEUR/formation/${f.id}/absence`} 
-                                        className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition flex items-center gap-1"
-                                        title="Signaler une absence de formateur"
-                                    >
-                                        <FaUserSlash />
-                                    </Link>
-                                </td>
-
-                                </tr>
-                            ))
-                        ) : (
+            {/* Table Section */}
+            <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+                <div className="overflow-x-auto">
+                    <table className="w-full">
+                        <thead className="bg-orange-500 text-white">
                             <tr>
-                                <td colSpan="5" className="text-center p-6 text-gray-500">
-                                    Aucune formation validée disponible.
-                                </td>
+                                <th className="p-4 text-left font-semibold text-sm uppercase tracking-wide">Titre</th>
+                                <th className="p-4 text-left font-semibold text-sm uppercase tracking-wide">Date de Début</th>
+                                <th className="p-4 text-left font-semibold text-sm uppercase tracking-wide">Date de Fin</th>
+                                <th className="p-4 text-left font-semibold text-sm uppercase tracking-wide">Lieux</th>
+                                <th className="p-4 text-left font-semibold text-sm uppercase tracking-wide">Actions</th>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {filteredFormations.length > 0 ? (
+                                filteredFormations.map((f) => (
+                                    <tr key={f.id} className="border-b hover:bg-orange-50 transition-all duration-200">
+                                        <td className="p-4 text-gray-800 font-medium">{f.titre}</td>
+                                        <td className="p-4 text-gray-600">{f.dateDebut}</td>
+                                        <td className="p-4 text-gray-600">{f.dateFin}</td>
+                                        <td className="p-4 text-gray-600">{f.lieux}</td>
+                                        <td className="p-4 flex flex-wrap gap-2">
+                                            <Link 
+                                                to={`/ANIMATEUR/formation/${f.id}`} 
+                                                className="p-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transform hover:scale-105 transition-all duration-200"
+                                                title="Voir la formation"
+                                            >
+                                                <FaEye />
+                                            </Link>
+                                            <Link 
+                                                to={`/ANIMATEUR/formation/${f.id}/absence`} 
+                                                className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transform hover:scale-105 transition-all duration-200"
+                                                title="Signaler une absence de formateur"
+                                            >
+                                                <FaUserSlash />
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="5" className="p-6 text-center text-gray-500 text-lg">
+                                        Aucune formation validée disponible.
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );

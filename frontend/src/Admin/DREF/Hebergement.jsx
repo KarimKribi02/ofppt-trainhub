@@ -10,7 +10,7 @@ export default function Hebergement() {
     const [lieuTerm, setLieuTerm] = useState("");
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
-    const { id } = useParams(); 
+    const { id } = useParams();
 
     useEffect(() => {
         const fetchHebergements = async () => {
@@ -33,6 +33,7 @@ export default function Hebergement() {
     const handleSelect = (id) => {
         setSelectedHebergementId(prev => (prev === id ? null : id));
     };
+
     const handleAddHebergement = async () => {
         if (!selectedHebergementId) {
             setMessage("Veuillez sélectionner un hébergement.");
@@ -44,14 +45,12 @@ export default function Hebergement() {
             setTimeout(() => setMessage(""), 3000);
             return;
         }
-    
+
         try {
             const response = await axios.post(
-                    `http://127.0.0.1:8000/api/hebergements/assign/${id}` ,
-                    {
-                      hebergement_id: selectedHebergementId
-                    }
-                  );
+                `http://127.0.0.1:8000/api/hebergements/assign/${id}`,
+                { hebergement_id: selectedHebergementId }
+            );
             setMessage("Hébergement ajouté avec succès !");
             setSelectedHebergementId(null);
             setTimeout(() => {
@@ -73,85 +72,101 @@ export default function Hebergement() {
     const lieux = [...new Set(hebergements.map((hebergement) => hebergement.lieu))];
 
     return (
-        <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 p-4 sm:ml-64">
-            <div className="mb-6 flex flex-wrap gap-4 items-center bg-white p-4 shadow-md rounded-lg w-full">
-                <input
-                    type="text"
-                    placeholder="🔍 Rechercher par nom..."
-                    className="border border-gray-300 p-2 rounded-lg w-full sm:w-1/4 focus:ring-2 focus:ring-blue-400 outline-none"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <select
-                    value={lieuTerm}
-                    onChange={(e) => setLieuTerm(e.target.value)}
-                    className="border border-gray-300 p-2 rounded-lg w-full sm:w-1/4 focus:ring-2 focus:ring-blue-400 outline-none"
-                >
-                    <option value="">Tous les lieux</option>
-                    {lieux.map((lieu, index) => (
-                        <option key={index} value={lieu}>{lieu}</option>
-                    ))}
-                </select>
-            </div>
-
-            {loading ? (
-                <p className="text-center text-gray-600">Chargement...</p>
-            ) : filteredHebergements.length === 0 ? (
-                <p className="text-center text-gray-600">Aucun hébergement trouvé.</p>
-            ) : (
-                <div className="w-full bg-white shadow-lg rounded-lg overflow-hidden">
-                    <table className="min-w-full border-collapse">
-                        <thead>
-                            <tr className="bg-blue-600 text-white">
-                                <th className="py-3 px-4 text-left">Sélection</th>
-                                <th className="py-3 px-4 text-left">ID</th>
-                                <th className="py-3 px-4 text-left">Nom</th>
-                                <th className="py-3 px-4 text-left">Lieu</th>
-                                <th className="py-3 px-4 text-left">Localisation</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredHebergements.map((hebergement) => (
-                                <tr key={hebergement.id} className="border-b hover:bg-gray-100">
-                                    <td className="py-2 px-4">
-                                        <input
-                                            type="checkbox"
-                                            className="w-5 h-5 text-blue-600 focus:ring-blue-500"
-                                            checked={selectedHebergementId === hebergement.id}
-                                            onChange={() => handleSelect(hebergement.id)}
-                                        />
-                                    </td>
-                                    <td className="py-2 px-4">{hebergement.id}</td>
-                                    <td className="py-2 px-4">{hebergement.nom_hebergement}</td>
-                                    <td className="py-2 px-4">{hebergement.lieu}</td>
-                                    <td className="py-2 px-4">{hebergement.localisation}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    <div className="mt-4 text-right p-4">
-                        <button
-                            className={`bg-blue-600 text-white px-6 py-2 rounded-lg shadow transition ${
-                                !selectedHebergementId ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"
-                            }`}
-                            disabled={!selectedHebergementId}
-                            onClick={handleAddHebergement}
+        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 sm:ml-64 flex items-center justify-center">
+            <div className="max-w-5xl w-full">
+                {/* Filter Section */}
+                <div className="bg-white p-6 rounded-xl shadow-lg mb-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="relative">
+                            <input
+                                type="text"
+                                placeholder="Rechercher par nom..."
+                                className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
+                        </div>
+                        <select
+                            value={lieuTerm}
+                            onChange={(e) => setLieuTerm(e.target.value)}
+                            className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
                         >
-                            Ajouter
-                        </button>
-                        {message && (
-                            <p
-                                className={`text-center mt-2 ${
-                                    message.includes("Erreur") ? "text-red-600" : "text-green-600"
-                                }`}
-                            >
-                                {message}
-                            </p>
-                        )}
+                            <option value="">Tous les lieux</option>
+                            {lieux.map((lieu, index) => (
+                                <option key={index} value={lieu}>{lieu}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
-            )}
+
+                {/* Table Section */}
+                {loading ? (
+                    <div className="flex justify-center items-center h-64">
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-orange-500"></div>
+                    </div>
+                ) : filteredHebergements.length === 0 ? (
+                    <div className="bg-white p-6 rounded-xl shadow-lg text-center text-gray-600 text-lg">
+                        Aucun hébergement trouvé.
+                    </div>
+                ) : (
+                    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <table className="w-full">
+                                <thead className="bg-orange-500 text-white">
+                                    <tr>
+                                        <th className="py-4 px-6 text-left font-semibold text-sm uppercase tracking-wide">Sélection</th>
+                                        <th className="py-4 px-6 text-left font-semibold text-sm uppercase tracking-wide">ID</th>
+                                        <th className="py-4 px-6 text-left font-semibold text-sm uppercase tracking-wide">Nom</th>
+                                        <th className="py-4 px-6 text-left font-semibold text-sm uppercase tracking-wide">Lieu</th>
+                                        <th className="py-4 px-6 text-left font-semibold text-sm uppercase tracking-wide">Localisation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filteredHebergements.map((hebergement) => (
+                                        <tr key={hebergement.id} className="border-b hover:bg-orange-50 transition-all duration-200">
+                                            <td className="py-4 px-6">
+                                                <input
+                                                    type="checkbox"
+                                                    className="w-5 h-5 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
+                                                    checked={selectedHebergementId === hebergement.id}
+                                                    onChange={() => handleSelect(hebergement.id)}
+                                                />
+                                            </td>
+                                            <td className="py-4 px-6 text-gray-700">{hebergement.id}</td>
+                                            <td className="py-4 px-6 text-gray-800 font-medium">{hebergement.nom_hebergement}</td>
+                                            <td className="py-4 px-6 text-gray-600">{hebergement.lieu}</td>
+                                            <td className="py-4 px-6 text-gray-600">{hebergement.localisation}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="p-6 flex flex-col items-end gap-4">
+                            <button
+                                className={`px-6 py-3 rounded-lg text-white font-semibold transition-all duration-200 ${
+                                    !selectedHebergementId
+                                        ? "bg-orange-300 cursor-not-allowed"
+                                        : "bg-orange-500 hover:bg-orange-600 hover:shadow-md"
+                                }`}
+                                disabled={!selectedHebergementId}
+                                onClick={handleAddHebergement}
+                            >
+                                Ajouter
+                            </button>
+                            {message && (
+                                <p
+                                    className={`text-center w-full ${
+                                        message.includes("Erreur") ? "text-red-600" : "text-green-600"
+                                    } animate-fade-in`}
+                                >
+                                    {message}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
-        
     );
 }

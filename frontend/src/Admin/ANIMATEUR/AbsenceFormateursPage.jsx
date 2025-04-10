@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function AbsenceFormateursPage() {
   const [participants, setParticipants] = useState([]);
@@ -8,6 +8,7 @@ export default function AbsenceFormateursPage() {
   const [loading, setLoading] = useState(true);
 
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchParticipants = async () => {
@@ -17,7 +18,6 @@ export default function AbsenceFormateursPage() {
         );
 
         const data = response.data.participants || [];
-
         setParticipants(data);
         setLoading(false);
       } catch (error) {
@@ -50,47 +50,75 @@ export default function AbsenceFormateursPage() {
     }
   };
 
-  return (
-    <div className="p-4 sm:ml-64 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6">Absence des formateurs</h1>
+  const handleBack = () => {
+    navigate("/ANIMATEUR/formationsAnimateur");
+  };
 
-      {loading ? (
-        <p>Chargement des formateurs...</p>
-      ) : (
-        <div className="bg-white rounded-lg shadow overflow-x-auto">
-          <table className="min-w-full table-auto">
-            <thead className="bg-blue-600 text-white">
-              <tr>
-                <th className="px-4 py-2 text-left">Absent</th>
-                <th className="px-4 py-2 text-left">ID</th>
-                <th className="px-4 py-2 text-left">Nom</th>
-                <th className="px-4 py-2 text-left">Prénom</th>
-                <th className="px-4 py-2 text-left">Filière</th>
-                <th className="px-4 py-2 text-left">Établissement</th>
-              </tr>
-            </thead>
-            <tbody>
-              {participants.map((p) => (
-                <tr key={p.id} className="border-b hover:bg-gray-50">
-                  <td className="px-4 py-2">
-                    <input
-                      type="checkbox"
-                      className="w-5 h-5"
-                      checked={absents.includes(p.id)}
-                      onChange={() => toggleAbsence(p.id)}
-                    />
-                  </td>
-                  <td className="px-4 py-2">{p.id}</td>
-                  <td className="px-4 py-2">{p.participant.nom}</td>
-                  <td className="px-4 py-2">{p.participant.prenom}</td>
-                  <td className="px-4 py-2">{p.participant.filliere}</td>
-                  <td className="px-4 py-2">{p.participant.etablissement}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 sm:ml-64">
+      <div className="max-w-5xl mx-auto">
+        {/* Header with Title and Back Button */}
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Absence des formateurs</h1>
+          <button
+            onClick={handleBack}
+            className="px-6 py-2 rounded-lg bg-orange-500 text-white font-semibold hover:bg-orange-600 transition-all duration-200"
+          >
+            Retour
+          </button>
         </div>
-      )}
+
+        {/* Table Section */}
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-orange-500"></div>
+          </div>
+        ) : (
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-orange-500 text-white">
+                  <tr>
+                    <th className="py-4 px-6 text-left font-semibold text-sm uppercase tracking-wide">Absent</th>
+                    <th className="py-4 px-6 text-left font-semibold text-sm uppercase tracking-wide">ID</th>
+                    <th className="py-4 px-6 text-left font-semibold text-sm uppercase tracking-wide">Nom</th>
+                    <th className="py-4 px-6 text-left font-semibold text-sm uppercase tracking-wide">Prénom</th>
+                    <th className="py-4 px-6 text-left font-semibold text-sm uppercase tracking-wide">Filière</th>
+                    <th className="py-4 px-6 text-left font-semibold text-sm uppercase tracking-wide">Établissement</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {participants.length > 0 ? (
+                    participants.map((p) => (
+                      <tr key={p.id} className="border-b hover:bg-orange-50 transition-all duration-200">
+                        <td className="py-4 px-6">
+                          <input
+                            type="checkbox"
+                            className="w-5 h-5 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
+                            checked={absents.includes(p.id)}
+                            onChange={() => toggleAbsence(p.id)}
+                          />
+                        </td>
+                        <td className="py-4 px-6 text-gray-700">{p.id}</td>
+                        <td className="py-4 px-6 text-gray-800 font-medium">{p.participant.nom}</td>
+                        <td className="py-4 px-6 text-gray-700">{p.participant.prenom}</td>
+                        <td className="py-4 px-6 text-gray-700">{p.participant.filliere}</td>
+                        <td className="py-4 px-6 text-gray-700">{p.participant.etablissement}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" className="py-6 text-center text-gray-500 text-lg">
+                        Aucun participant trouvé pour cette formation.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

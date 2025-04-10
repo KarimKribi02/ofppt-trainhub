@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Footer from './Footer';
@@ -8,7 +8,7 @@ const Benefits = () => {
   const [user, setUser] = useState(null);
   const [cours, setCours] = useState([]);
   const [coursFiltrés, setCoursFiltrés] = useState([]);
-  const [authCheck, setAuthCheck] = useState(0); // Clé pour forcer la vérification
+  const [authCheck, setAuthCheck] = useState(0);
 
   const handleLogout = () => {
     const token = localStorage.getItem('token');
@@ -22,8 +22,8 @@ const Benefits = () => {
         .then(() => {
           localStorage.removeItem('token');
           setUser(null);
-          setCoursFiltrés([]); // Réinitialise les cours
-          setAuthCheck(prev => prev + 1); // Force une nouvelle vérification
+          setCoursFiltrés([]);
+          setAuthCheck(prev => prev + 1);
           console.log('Déconnexion réussie');
         })
         .catch(err => {
@@ -67,7 +67,7 @@ const Benefits = () => {
     };
 
     fetchUser();
-  }, [authCheck]); // Dépendance sur authCheck pour re-vérifier après logout
+  }, [authCheck]);
 
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/api/formation-participants')
@@ -93,76 +93,110 @@ const Benefits = () => {
 
   return (
     <>
-      <Navbar handleLogout={handleLogout} />
-      <section className="bg-white py-20">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Bienvenue {user ? (
-              <span className="text-orange-500">{user.nom} {user.prenom}</span>
+      <Navbar className="w-full bg-white shadow-md py-4 px-6 flex justify-between items-center" handleLogout={handleLogout} />
+      {/* Section Hero avec fond créatif */}
+      <section
+        className="relative bg-cover bg-center py-16 md:py-24 text-white"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg fill='%23f97316' fill-opacity='0.1'%3E%3Ccircle cx='400' cy='400' r='600'/%3E%3Ccircle cx='1200' cy='200' r='400'/%3E%3Ccircle cx='800' cy='600' r='300'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(to right, #ffffff, #fef3e8)`,
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight mb-6 text-gray-900">
+            {user ? (
+              <span>Bienvenue, <span className="text-orange-500 underline decoration-orange-500/50">{user.nom} {user.prenom}</span></span>
             ) : (
-              'sur Trainhub'
+              'Découvrez Trainhub'
             )}
           </h1>
-          <p className="text-gray-600 text-lg mb-8">
-          Découvrez notre plateforme dédiée à la gestion et au suivi des formations des formateurs de Trainhub.
+          <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-8">
+            Votre porte d’entrée vers une croissance professionnelle avec des solutions de formation adaptées.
           </p>
-          <p className="text-gray-500 text-sm mb-8">
-          Optimisez vos parcours, accédez aux ressources pédagogiques, et suivez votre évolution professionnelle en toute simplicité.
-          </p>
-          <Link to="/courses" className="bg-orange-500 text-white py-3 px-6 rounded-lg shadow hover:bg-orange-600 transition">
-          Explorer les formations
+          <Link
+            to="/courses"
+            className="inline-block bg-orange-500 text-white py-2 px-6 sm:py-3 sm:px-8 rounded-full font-semibold shadow-lg hover:bg-orange-600 hover:shadow-xl transition-all duration-300"
+          >
+            Explorer les Formations
           </Link>
         </div>
       </section>
 
-      <section className="bg-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Bénéfices</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto mb-12">
-            Découvrez les avantages uniques de notre plateforme d’apprentissage.
-          </p>
-          <div className="grid md:grid-cols-3 gap-8">
+      {/* Section Bénéfices */}
+      <section className="bg-gray-100 py-12 md:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 text-center mb-10 md:mb-12">
+            Pourquoi choisir Trainhub ?
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
             {[
-              { icon: '🎯', title: 'Contenu de qualité', description: 'Cours élaborés par des professionnels expérimentés.' },
-              { icon: '💡', title: 'Apprentissage flexible', description: 'Étudiez à votre propre rythme, n’importe où, n’importe quand.' },
-              { icon: '📈', title: 'Développement de carrière', description: 'Améliorez vos compétences pour booster votre carrière.' }
+              { icon: '🎯', title: 'Contenu dirigé par des experts', description: 'Apprenez auprès de professionnels de l’industrie avec une expérience concrète.' },
+              { icon: '💡', title: 'Apprentissage flexible', description: 'Étudiez à votre rythme, où et quand vous voulez.' },
+              { icon: '📈', title: 'Croissance de carrière', description: 'Ouvrez de nouvelles opportunités avec des compétences améliorées.' }
             ].map((benefit, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-                <div className="text-4xl mb-4">{benefit.icon}</div>
-                <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
-                <p className="text-gray-600">{benefit.description}</p>
+              <div
+                key={index}
+                className="bg-white p-6 md:p-8 rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-2 transition-all duration-300"
+              >
+                <div className="text-4xl md:text-5xl text-orange-500 mb-4 md:mb-6">{benefit.icon}</div>
+                <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-2 md:mb-3">{benefit.title}</h3>
+                <p className="text-gray-600 text-sm md:text-base">{benefit.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* Section Mes Formations (pour les utilisateurs connectés) */}
       {user && (
-        <section className="bg-white py-20">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex justify-between items-center mb-10">
-              <div>
-                <h2 className="text-3xl font-bold mb-2 text-gray-800">Mes Formations</h2>
-                <p className="text-gray-600 max-w-xl">
-                  Voici les formations auxquelles vous êtes inscrit.
-                </p>
-              </div>
-              <Link to="/courses" className="text-orange-500 hover:underline font-medium text-sm">
-                Voir tous les cours →
+        <section className="bg-white py-12 md:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row justify-between items-center mb-10 md:mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-4 sm:mb-0">Mes Formations</h2>
+              <Link
+                to="/courses"
+                className="text-orange-500 hover:text-orange-600 font-medium flex items-center gap-2 transition-colors duration-200"
+              >
+                Voir tout <span className="text-sm">→</span>
               </Link>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {coursFiltrés.map((item, index) => (
-                <div key={index} className="bg-gradient-to-br from-white to-gray-50 border border-gray-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition duration-200">
-                  <h3 className="text-xl font-semibold text-orange-600 mb-2">{item.formation.titre}</h3>
-                  <div className="text-sm text-gray-600 space-y-1">
-                    <p><span className="font-medium">📍 Lieu :</span> {item.formation.lieux}</p>
-                    <p><span className="font-medium">🎓 Filière :</span> {item.formation.filières}</p>
-                    <p><span className="font-medium">🗓️ Dates :</span> {item.formation.dateDebut} → {item.formation.dateFin}</p>
+            {coursFiltrés.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                {coursFiltrés.map((item, index) => (
+                  <div
+                    key={index}
+                    className="relative bg-gradient-to-br from-orange-50 to-white p-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+                  >
+                    {/* Élément décoratif créatif */}
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/10 rounded-full -translate-y-12 translate-x-12"></div>
+                    <h3 className="text-lg md:text-xl font-semibold text-orange-600 mb-4 relative z-10">{item.formation.titre}</h3>
+                    <div className="text-gray-600 space-y-3 text-sm md:text-base relative z-10">
+                      <p className="flex items-center gap-2">
+                        <span className="text-orange-500">📍</span>
+                        <span className="font-medium text-gray-800">Lieu :</span> {item.formation.lieux}
+                      </p>
+                      <p className="flex items-center gap-2">
+                        <span className="text-orange-500">🎓</span>
+                        <span className="font-medium text-gray-800">Filière :</span> {item.formation.filières}
+                      </p>
+                      <p className="flex items-center gap-2">
+                        <span className="text-orange-500">🗓️</span>
+                        <span className="font-medium text-gray-800">Dates :</span> {item.formation.dateDebut} - {item.formation.dateFin}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center text-gray-500 py-10 md:py-12">
+                <p className="text-lg md:text-xl mb-4">Vous n’êtes inscrit à aucune formation pour le moment.</p>
+                <Link
+                  to="/courses"
+                  className="inline-block text-orange-500 hover:text-orange-600 font-medium underline transition-colors duration-200"
+                >
+                  Parcourir les formations disponibles
+                </Link>
+              </div>
+            )}
           </div>
         </section>
       )}

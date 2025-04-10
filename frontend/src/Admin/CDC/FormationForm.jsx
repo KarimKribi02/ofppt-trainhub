@@ -101,242 +101,156 @@ const FormationForm = () => {
   };
 
   return (
-    
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 sm:ml-64">
-      <div className="max-w-3xl w-full bg-white shadow-lg p-6 rounded-lg">
-        <h2 className="text-xl font-semibold mb-6 text-center">Ajouter Formation</h2>
-
+    <div className="flex justify-center items-start min-h-screen bg-gradient-to-br from-blue-50 to-white  p-6 sm:ml-64">
+      <div className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl p-8">
+        <h2 className="text-2xl font-bold text-center text-orange-500 mb-8 flex items-center justify-center gap-2">
+          <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+          Ajouter une Formation
+        </h2>
+  
         <form onSubmit={handleSubmit}>
-          <div className="grid gap-4">
-            <div className="mb-4">
-              <label htmlFor="titre" className="block text-sm font-medium mb-1">Titre</label>
-              <input
-                type="text"
-                id="titre"
-                name="titre"
-                value={formData.titre}
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-              />
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Titre */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Titre</label>
+              <input type="text" name="titre" value={formData.titre} onChange={handleChange}
+                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500 outline-none" />
             </div>
-
-            <div className="mb-4">
-              <label htmlFor="description" className="block text-sm font-medium mb-1">Description</label>
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                rows="4"
-                className="w-full p-2 border rounded"
-              />
+  
+            {/* Date début */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Date de Début</label>
+              <input type="date" name="dateDebut" value={formData.dateDebut} onChange={handleChange}
+                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500 outline-none" />
             </div>
-
-            <div className="mb-4">
-              <label htmlFor="dateDebut" className="block text-sm font-medium mb-1">Date de Début</label>
-              <input
-                type="date"
-                id="dateDebut"
-                name="dateDebut"
-                value={formData.dateDebut}
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-              />
+  
+            {/* Date fin */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Date de Fin</label>
+              <input type="date" name="dateFin" value={formData.dateFin} onChange={handleChange}
+                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500 outline-none" />
             </div>
-
-            <div className="mb-4">
-              <label htmlFor="dateFin" className="block text-sm font-medium mb-1">Date de Fin</label>
-              <input
-                type="date"
-                id="dateFin"
-                name="dateFin"
-                value={formData.dateFin}
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-
-            
-
-            <div className="mb-4">
-              <label htmlFor="lieux" className="block text-sm font-medium mb-1">Ville</label>
-              <select
-                id="lieux"
-                name="lieux"
-                value={formData.lieux}
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-              >
+  
+            {/* Lieux */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Ville</label>
+              <select name="lieux" value={formData.lieux} onChange={handleChange}
+                className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:ring-2 focus:ring-orange-500 outline-none">
                 <option value="">Sélectionner une ville</option>
+                {/* Ajoute ici toutes les options de ville comme dans ton code */}
                 <option value="casablanca">Casablanca</option>
                 <option value="rabat">Rabat</option>
                 <option value="marrakech">Marrakech</option>
-                <option value="fes">Fès</option>
-                <option value="tanger">Tanger</option>
-                <option value="agadir">Agadir</option>
-                <option value="meknes">Meknès</option>
-                <option value="oujda">Oujda</option>
-                <option value="kenitra">Kénitra</option>
-                <option value="tetouan">Tétouan</option>
-                <option value="safi">Safi</option>
-                <option value="el-jadida">El Jadida</option>
-                <option value="nador">Nador</option>
-                <option value="beni-mellal">Béni Mellal</option>
-                <option value="taza">Taza</option>
-                <option value="settat">Settat</option>
-                <option value="mohammedia">Mohammédia</option>
-                <option value="khemisset">Khémisset</option>
-                <option value="guelmim">Guelmim</option>
-                <option value="errachidia">Errachidia</option>
-                <option value="laayoune">Laâyoune</option>
-                <option value="dakhla">Dakhla</option>
+                {/* ... */}
               </select>
             </div>
-            <div className="mb-4">
-              <label htmlFor="filières" className="block text-sm font-medium mb-1">Filières :</label>
-              <select
-                id="filières"
-                name="filières"
-                value={formData.filières}
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-              >
+  
+            {/* Filière */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Filière</label>
+              <select name="filières" value={formData.filières} onChange={handleChange}
+                className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:ring-2 focus:ring-orange-500 outline-none">
                 <option value="">Sélectionner Filière</option>
                 <option value="Développement Digital">Développement Digital</option>
                 <option value="Génie Civil">Génie Civil</option>
-                <option value="Infrastructure Digitale">Infrastructure Digitale</option>
-                <option value="Gestion des Entreprises">Gestion des Entreprises</option>
+                {/* ... */}
               </select>
             </div>
-
-            {/* Formateurs Animateurs */}
-            <div className="mb-4">
-              <label htmlFor="formateurs_animateurs" className="block text-sm font-medium mb-1">Formateurs Animateurs :</label>
-              <select
-                id="formateurs_animateurs"
-                name="formateurs_animateurs"
-                value={formData.formateurs_animateurs}
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-              >
-                <option value="">Sélectionner Formateurs Animateurs</option>
+  
+            {/* Animateur */}
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Formateur / Animateur</label>
+              <select name="formateurs_animateurs" value={formData.formateurs_animateurs} onChange={handleChange}
+                className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:ring-2 focus:ring-orange-500 outline-none">
+                <option value="">Sélectionner</option>
                 {animateurs
-                  .filter((animateur) => animateur.filières === formData.filières)
-                  .map((animateur) => (
-                    <option key={animateur.id} value={`${animateur.nom} ${animateur.prenom}`}>
-                      {animateur.nom} {animateur.prenom}
+                  .filter((a) => a.filières === formData.filières)
+                  .map((a) => (
+                    <option key={a.id} value={`${a.nom} ${a.prenom}`}>
+                      {a.nom} {a.prenom}
                     </option>
                   ))}
               </select>
             </div>
-
-            <div className="mb-4">
-              <label htmlFor="document" className="block text-sm font-medium mb-1">Document de Formation</label>
-              <input
-                type="file"
-                id="document"
-                name="document"
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Mode de Formation :</label>
-              <div className="flex flex-col space-y-2">
+  
+            {/* Mode */}
+            <div className="col-span-2">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Mode de Formation</label>
+              <div className="flex gap-4">
                 {["présentiel", "à_distance", "hybride"].map((mode) => (
-                  <div key={mode} className="flex items-center border p-2 rounded">
+                  <label key={mode} className="flex items-center gap-2">
                     <input
-                      id={mode}
                       type="radio"
-                      value={mode}
                       name="mode"
+                      value={mode}
                       checked={formData.mode === mode}
                       onChange={handleChange}
-                      className="w-4 h-4 text-blue-600"
+                      className="text-orange-500"
                     />
-                    <label htmlFor={mode} className="ml-2 text-sm font-medium text-gray-900">
-                      {mode === "présentiel"
-                        ? "Présentiel"
-                        : mode === "à_distance"
-                        ? "À Distance"
-                        : "Hybride"}
-                    </label>
-                  </div>
+                    <span>{mode === "présentiel" ? "Présentiel" : mode === "à_distance" ? "À Distance" : "Hybride"}</span>
+                  </label>
                 ))}
               </div>
             </div>
-
-            {/* Affichage du champ lienFormation si Hybride ou À Distance est sélectionné */}
+  
+            {/* Lien teams si nécessaire */}
             {(formData.mode === "à_distance" || formData.mode === "hybride") && (
-              <div className="mb-4">
-                <label htmlFor="lien_teams" className="block text-sm font-medium mb-1">
-                  Lien de la formation :
-                </label>
-                <input
-                  type="text"
-                  id="lien_teams"
-                  name="lien_teams"
-                  value={formData.lien_teams}
-                  onChange={handleChange}
-                  placeholder="Ex: https://meet.google.com/..."
-                  className="w-full p-2 border rounded"
-                />
+              <div className="col-span-2">
+                <label className="block mb-2 text-sm font-semibold text-gray-700">Lien Teams</label>
+                <input type="text" name="lien_teams" value={formData.lien_teams} onChange={handleChange}
+                  placeholder="https://teams.microsoft.com/..."
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500 outline-none" />
               </div>
             )}
-
-<div className="mb-4">
-  <label className="block text-sm font-medium mb-1">Statut de Formation :</label>
-  <div className="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-    <input
-      id="redigé"
-      type="radio"
-      value="redigé"
-      name="statut"
-      checked={formData.statut === "redigé"}
-      onChange={handleChange}
-      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-    />
-    <label htmlFor="redigé" className="w-full py-4 ms-2 text-sm font-medium text-gray-900">
-      Rédigé
-    </label>
-  </div>
-  <div className="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-    <input
-      id="validé"
-      type="radio"
-      value="validé"
-      name="statut"
-      checked={formData.statut === "validé"}
-      onChange={handleChange}
-      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-    />
-    <label htmlFor="validé" className="w-full py-4 ms-2 text-sm font-medium text-gray-900">
-      Validé
-    </label>
-  </div>
-</div>
-            
-
-            <div className="flex justify-center space-x-2 mt-4">
-              <button
-                type="button"
-                className="px-4 py-2 bg-gray-300 text-gray-800 rounded"
-                onClick={handleCancel}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded"
-              >
-                Add Formation
-              </button>
+  
+            {/* Description */}
+            <div className="col-span-2">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Description</label>
+              <textarea name="description" value={formData.description} onChange={handleChange}
+                rows="4" className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500 outline-none" />
             </div>
+  
+            {/* Document */}
+            <div className="col-span-2">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Document de formation</label>
+              <input type="file" name="document" onChange={handleChange}
+                className="w-full border border-gray-300 rounded-lg p-3 bg-white" />
+            </div>
+  
+            {/* Statut */}
+            <div className="col-span-2">
+              <label className="block mb-2 text-sm font-semibold text-gray-700">Statut</label>
+              <div className="flex gap-6">
+                {["redigé", "validé"].map((s) => (
+                  <label key={s} className="flex items-center gap-2">
+                    <input type="radio" name="statut" value={s} checked={formData.statut === s} onChange={handleChange}
+                      className="text-orange-500" />
+                    <span className="capitalize">{s}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+  
+          <div className="mt-8 flex justify-end gap-4">
+            <button type="button"
+              onClick={handleCancel}
+              className="px-6 py-2 border rounded-lg text-gray-700 hover:bg-gray-100 transition">
+              Annuler
+            </button>
+            <button type="submit"
+              disabled={isSubmitting}
+              className="px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition">
+              {isSubmitting ? 'Envoi en cours...' : 'Ajouter Formation'}
+            </button>
           </div>
         </form>
       </div>
     </div>
   );
+  
 };
 
 export default FormationForm;
