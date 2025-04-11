@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UpdateFormation = ({ source }) => {
   const { id } = useParams();
@@ -77,11 +79,11 @@ const UpdateFormation = ({ source }) => {
         },
       });
 
-      alert("Formation mise à jour avec succès");
+      toast.success('🎉 Formation mise à jour avec succès');
       navigate(source === "DREF" ? "/DREF/formations" : "/CDC/overview");
     } catch (error) {
       console.error("Erreur lors de la mise à jour", error.response?.data || error.message);
-      alert('Erreur : ' + (error.response?.data.message || 'Une erreur est survenue'));
+      toast.error('❌ Erreur : ' + (error.response?.data.message || 'Une erreur est survenue'));
     } finally {
       setIsSubmitting(false);
     }
@@ -288,6 +290,7 @@ const UpdateFormation = ({ source }) => {
           </div>
         </form>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={true} closeOnClick pauseOnHover />
     </div>
   );
 };

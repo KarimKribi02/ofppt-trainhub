@@ -1,4 +1,6 @@
 import React, { useState , useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'
 
 const FormationForm = () => {
@@ -61,7 +63,7 @@ const FormationForm = () => {
   
       if (res.data.status === 200) {
         console.log('Formation ajoutée:', res.data.message);
-        alert('Formation ajoutée avec succès !'); // Feedback utilisateur
+        toast.success('🎉 Formation ajoutée avec succès !');
         setFormData({
           titre: '',
           description: '',
@@ -78,7 +80,7 @@ const FormationForm = () => {
       }
     } catch (error) {
       console.error('Erreur lors de la soumission:', error.response?.data || error.message);
-      alert('Erreur : ' + (error.response?.data.message || 'Une erreur est survenue')); // Feedback utilisateur
+      toast.error('❌ Erreur : ' + (error.response?.data.message || 'Une erreur est survenue'));
     } finally {
       setIsSubmitting(false);
     }
@@ -248,7 +250,10 @@ const FormationForm = () => {
           </div>
         </form>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={true} closeOnClick pauseOnHover />
+
     </div>
+    
   );
   
 };

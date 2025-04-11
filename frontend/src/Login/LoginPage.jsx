@@ -79,10 +79,11 @@ export default function LoginPage() {
           </p>
           <div className="grid grid-cols-2 gap-4 w-full max-w-md">
             {[
-              { icon: "🎓", text: "Formations certifiantes" },
-              { icon: "🚀", text: "Développement de carrière" },
-              { icon: "👨‍👩‍👧‍👦", text: "Communauté d'experts" },
-              { icon: "🔒", text: "Accès sécurisé" }
+              { icon: "📜", text: "Formations certifiantes" },        // style diplôme
+              { icon: "📈", text: "Développement de carrière" },     // progression / carrière
+              { icon: "🌐", text: "Communauté d'experts" },          // réseau / communauté
+              { icon: "🛡️", text: "Accès sécurisé" }                // sécurité
+              
             ].map((item, index) => (
               <div key={index} className="flex items-center gap-3">
                 <span className="text-2xl">{item.icon}</span>

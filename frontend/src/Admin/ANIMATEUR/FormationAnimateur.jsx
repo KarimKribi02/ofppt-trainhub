@@ -7,8 +7,39 @@ function DrefFormations() {
     const [formations, setFormations] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [filterLieu, setFilterLieu] = useState("");
-
+     const [user, setUser] = useState(null);
+     const [authCheck, setAuthCheck] = useState(0);
     useEffect(() => {
+        const fetchUser = () => {
+          const token = localStorage.getItem('token');
+          console.log('Vérification token:', token);
+          if (token) {
+            axios.get('http://127.0.0.1:8000/api/user', {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/json'
+              }
+            })
+              .then(res => {
+                
+                setUser(res.data);
+              })
+              .catch(err => {
+                console.error('Erreur utilisateur:', err.response ? err.response.data : err.message);
+                setUser(null);
+                localStorage.removeItem('token');
+              });
+          } else {
+            
+            setUser(null);
+          }
+        };
+    
+        fetchUser();
+      }, [authCheck]);
+    
+   
+useEffect(() => {
         axios
             .get("http://127.0.0.1:8000/api/formations")
             .then((response) => {
@@ -19,11 +50,12 @@ function DrefFormations() {
                 setFormations([]);
             });
     }, []);
-
-    const filteredFormations = formations.filter(f => 
+    const filteredFormations = formations.filter(f =>
         f.statut === "validé" &&
         f.titre.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (filterLieu ? f.lieux === filterLieu : true)
+        (filterLieu ? f.lieux === filterLieu : true) &&
+        user &&
+        f.formateurs_animateurs === `${user.nom} ${user.prenom}`
     );
 
     return (
