@@ -65,10 +65,28 @@ class FormationParticipantController extends Controller
    
     public function show($id)
     {
+        $formation = FormationModel::find($id);
+        if (!$formation) {
+            return response()->json(['message' => 'Formation non trouvée'], 404);
+        }
+
+        // MODIFIÉ: Ajout de est_absent dans la récupération
         $participants = FormationParticipant::where('formation_id', $id)
-            ->with('participant') 
-            ->get();
-    
+            ->with(['participant' => function ($query) {
+                $query->select('id', 'nom', 'prenom', 'filliere', 'etablissement');
+            }])
+            ->get()
+            ->map(function ($participant) {
+                return [
+                    'id' => $participant->participant->id,
+                    'nom' => $participant->participant->nom,
+                    'prenom' => $participant->participant->prenom,
+                    'filliere' => $participant->participant->filliere,
+                    'etablissement' => $participant->participant->etablissement,
+                    'est_absent' => (bool)$participant->est_absent, // Conversion explicite en booléen
+                ];
+            });
+
         return response()->json(['participants' => $participants]);
     }
     
@@ -118,13 +136,17 @@ class FormationParticipantController extends Controller
         }
     
         // Use 'absent' directly and fix the date_absence logic
-        $formationParticipant->est_absent = $request->absent;
-        $formationParticipant->date_absence = $request->absent ? $request->date_absence : null;
+        $formationParticipant->est_absent = $request->absent ? 1 : 0; // Toujours stocker 1 ou 0
+        $formationParticipant->date_absence = $request->absent ? $request->date_absence ?? now() : null;
         $formationParticipant->save();
     
         return response()->json([
             'message' => 'Absence mis à jour avec succès',
-            'data' => $formationParticipant->load('participant')
+            'data' => [
+                'id' => $participantId,
+                'est_absent' => (bool)$formationParticipant->est_absent,
+                'date_absence' => $formationParticipant->date_absence
+            ]
         ], 200);
     }
 

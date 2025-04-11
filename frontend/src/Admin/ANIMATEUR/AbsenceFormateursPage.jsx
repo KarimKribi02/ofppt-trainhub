@@ -10,22 +10,30 @@ export default function AbsenceFormateursPage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const fetchParticipants = async () => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/formation-participants/${id}`
+      );
+
+      const data = response.data.participants || [];
+      setParticipants(data);
+      
+      // Initialize the absents array with participants that are already marked as absent
+      const initialAbsents = data
+        .filter(participant => participant.est_absent === 1 || participant.est_absent === true)
+        .map(participant => participant.id);
+      
+      console.log("Participants absents initialisés:", initialAbsents);
+      setAbsents(initialAbsents);
+      setLoading(false);
+    } catch (error) {
+      console.error("Erreur lors du chargement des participants :", error);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchParticipants = async () => {
-      try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/formation-participants/${id}`
-        );
-
-        const data = response.data.participants || [];
-        setParticipants(data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Erreur lors du chargement des participants :", error);
-        setLoading(false);
-      }
-    };
-
     fetchParticipants();
   }, [id]);
 
@@ -33,12 +41,14 @@ export default function AbsenceFormateursPage() {
     const isAbsent = absents.includes(participantId);
 
     try {
+      // Update the backend
       await axios.put(
         `http://127.0.0.1:8000/api/formations/${id}/participants/${participantId}/absence`,
         { absent: !isAbsent },
         { headers: { "Content-Type": "application/json" } }
       );
 
+      // Update local state
       setAbsents((prev) => {
         const newAbsents = isAbsent
           ? prev.filter((id) => id !== participantId)
@@ -46,9 +56,14 @@ export default function AbsenceFormateursPage() {
         console.log("New absents:", newAbsents);
         return newAbsents;
       });
+      
+      // Refresh the data after a short delay to ensure backend updates are reflected
+      setTimeout(() => {
+        fetchParticipants();
+      }, 500);
     } catch (error) {
       console.error("Erreur API :", error.response?.data || error.message);
-      alert("Échec de mise à jour de l’absence.");
+      alert("Échec de mise à jour de l'absence.");
     }
   };
 
@@ -102,10 +117,10 @@ export default function AbsenceFormateursPage() {
                           />
                         </td>
                         <td className="py-4 px-6 text-gray-700">{p.id}</td>
-                        <td className="py-4 px-6 text-gray-800 font-medium">{p.participant.nom}</td>
-                        <td className="py-4 px-6 text-gray-700">{p.participant.prenom}</td>
-                        <td className="py-4 px-6 text-gray-700">{p.participant.filliere}</td>
-                        <td className="py-4 px-6 text-gray-700">{p.participant.etablissement}</td>
+                        <td className="py-4 px-6 text-gray-800 font-medium">{p.nom}</td>
+                        <td className="py-4 px-6 text-gray-700">{p.prenom}</td>
+                        <td className="py-4 px-6 text-gray-700">{p.filliere}</td>
+                        <td className="py-4 px-6 text-gray-700">{p.etablissement}</td>
                       </tr>
                     ))
                   ) : (

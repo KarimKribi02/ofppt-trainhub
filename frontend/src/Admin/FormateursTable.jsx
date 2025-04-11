@@ -67,20 +67,31 @@ export default function PageFormateurs() {
   };
 
   const handleSelect = async (formateurId) => {
-    const isSelected = selectedFormateurIds.includes(formateurId);
-
+    const idAsNumber = Number(formateurId);
+    const isSelected = selectedFormateurIds.includes(idAsNumber);
+  
+    console.log("handleSelect:", { formateurId: idAsNumber, isSelected, selectedFormateurIds, formationId: id });
+  
     if (isSelected) {
       try {
         await axios.delete(
-          `http://127.0.0.1:8000/api/formation-participants/${id}/${formateurId}`
+          `http://127.0.0.1:8000/api/formation-participants/${id}/${idAsNumber}`
         );
-        setSelectedFormateurIds((prev) => prev.filter((id) => id !== formateurId));
+        setSelectedFormateurIds((prev) => prev.filter((id) => id !== idAsNumber));
+        showNotification("Formateur désélectionné.", "success");
       } catch (error) {
-        console.error("Erreur lors de la suppression :", error.response?.data || error.message);
-        showNotification("Erreur lors de la suppression du formateur.", "error");
+        const errorMessage = error.response?.data?.message || error.message;
+        console.error("Erreur lors de la suppression :", errorMessage);
+        if (error.response?.status === 404) {
+          setSelectedFormateurIds((prev) => prev.filter((id) => id !== idAsNumber));
+          showNotification("Formateur désélectionné localement (non trouvé dans la base).", "warning");
+        } else {
+          showNotification(`Erreur : ${errorMessage}`, "error");
+        }
       }
     } else {
-      setSelectedFormateurIds((prev) => [...prev, formateurId]);
+      setSelectedFormateurIds((prev) => [...prev, idAsNumber]);
+      showNotification("Formateur sélectionné.", "success");
     }
   };
 
