@@ -22,6 +22,9 @@ import CoursesPage from './Participants/CoursesPage';
 import About from './Participants/AboutPage';
 import AbsenceFormateursPage from './Admin/ANIMATEUR/AbsenceFormateursPage';
 import Dashbord from './Admin/dashbord';
+import ADD_CDC from './Admin/ADD_CDC';
+import ADD_DREF from './Admin/ADD_DREF';
+import ADD_ANIMATEUR from './Admin/ADD_ANIMATEUR';
 
 
 function App() {
@@ -40,6 +43,9 @@ function App() {
      <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
         <Route path="/ADMIN" element={<Dashbord />}>
           <Route index element={<Welcome role={"ADMIN"} />} /> {/* ✅ ici */}
+          <Route path="ajouter_CDC" element={<ADD_CDC />} />
+          <Route path="ajouter_DREF" element={<ADD_DREF />} />
+          <Route path="ajouter_ANIMATEUR" element={<ADD_ANIMATEUR />} />
         </Route>
       </Route>
 
