@@ -33,7 +33,7 @@ public function store(Request $request)
         'nom' => 'required|string|max:255',
         'prenom' => 'required|string|max:255',
         'email' => 'required|email|unique:formateur_animateurs,email',
-        'filliere' => 'nullable|string|max:255',
+        'filières' => 'nullable|string|max:255',
         'password' => 'required|string|min:6',
     ]);
 
@@ -42,7 +42,7 @@ public function store(Request $request)
     $formateur->nom = $request->nom;
     $formateur->prenom = $request->prenom;
     $formateur->email = $request->email;
-    $formateur->filliere = $request->filliere;
+    $formateur->filières = $request->filières;
     $formateur->role = 'ANIMATEUR'; 
     $formateur->password = Hash::make($request->password);
     $formateur->save();
