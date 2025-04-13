@@ -11,6 +11,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TestUploadController;
 use App\Http\Controllers\FormationParticipantController;
 use App\Http\Controllers\ForamtionhebergmentController;
+use App\Http\Controllers\CdcsController;
+use App\Http\Controllers\DrefsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,3 +73,8 @@ Route::get('downloadDocument/{filename}', [FormationController::class, 'download
 
 // Make sure you also have this for compatibility with your current React code
 Route::get('download/{filename}', [FormationController::class, 'downloadDocument']);
+
+Route::resource('drefUsers',DrefsController::class); // api de dref
+
+Route::resource('cdcsUsers',CdcsController::class); // api de cdcs
+
