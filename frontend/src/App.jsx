@@ -25,7 +25,7 @@ import Dashbord from './Admin/dashbord';
 import ADD_CDC from './Admin/ADD_CDC';
 import ADD_DREF from './Admin/ADD_DREF';
 import ADD_ANIMATEUR from './Admin/ADD_ANIMATEUR';
-
+import ADD_PARTICIPANT from './Admin/ADD_PARTICIPANT';
 
 function App() {
   return (
@@ -46,6 +46,8 @@ function App() {
           <Route path="ajouter_CDC" element={<ADD_CDC />} />
           <Route path="ajouter_DREF" element={<ADD_DREF />} />
           <Route path="ajouter_ANIMATEUR" element={<ADD_ANIMATEUR />} />
+          <Route path="ajouter_PARTICIPANT" element={<ADD_PARTICIPANT />} />
+
         </Route>
       </Route>
 
