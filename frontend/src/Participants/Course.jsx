@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import AccessLetterPDF from './AccessLetterPDF';
+import { motion } from 'framer-motion';
 
 const CourseDetailsPage = () => {
   const { id } = useParams();
@@ -29,6 +30,7 @@ const CourseDetailsPage = () => {
       });
     }
   }, []);
+  
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/api/formations/${id}`)
       .then(res => {
@@ -46,10 +48,15 @@ const CourseDetailsPage = () => {
       <>
         <Navbar className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md" />
         <div className="pt-20 flex items-center justify-center min-h-screen bg-gray-50">
-          <div className="text-center">
+          <motion.div 
+            className="text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             <div className="inline-block w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
             <p className="mt-4 text-gray-600">Chargement de la formation...</p>
-          </div>
+          </motion.div>
         </div>
       </>
     );
@@ -60,13 +67,18 @@ const CourseDetailsPage = () => {
       <>
         <Navbar className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md" />
         <div className="pt-20 flex items-center justify-center min-h-screen bg-gray-50">
-          <div className="text-center p-8 bg-white rounded-lg shadow-md max-w-md">
+          <motion.div 
+            className="text-center p-8 bg-white rounded-lg shadow-md max-w-md"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <svg className="w-20 h-20 mx-auto text-red-500 mb-4" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
             </svg>
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Formation introuvable</h2>
             <p className="text-gray-600">Nous n'avons pas pu trouver la formation que vous recherchez.</p>
-          </div>
+          </motion.div>
         </div>
       </>
     );
@@ -91,21 +103,80 @@ const CourseDetailsPage = () => {
     }
   };
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        duration: 0.6,
+        when: "beforeChildren",
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.5 }
+    }
+  };
+
+  const tabContentVariants = {
+    hidden: { opacity: 0, x: 20 },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      transition: { duration: 0.5 }
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md" />
       
       <main className="flex-grow pt-20 px-4 sm:px-6 lg:px-8 py-10">
-        <div className="max-w-4xl mx-auto">
+        <motion.div 
+          className="max-w-4xl mx-auto"
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+        >
           {/* Hero Section */}
-          <div className="bg-gradient-to-r from-orange-600 to-orange-400 rounded-t-2xl p-8 text-white relative overflow-hidden shadow-lg">
+          <motion.div 
+            className="bg-gradient-to-r from-orange-600 to-orange-400 rounded-t-2xl p-8 text-white relative overflow-hidden shadow-lg"
+            variants={itemVariants}
+          >
             <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full transform translate-x-1/2 -translate-y-1/2"></div>
             <div className="absolute bottom-0 left-0 w-40 h-40 bg-white opacity-10 rounded-full transform -translate-x-1/2 translate-y-1/2"></div>
             
-            <h1 className="text-3xl sm:text-4xl font-extrabold mb-3 relative">{formation.titre}</h1>
-            <p className="text-orange-100 mb-6 max-w-2xl relative">{formation.description}</p>
+            <motion.h1 
+              className="text-3xl sm:text-4xl font-extrabold mb-3 relative"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
+              {formation.titre}
+            </motion.h1>
             
-            <div className="flex items-center space-x-4 text-sm relative">
+            <motion.p 
+              className="text-orange-100 mb-6 max-w-2xl relative"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+            >
+              {formation.description}
+            </motion.p>
+            
+            <motion.div 
+              className="flex items-center space-x-4 text-sm relative"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+            >
               <div className="flex items-center">
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -119,43 +190,66 @@ const CourseDetailsPage = () => {
                 </svg>
                 <span>{formation.lieux}</span>
               </div>
-            </div>
+            </motion.div>
 
             <div className="absolute bottom-3 right-3 bg-black bg-opacity-20 backdrop-filter backdrop-blur-sm rounded-lg px-3 py-1 text-xs">
               Référence: #{formation.id}
             </div>
-          </div>
+          </motion.div>
           
           {/* Navigation Tabs */}
-          <div className="bg-white border-b border-gray-200 rounded-b-none flex overflow-x-auto">
-            <button 
+          <motion.div 
+            className="bg-white border-b border-gray-200 rounded-b-none flex overflow-x-auto"
+            variants={itemVariants}
+          >
+            <motion.button 
               onClick={() => setActiveTab('details')} 
               className={`px-6 py-4 text-sm font-medium whitespace-nowrap transition border-b-2 focus:outline-none ${
                 activeTab === 'details' 
                   ? 'border-orange-500 text-orange-600' 
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
+              whileHover={{ y: -2 }}
+              whileTap={{ y: 0 }}
             >
               Détails de la formation
-            </button>
-            <button 
+            </motion.button>
+            <motion.button 
               onClick={() => setActiveTab('resources')} 
               className={`px-6 py-4 text-sm font-medium whitespace-nowrap transition border-b-2 focus:outline-none ${
                 activeTab === 'resources' 
                   ? 'border-orange-500 text-orange-600' 
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
+              whileHover={{ y: -2 }}
+              whileTap={{ y: 0 }}
             >
               Ressources
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
           
           {/* Content */}
-          <div className="bg-white rounded-b-2xl shadow-lg p-6 sm:p-8 border-t-0">
+          <motion.div 
+            className="bg-white rounded-b-2xl shadow-lg p-6 sm:p-8 border-t-0"
+            variants={itemVariants}
+          >
             {activeTab === 'details' && (
-              <div className="space-y-8">
+              <motion.div 
+                className="space-y-8"
+                variants={tabContentVariants}
+                initial="hidden"
+                animate="visible"
+                key="details"
+              >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-orange-50 p-6 rounded-xl border border-orange-100 relative">
+                  <motion.div 
+                    className="bg-orange-50 p-6 rounded-xl border border-orange-100 relative"
+                    whileHover={{ 
+                      scale: 1.02,
+                      boxShadow: "0 10px 25px rgba(249, 115, 22, 0.1)"
+                    }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
                     <div className="absolute top-0 right-0 bg-orange-500 text-white rounded-bl-lg rounded-tr-lg px-3 py-1 text-xs font-medium">
                       Modalités
                     </div>
@@ -166,7 +260,12 @@ const CourseDetailsPage = () => {
                       Informations
                     </h3>
                     <ul className="space-y-3 text-gray-700">
-                      <li className="flex items-start">
+                      <motion.li 
+                        className="flex items-start"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 }}
+                      >
                         <span className="bg-orange-200 text-orange-800 rounded-full w-6 h-6 flex items-center justify-center mr-2 mt-0.5 flex-shrink-0">
                           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -175,8 +274,13 @@ const CourseDetailsPage = () => {
                         <div>
                           <span className="font-medium">Filière:</span> {formation.filières}
                         </div>
-                      </li>
-                      <li className="flex items-start">
+                      </motion.li>
+                      <motion.li 
+                        className="flex items-start"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.3 }}
+                      >
                         <span className="bg-orange-200 text-orange-800 rounded-full w-6 h-6 flex items-center justify-center mr-2 mt-0.5 flex-shrink-0">
                           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -185,11 +289,18 @@ const CourseDetailsPage = () => {
                         <div>
                           <span className="font-medium">Mode:</span> {formation.mode}
                         </div>
-                      </li>
+                      </motion.li>
                     </ul>
-                  </div>
+                  </motion.div>
                   
-                  <div className="bg-blue-50 p-6 rounded-xl border border-blue-100 relative">
+                  <motion.div 
+                    className="bg-blue-50 p-6 rounded-xl border border-blue-100 relative"
+                    whileHover={{ 
+                      scale: 1.02,
+                      boxShadow: "0 10px 25px rgba(59, 130, 246, 0.1)"
+                    }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
                     <div className="absolute top-0 right-0 bg-blue-500 text-white rounded-bl-lg rounded-tr-lg px-3 py-1 text-xs font-medium">
                       Équipe pédagogique
                     </div>
@@ -201,18 +312,30 @@ const CourseDetailsPage = () => {
                     </h3>
                     <div className="space-y-2 text-gray-700">
                       {formation.formateurs_animateurs.split(',').map((formateur, index) => (
-                        <div key={index} className="flex items-center bg-white p-2 rounded-lg border border-blue-100">
+                        <motion.div 
+                          key={index} 
+                          className="flex items-center bg-white p-2 rounded-lg border border-blue-100"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.2 + index * 0.1 }}
+                          whileHover={{ scale: 1.03 }}
+                        >
                           <div className="w-8 h-8 bg-blue-200 rounded-full flex items-center justify-center mr-3 text-blue-700">
                             {formateur.trim().charAt(0)}
                           </div>
                           <div className="text-sm">{formateur.trim()}</div>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
                 
-                <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                <motion.div 
+                  className="bg-gray-50 p-6 rounded-xl border border-gray-200"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
                   <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
                     <svg className="w-5 h-5 mr-2 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
@@ -222,13 +345,24 @@ const CourseDetailsPage = () => {
                   <div className="prose max-w-none text-gray-700">
                     <p>{formation.description}</p>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             )}
             
             {activeTab === 'resources' && (
-              <div className="space-y-6">
-                <div className="p-6 bg-gray-50 rounded-xl border border-gray-200">
+              <motion.div 
+                className="space-y-6"
+                variants={tabContentVariants}
+                initial="hidden"
+                animate="visible"
+                key="resources"
+              >
+                <motion.div 
+                  className="p-6 bg-gray-50 rounded-xl border border-gray-200"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
                   <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center">
                     <svg className="w-5 h-5 mr-2 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -237,7 +371,16 @@ const CourseDetailsPage = () => {
                   </h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition">
+                    <motion.div 
+                      className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition"
+                      whileHover={{ 
+                        scale: 1.03,
+                        boxShadow: "0 10px 25px rgba(79, 70, 229, 0.1)"
+                      }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
                       <PDFDownloadLink
                         document={<AccessLetterPDF formation={formation} user={user} />}
                         fileName={`Lettre_Demande_Formation_${formation.id}.pdf`}
@@ -256,7 +399,11 @@ const CourseDetailsPage = () => {
                               <h4 className="font-medium text-gray-800">Lettre d'accès à la formation</h4>
                               <p className="text-sm text-gray-500">Document officiel (PDF)</p>
                             </div>
-                            <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center">
+                            <motion.button 
+                              className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
                               {loading ? (
                                 <svg className="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -268,12 +415,21 @@ const CourseDetailsPage = () => {
                                 </svg>
                               )}
                               Télécharger
-                            </button>
+                            </motion.button>
                           </>
                         )}
                       </PDFDownloadLink>
-                    </div>
-                    <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition">
+                    </motion.div>
+                    <motion.div 
+                      className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition"
+                      whileHover={{ 
+                        scale: 1.03,
+                        boxShadow: "0 10px 25px rgba(22, 163, 74, 0.1)"
+                      }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                    >
                       <div className="flex items-center cursor-pointer" onClick={() => handleDownload(formation.document)}>
                         <div className="bg-green-100 rounded-lg p-3 mr-4">
                           <svg className="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
@@ -284,20 +440,24 @@ const CourseDetailsPage = () => {
                           <h4 className="font-medium text-gray-800">Ressources pédagogiques</h4>
                           <p className="text-sm text-gray-500">Supports de cours, exercices, etc.</p>
                         </div>
-                        <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center">
+                        <motion.button 
+                          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
                           <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
                           </svg>
                           Télécharger
-                        </button>
+                        </motion.button>
                       </div>
-                    </div>
+                    </motion.div>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </main>
       
       <Footer />
