@@ -29,7 +29,6 @@ class FormateurParticipantController extends Controller
             'password' => 'required|string|min:8',
             'filliere' => 'required|string|max:255',
             'etablissement' => 'required|string|max:255',
-            'role' => 'required|string|max:255',
             'hebergement_id' => 'nullable|exists:hebergements,id',
         ]);
 
@@ -40,7 +39,7 @@ class FormateurParticipantController extends Controller
             'password' => Hash::make($request->password), // Hashage du mot de passe
             'filliere' => $request->filliere,
             'etablissement' => $request->etablissement,
-            'role' => $request->role,
+            'role' => 'PARTICIPANT',
             'hebergement_id' => $request->hebergement_id,
         ]);
 

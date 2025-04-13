@@ -25,19 +25,28 @@ class formateurAnimateurController extends Controller
     }
 
     // Enregistrer un formateur/animateur
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'email' => 'required|email|unique:formateur_animateurs,email',
-            'filliere' => 'nullable|string|max:255',
-        ]);
+   // Enregistrer un formateur/animateur
+public function store(Request $request)
+{
+    $request->validate([
+        'nom' => 'required|string|max:255',
+        'prenom' => 'required|string|max:255',
+        'email' => 'required|email|unique:formateur_animateurs,email',
+        'filliere' => 'nullable|string|max:255',
+    ]);
 
-        $formateur = FormateurAnimateur::create($request->all());
+   
+    $formateur = new FormateurAnimateur();
+    $formateur->nom = $request->nom;
+    $formateur->prenom = $request->prenom;
+    $formateur->email = $request->email;
+    $formateur->filliere = $request->filliere;
+    $formateur->role = 'ANIMATEUR'; 
+    $formateur->save();
 
-        return response()->json($formateur, 201);  // 201 pour la création réussie
-    }
+    return response()->json($formateur, 201);  
+}
+
 
     // Mettre à jour un formateur/animateur
     public function update(Request $request, $id)
