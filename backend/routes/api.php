@@ -13,6 +13,8 @@ use App\Http\Controllers\FormationParticipantController;
 use App\Http\Controllers\ForamtionhebergmentController;
 use App\Http\Controllers\CdcsController;
 use App\Http\Controllers\DrefsController;
+use App\Http\Controllers\ResponsableDrController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -77,4 +79,6 @@ Route::get('download/{filename}', [FormationController::class, 'downloadDocument
 Route::resource('drefUsers',DrefsController::class); // api de dref
 
 Route::resource('cdcsUsers',CdcsController::class); // api de cdcs
+
+Route::resource('ResponsableDR',ResponsableDrController::class); // api de responsableDR
 

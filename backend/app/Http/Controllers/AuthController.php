@@ -7,6 +7,7 @@ use App\Models\drefs;
 use App\Models\FormateurAnimateur;
 use Illuminate\Support\Facades\Hash;
 USE App\Models\formateurParticipant;
+use App\Models\ResponsableDr;
 
 class AuthController extends Controller
 {
@@ -19,13 +20,14 @@ class AuthController extends Controller
         ]);
 
        
-        $user = cdcs::where('email', $request->email)->first() ?? drefs::where('email', $request->email)->first() ?? FormateurAnimateur::where('email', $request->email)->first() ?? formateurParticipant::where('email', $request->email)->first();
+        $user = cdcs::where('email', $request->email)->first() ?? drefs::where('email', $request->email)->first() ?? FormateurAnimateur::where('email', $request->email)->first() ?? formateurParticipant::where('email', $request->email)->first()
+            ?? ResponsableDr::where('email', $request->email)->first();
 
         
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Identifiants invalides'], 401);
         }
-        if (!in_array($user->role, ['CDC', 'DREF','ANIMATEUR', 'PARTICIPANT'])) {
+        if (!in_array($user->role, ['CDC', 'DREF','ANIMATEUR', 'PARTICIPANT','RESPONSABLE_DR'])) {
             return response()->json(['message' => 'Rôle invalide'], 403);
         }
 
