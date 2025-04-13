@@ -42,7 +42,11 @@ export default function LoginPage() {
       } else if (response.data.user.role === "PARTICIPANT") {
         console.log("Redirection vers /PARTICIPANT");
         navigate("/");
-      } else {
+      } else if (response.data.user.role === "ADMIN") {
+        console.log("Redirection vers /ADMIN");
+        navigate("/ADMIN");
+      }
+       else {
         console.log("Redirection vers /");
         navigate("/login");
       }
