@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\FormateurAnimateur;
+use Illuminate\Support\Facades\Hash;
 class formateurAnimateurController extends Controller
 {
     public function index()
@@ -33,6 +34,7 @@ public function store(Request $request)
         'prenom' => 'required|string|max:255',
         'email' => 'required|email|unique:formateur_animateurs,email',
         'filliere' => 'nullable|string|max:255',
+        'password' => 'required|string|min:6',
     ]);
 
    
@@ -42,6 +44,7 @@ public function store(Request $request)
     $formateur->email = $request->email;
     $formateur->filliere = $request->filliere;
     $formateur->role = 'ANIMATEUR'; 
+    $formateur->password = Hash::make($request->password);
     $formateur->save();
 
     return response()->json($formateur, 201);  
