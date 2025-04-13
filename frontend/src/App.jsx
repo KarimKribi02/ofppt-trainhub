@@ -21,6 +21,7 @@ import CourseDetailsPage from './Participants/Course';
 import CoursesPage from './Participants/CoursesPage';
 import About from './Participants/AboutPage';
 import AbsenceFormateursPage from './Admin/ANIMATEUR/AbsenceFormateursPage';
+import Dashbord from './Admin/dashbord';
 
 
 function App() {
@@ -36,6 +37,12 @@ function App() {
         <Route path="/courses/:id" element={<CourseDetailsPage />} />
         <Route path="/about" element={<About />} />
         </Route>
+        <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+        <Route path="/ADMIN" element={<Dashbord />}>
+          <Route index element={<Welcome role={"ADMIN"} />} /> {/* ✅ ici */}
+        </Route>
+      </Route>
+
         {/* Routes protégées pour CDC */}
         <Route element={<ProtectedRoute allowedRoles={["CDC"]} />}>
           <Route path="/CDC" element={<Cdc />}>
@@ -69,14 +76,11 @@ function App() {
             <Route path="chat" element={<ChatTotal role="ANIMATEUR" />} />
             <Route path="formation/:id" element={<AffichageFormation />} />
             <Route path="formation/:id/absence" element={<AbsenceFormateursPage />} />
-
-            {/* <Route path="ajouter-formateurs/:id" element={<FormateursTable />} /> */}
-            {/* <Route path="ajouter-hebergement/:id" element={<Hebergement />} /> */}
           </Route>
         </Route>
       </Routes>
     </BrowserRouter>
-
+    
    
     // <DocumentUpload />
     

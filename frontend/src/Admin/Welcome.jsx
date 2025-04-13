@@ -35,6 +35,16 @@ const Welcome = ({ role }) => {
       icon: <BarChart3 className="w-16 h-16 text-orange-500 mb-4" />,
       bgPattern: "animateur-pattern",
     },
+    ADMIN: {
+      title: "Bonjour et Bienvenue",
+      subtitle: "Administrateur",
+      description:
+        "En tant qu'administrateur, vous avez accès à toutes les fonctionnalités de l'application. Gérer les utilisateurs, les formations et les statistiques.",
+      link: "utilisateurs",
+      buttonText: "Gérer les Utilisateurs",
+      icon: <Users className="w-16 h-16 text-orange-500 mb-4" />,
+      bgPattern: "admin-pattern",
+    },
   };
 
   // Sélection du contenu en fonction du rôle (CDC par défaut si aucun rôle défini)

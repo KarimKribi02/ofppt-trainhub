@@ -28,7 +28,7 @@ class AuthController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Identifiants invalides'], 401);
         }
-        if (!in_array($user->role, ['CDC', 'DREF','ANIMATEUR', 'PARTICIPANT','RESPONSABLE_DR','admin'])) {
+        if (!in_array($user->role, ['CDC', 'DREF','ANIMATEUR', 'PARTICIPANT','RESPONSABLE_DR','ADMIN'])) {
             return response()->json(['message' => 'Rôle invalide'], 403);
         }
 
