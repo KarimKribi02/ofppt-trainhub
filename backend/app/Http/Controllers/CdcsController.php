@@ -28,26 +28,26 @@ class CdcsController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:cdcs,email',
             'password' => 'required|min:6',
-            'role' => 'required|string',
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json([
                 'errors' => $validator->errors()
             ], 422);
         }
-
+    
         $cdcs = cdcs::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role' => 'CDC', 
         ]);
-
+    
         return response()->json([
             'message' => 'User created successfully',
             'data' => $cdcs
         ], 201);
     }
+    
 
     /**
      * Update the specified resource in storage.

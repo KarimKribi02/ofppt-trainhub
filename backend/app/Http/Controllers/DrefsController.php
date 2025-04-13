@@ -28,7 +28,6 @@ class DrefsController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:drefs,email',
             'password' => 'required|min:6',
-            'role' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -40,7 +39,7 @@ class DrefsController extends Controller
         $drefs = drefs::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role' => 'DREF',
         ]);
 
         return response()->json([

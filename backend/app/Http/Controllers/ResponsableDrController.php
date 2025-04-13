@@ -31,13 +31,12 @@ class ResponsableDrController extends Controller
         $request->validate([
             'email' => 'required|email|unique:responsable_drs',
             'password' => 'required|min:6',
-            'role' => 'required|string',
         ]);
 
         $responsable = ResponsableDr::create([
             'email' => $request->email,
             'password' => Hash::make($request->password), // sécuriser le mot de passe
-            'role' => $request->role,
+            'role' => 'RESPONSABLE_DR',
         ]);
 
         return response()->json($responsable, 201);
