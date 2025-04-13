@@ -36,8 +36,8 @@ function App() {
         <Route path="/courses" element={<CoursesPage />} />
         <Route path="/courses/:id" element={<CourseDetailsPage />} />
         <Route path="/about" element={<About />} />
-        </Route>
-        <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+      </Route>
+     <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
         <Route path="/ADMIN" element={<Dashbord />}>
           <Route index element={<Welcome role={"ADMIN"} />} /> {/* ✅ ici */}
         </Route>

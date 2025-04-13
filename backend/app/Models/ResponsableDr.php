@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens; 
 class ResponsableDr extends Model
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens;
 
     protected $table = 'responsable_drs';
 
