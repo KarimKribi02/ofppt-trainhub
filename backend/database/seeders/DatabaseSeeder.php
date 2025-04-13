@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(HebergementSeeder::class);
         $this->call(drefsSeeder::class);
         $this->call(cdcs::class);
+        $this->call(ResponsableDrSeeder::class);
         
 
     }
