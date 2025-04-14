@@ -40,10 +40,20 @@ const Welcome = ({ role }) => {
       subtitle: "Administrateur",
       description:
         "En tant qu'administrateur, vous avez accès à toutes les fonctionnalités de l'application. Gérer les utilisateurs, les formations et les statistiques.",
-      link: "utilisateurs",
+      link: "ajouter_CDC",
       buttonText: "Gérer les Utilisateurs",
       icon: <Users className="w-16 h-16 text-orange-500 mb-4" />,
       bgPattern: "admin-pattern",
+    },
+    RESPONSABLE_DR: {
+      title: "Bonjour et Bienvenue",
+      subtitle: "Responsable DR",
+      description:
+        "En tant que Responsable DR, vous avez accès à la gestion des formations et des participants. Accédez à toutes vos ressources depuis cette interface.",
+      link: "formations",
+      buttonText: "Voir les Formations",
+      icon: <BookOpen className="w-16 h-16 text-orange-500 mb-4" />,
+      bgPattern: "dr-pattern",
     },
   };
 

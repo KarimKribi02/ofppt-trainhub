@@ -45,6 +45,11 @@ function SideBar({ role }) {
       { to: "ajouter_ANIMATEUR", icon: <FiLayers className="w-5 h-5" />, label: "ajouter_ANIMATEUR" },
       { to: "ajouter_PARTICIPANT", icon: <FiLayers className="w-5 h-5" />, label: "ajouter_PARTICIPANT" },
     ],
+
+    RESPONSABLE_DR: [
+      { to: "formations", icon: <FiLayers className="w-5 h-5" />, label: "Formations" },
+      { to: "formateurs", icon: <FiLayers className="w-5 h-5" />, label: "Formateurs" }
+    ]
   };
 
   const currentMenu = menuItems[role] || [];

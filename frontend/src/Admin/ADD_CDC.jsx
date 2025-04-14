@@ -110,7 +110,7 @@ const GestionCDC = () => {
   };
 
   return (
-    <div className="bg-orange-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+    <div className="bg-orange-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8 p-4 sm:ml-64">
       <motion.div 
         className="max-w-7xl mx-auto"
         initial={{ opacity: 0 }}
@@ -199,25 +199,7 @@ const GestionCDC = () => {
                     </div>
                   </div>
                   
-                  <div className="sm:col-span-3">
-                    <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                      Rôle
-                    </label>
-                    <div className="mt-1">
-                      <select
-                        id="role"
-                        name="role"
-                        value={formData.role}
-                        onChange={handleChange}
-                        className="shadow-sm focus:ring-orange-500 focus:border-orange-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
-                      >
-                        <option value="">Sélectionnez un rôle</option>
-                        <option value="admin">Administrateur</option>
-                        <option value="editor">Éditeur</option>
-                        <option value="viewer">Lecteur</option>
-                      </select>
-                    </div>
-                  </div>
+                  
                   
                   <div className="sm:col-span-6">
                     <label htmlFor="password" className="block text-sm font-medium text-gray-700">

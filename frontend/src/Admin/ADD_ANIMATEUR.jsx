@@ -89,7 +89,7 @@ const GestionANIMATEUR = () => {
   };
 
   return (
-    <div className="bg-orange-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+    <div className="bg-orange-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8 p-4 sm:ml-64">
       <motion.div
         className="max-w-7xl mx-auto"
         initial={{ opacity: 0 }}
@@ -306,7 +306,7 @@ const GestionANIMATEUR = () => {
 
         {/* Table */}
         <motion.div
-          className="flex flex-col"
+          className="flex flex-col "
           variants={containerVariants}
           initial="hidden"
           animate="visible"

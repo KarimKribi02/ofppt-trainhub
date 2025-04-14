@@ -26,7 +26,9 @@ import ADD_CDC from './Admin/ADD_CDC';
 import ADD_DREF from './Admin/ADD_DREF';
 import ADD_ANIMATEUR from './Admin/ADD_ANIMATEUR';
 import ADD_PARTICIPANT from './Admin/ADD_PARTICIPANT';
-
+import RESPONSABLE_DR from './Admin/ResponsableDR/Responsabledr';
+import Formationsdr from './Admin/ResponsableDR/Formationsdr';
+import Formateursdr from './Admin/ResponsableDR/Formateursdr';
 function App() {
   return (
     <BrowserRouter>
@@ -48,6 +50,14 @@ function App() {
           <Route path="ajouter_ANIMATEUR" element={<ADD_ANIMATEUR />} />
           <Route path="ajouter_PARTICIPANT" element={<ADD_PARTICIPANT />} />
 
+        </Route>
+      </Route>
+      <Route element={<ProtectedRoute allowedRoles={["RESPONSABLE_DR"]} />}>
+        <Route path="/RESPONSABLE_DR" element={<RESPONSABLE_DR />}>
+          <Route index element={<Welcome role={"RESPONSABLE_DR"} />} /> {/* ✅ ici */}
+          <Route path="formations" element={<Formationsdr />} />
+          <Route path="formation/:id" element={<AffichageFormation />} />
+          <Route path="formateurs" element={<Formateursdr />} />
         </Route>
       </Route>
 

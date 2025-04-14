@@ -46,6 +46,10 @@ export default function LoginPage() {
         console.log("Redirection vers /ADMIN");
         navigate("/ADMIN");
       }
+      else if (response.data.user.role === "RESPONSABLE_DR") {
+        console.log("Redirection vers /RESPONSABLE_DR");
+        navigate("/RESPONSABLE_DR");
+      }
        else {
         console.log("Redirection vers /");
         navigate("/login");
