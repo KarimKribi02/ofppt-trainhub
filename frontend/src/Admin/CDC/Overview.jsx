@@ -33,12 +33,24 @@ function VueFormations() {
         setTimeout(() => setNotification(null), 5000);
     };
 
-    const handleSupprimer = (id, titre) => {
-        if (window.confirm(`Êtes-vous sûr de vouloir supprimer la formation "${titre}" ?`)) {
-            // Simulation de suppression (à remplacer par l'appel API réel)
+   // Replace your handleSupprimer function with this:
+const handleSupprimer = async (id, titre) => {
+    if (window.confirm(`Êtes-vous sûr de vouloir supprimer la formation "${titre}" ?`)) {
+        try {
+            // Make the actual API call to delete the formation
+            await axios.delete(`http://127.0.0.1:8000/api/formations/${id}`);
+            
+            // Update the state to remove the deleted formation
+            setFormations(formations.filter(f => f.id !== id));
+            
+            // Show success notification
             afficherNotification(`La formation "${titre}" a été supprimée avec succès`, "succès");
+        } catch (error) {
+            console.error("Erreur lors de la suppression de la formation :", error);
+            afficherNotification(`Erreur lors de la suppression de la formation "${titre}"`, "erreur");
         }
-    };
+    }
+};
 
     const statusStyles = {
         validé: "bg-green-100 text-green-800 border-green-300",
