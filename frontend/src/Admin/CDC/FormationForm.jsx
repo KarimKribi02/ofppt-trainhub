@@ -157,7 +157,8 @@ const FormationForm = () => {
                 <option value="">Sélectionner Filière</option>
                 <option value="Développement Digital">Développement Digital</option>
                 <option value="Génie Civil">Génie Civil</option>
-                {/* ... */}
+                <option value="Infrastructure Digitale">Infrastructure Digitale</option>
+                <option value="Gestion des Entreprises">Gestion des Entreprises</option>
               </select>
             </div>
   

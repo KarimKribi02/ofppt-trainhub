@@ -18,7 +18,7 @@ class ResponsableDrSeeder extends Seeder
     {
         DB::table('responsable_drs')->insert([
             'email' => 'ResponsableDr@example.com',
-            'password' => Hash::make('password123'),
+            'password' => Hash::make('admin123'),
             'role' => 'RESPONSABLE_DR',
         ]);
     }

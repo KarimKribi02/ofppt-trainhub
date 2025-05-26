@@ -15,16 +15,13 @@ const StyledCourseCard = ({ formation, index }) => {
 
   // Card animation variants
   const cardVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 50 
-    },
+    hidden: { opacity: 0, y: 50 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: { 
         duration: 0.5,
-        delay: index * 0.1 // Stagger effect based on index
+        delay: index * 0.1
       }
     },
     hover: {
@@ -53,7 +50,7 @@ const StyledCourseCard = ({ formation, index }) => {
       transition: { duration: 0.3 }
     },
     hover: {
-      backgroundColor: "#fff7ed", // Tailwind orange-50 darkened slightly
+      backgroundColor: "#fff7ed",
       scale: 1.02,
       transition: { duration: 0.2 }
     }
@@ -64,7 +61,7 @@ const StyledCourseCard = ({ formation, index }) => {
     hover: {
       scale: 1.05,
       y: -2,
-      backgroundColor: "#ea580c", // Tailwind orange-600
+      backgroundColor: "#ea580c",
       transition: { duration: 0.2 }
     },
     tap: {
@@ -214,7 +211,10 @@ const CoursesPage = () => {
       setLoading(true);
       axios.get('http://127.0.0.1:8000/api/formation-participants')
         .then(res => {
-          const filtered = res.data.filter(fp => fp.participant_id === user.id);
+          // Filter formations to only include those with "statut": "validé"
+          const filtered = res.data.filter(
+            fp => fp.participant_id === user.id && fp.formation.statut === "validé"
+          );
           setUserCourses(filtered);
           setLoading(false);
         }).catch(err => {
@@ -381,7 +381,7 @@ const CoursesPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
               >
-                Vous n'êtes inscrit à aucune formation pour le moment.
+                Vous n'êtes inscrit à aucune formation validée pour le moment.
               </motion.p>
             </motion.div>
           ) : (

@@ -25,9 +25,9 @@ class FormationModel extends Model
     //     return FormateurParticipant::whereIn('id', $this->participant_ids)->get();
     // }
 
-    public function formationParticipants()
+    public function formateur_participants()
     {
-        return $this->hasMany(FormationParticipant::class, 'formation_id');
+        return $this->belongsToMany(FormateurParticipant::class, 'formation_participants', 'formation_id', 'participant_id');
     }
 
     public function hebergement()

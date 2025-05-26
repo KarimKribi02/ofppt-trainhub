@@ -60,8 +60,7 @@ const handleSupprimer = async (id, titre) => {
 
     const statusIcons = {
         validé: "✓",
-        en_attente: "⏱",
-        rejeté: "✕",
+        redigé: "✕",
     };
 
     const filteredFormations = formations.filter(f => 
@@ -176,8 +175,7 @@ const handleSupprimer = async (id, titre) => {
                                 >
                                     <option value="">Tous les statuts</option>
                                     <option value="validé">Validé</option>
-                                    <option value="en_attente">En attente</option>
-                                    <option value="rejeté">Rejeté</option>
+                                    <option value="redigé">Redigé</option>
                                 </select>
                                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                     <svg className="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">

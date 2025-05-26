@@ -83,7 +83,10 @@ const Benefits = () => {
 
   useEffect(() => {
     if (user && cours.length > 0) {
-      const filtrés = cours.filter(c => c.participant_id === user.id);
+      // Filter courses to include only those with "statut": "validé" and matching participant_id
+      const filtrés = cours.filter(
+        c => c.participant_id === user.id && c.formation.statut === "validé"
+      );
       console.log('Cours filtrés:', filtrés);
       setCoursFiltrés(filtrés);
     } else {
@@ -384,7 +387,7 @@ const Benefits = () => {
                 transition={{ duration: 0.7 }}
                 className="text-center text-gray-500 py-10 md:py-12"
               >
-                <p className="text-lg md:text-xl mb-4">Vous n'êtes inscrit à aucune formation pour le moment.</p>
+                <p className="text-lg md:text-xl mb-4">Vous n'êtes inscrit à aucune formation validée pour le moment.</p>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     to="/courses"

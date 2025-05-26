@@ -30,11 +30,11 @@ function SideBar({ role }) {
     CDC: [
       { to: "ajouter-formation", icon: <FiPlusCircle className="w-5 h-5" />, label: "Ajouter Formation" },
       { to: "overview", icon: <FiGrid className="w-5 h-5" />, label: "Tableau de bord" },
-      { to: "chat", icon: <FiMessageSquare className="w-5 h-5" />, label: "Messagerie" },
+      
     ],
     DREF: [
       { to: "formations", icon: <FiLayers className="w-5 h-5" />, label: "Formations" },
-      { to: "chat", icon: <FiMessageSquare className="w-5 h-5" />, label: "Messagerie" },
+      
     ],
     ANIMATEUR: [
       { to: "formationsAnimateur", icon: <FiLayers className="w-5 h-5" />, label: "Mes Formations" },

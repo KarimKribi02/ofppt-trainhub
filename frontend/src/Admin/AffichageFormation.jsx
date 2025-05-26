@@ -11,24 +11,25 @@ const AffichageFormation = () => {
   useEffect(() => {
     fetchFormation();
   }, [id]);
-    const handleDownload = async (documentPath) => {
-      try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/downloadDocument/${documentPath}`, {
-          responseType: 'arraybuffer'
-        });
-        
-        const blob = new Blob([response.data], { type: 'application/pdf' });
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', documentPath);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } catch (error) {
-        console.error('Erreur lors du téléchargement:', error);
-      }
-    };
+
+  const handleDownload = async (documentPath) => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/downloadDocument/${documentPath}`, {
+        responseType: 'arraybuffer'
+      });
+      
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', documentPath);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Erreur lors du téléchargement:', error);
+    }
+  };
 
   const fetchFormation = async () => {
     setLoading(true);
@@ -136,8 +137,8 @@ const AffichageFormation = () => {
                 <h3 className="text-sm font-semibold text-gray-500 uppercase">Statut</h3>
                 <div className="mt-1">
                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                    formationData.statut === 'En cours' ? 'bg-green-100 text-green-800' : 
-                    formationData.statut === 'À venir' ? 'bg-blue-100 text-blue-800' : 
+                    formationData.statut === 'validé' ? 'bg-green-100 text-green-800' : 
+                    formationData.statut === 'redigé' ? 'bg-blue-100 text-blue-800' : 
                     'bg-gray-100 text-gray-800'
                   }`}>
                     {formationData.statut}
@@ -153,7 +154,7 @@ const AffichageFormation = () => {
               Ressources
             </h2>
             <div className="space-y-4">
-              {formationData.lien_teams && (
+              {formationData.lien_teams && (formationData.mode === 'à_distance'||formationData.mode === 'hybride') && (
                 <div>
                   <h3 className="text-sm font-semibold text-gray-500 uppercase">Lien de réunion</h3>
                   <a
@@ -169,23 +170,26 @@ const AffichageFormation = () => {
               )}
               
               {formationData.document && (
-                <div className="flex items-center cursor-pointer" >
-                <div className="bg-green-100 rounded-lg p-3 mr-4">
-                  <svg className="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
-                  </svg>
+                <div className="flex items-center cursor-pointer">
+                  <div className="bg-green-100 rounded-lg p-3 mr-4">
+                    <svg className="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
+                    </svg>
+                  </div>
+                  <div className="flex-grow">
+                    <h4 className="font-medium text-gray-800">Ressources pédagogiques</h4>
+                    <p className="text-sm text-gray-500">Supports de cours, exercices, etc.</p>
+                  </div>
+                  <button
+                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center"
+                    onClick={() => handleDownload(formationData.document)}
+                  >
+                    <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                    Télécharger
+                  </button>
                 </div>
-                <div className="flex-grow">
-                  <h4 className="font-medium text-gray-800">Ressources pédagogiques</h4>
-                  <p className="text-sm text-gray-500">Supports de cours, exercices, etc.</p>
-                </div>
-                <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center " onClick={() => handleDownload(formationData.document)}>
-                  <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                  Télécharger
-                </button>
-              </div>
               )}
             </div>
           </div>

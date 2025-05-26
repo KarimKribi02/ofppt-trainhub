@@ -226,7 +226,7 @@ function DrefFormations() {
                                             className="flex justify-center items-center p-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-all duration-200"
                                             title="Ajouter Hébergement"
                                         >
-                                            <FaHotel className="mr-1" /> Logement
+                                            <FaHotel className="mr-1"/> Hébergement
                                         </Link>
                                     </div>
                                 </div>

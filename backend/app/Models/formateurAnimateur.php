@@ -13,4 +13,8 @@ class FormateurAnimateur extends Model
     protected $table = 'formateur_animateurs';
     protected $fillable = ['nom','prenom','email','password','role','filières','hebergement_id'];
 
+    public function formations()
+    {
+        return $this->hasMany(FormationModel::class);
+    }   
 }

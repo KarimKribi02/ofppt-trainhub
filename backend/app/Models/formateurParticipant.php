@@ -14,15 +14,14 @@ class formateurParticipant extends Model
 
     protected $fillable = ['nom','prenom','email','password','role','filliere','etablissement','hebergement_id'];
 
- 
+   public function  formations() {
+    return $this->belongsTOMany(Formation::class,'formation_participants','participant_id','formation_id');
+   }
 
     public function hebergement()
     {
         return $this->belongsTo(hebergement::class);
     }
     
-    public function formationParticipants()
-    {
-        return $this->hasMany(FormationParticipant::class, 'participant_id');
-    }
+   
 }
